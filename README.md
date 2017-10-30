@@ -1,7 +1,7 @@
 # TravisBuddy
 > *TravisBuddy* is an awesome bot that will make life much easier for your contributoers.
 
-### Please not that TravisBuddy is still under development. Please do not integrate it yet.
+### Please not that TravisBuddy is still under development. Please do not integrate it yet. 
 
 ## Overview
 
