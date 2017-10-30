@@ -1,0 +1,7 @@
+[
+    {
+        "mode": "mocha",
+        "description": "Mocha testing library",
+        "path": "./resolvers/mocha.js"
+    }
+]
