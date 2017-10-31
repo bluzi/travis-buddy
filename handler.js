@@ -15,7 +15,7 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
 
         logger.log(`Resolver found in: '${resolverPath}'`);
 
-        function requestLog() {
+        (function requestLog() {
             request(`https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`, (err, response, log) => {
                 if (err) return reject(err);
 
@@ -29,7 +29,7 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
                     resolver(log, {}, comment);
                 }
             });
-        }
+        })();
 
         function comment(message) {
             const gh = new GitHub({
