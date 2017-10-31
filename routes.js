@@ -9,6 +9,17 @@ router.get('/', (req, res, next) => {
     res.send({ state: 'running' });
 });
 
+router.get('/test/:jobId', (req, res, next) => {
+    const test = require('./test-log');
+
+    test(req.params.jobId).then(log => {
+        res
+            .status(200)
+            .send(`<pre>${log.contents}</pre>`)
+            .end();
+    });
+});
+
 router.post('/:mode', (req, res, next) => {
     try {
         logger.log('\n\n!!! HANDLING NEW REQUEST !!!\n\n')
