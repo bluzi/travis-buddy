@@ -6,26 +6,33 @@ const logger = require('./logger');
 const stripAnsi = require('strip-ansi');
 
 
+const MAX_ATTEMPTS_TO_GET_DONE = 10;
+
 module.exports = (owner, repo, jobId, prNumber, author, mode) => {
     return new Promise((resolve, reject) => {
-        logger.log(`Looking for a resolver for mode '${mode}'`);
+        logger.log(`#${prNumber}: Looking for a resolver for mode '${mode}'`);
 
         const resolverPath = resolvers.find(resolver => resolver.mode = mode).path;
         const resolver = require(resolverPath);
 
-        logger.log(`Resolver found in: '${resolverPath}'`);
+        logger.log(`#${prNumber}: Resolver found in: '${resolverPath}'`);
 
-        (function requestLog() {
+        (function requestLog(attempts = 0) {
             request(`https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`, (err, response, log) => {
                 if (err) return reject(err);
 
                 const lastLine = log.trim().split(/\r?\n/).pop();
                 if (lastLine.startsWith('Done.') === false) {
-                    logger.log('Done not found, requesting new log...');
-                    setTimeout(requestLog, 1000);
+                    logger.log(`#${prNumber}: Done not found, requesting new log...`);
+
+                    if (attempts >= MAX_ATTEMPTS_TO_GET_DONE) {
+                        logger.error(`#${prNumber}: Too many attempts to find done (MAX_ATTEMPTS: ${MAX_ATTEMPTS_TO_GET_DONE})`);
+                    } else {
+                        setTimeout(() => requestLog(++attempts), 1000);
+                    }
                 } else {
-                    logger.log('Done found! yay!');
-                    logger.log(`Resolving log... (length: ${log.length})`);
+                    logger.log(`#${prNumber}: Done found after ${attempts}/${MAX_ATTEMPTS_TO_GET_DONE} attempts.`);
+                    logger.log(`#${prNumber}: Resolving log... (length: ${log.length})`);
 
                     logger.log(log);
                     log = stripAnsi(log);
@@ -48,16 +55,16 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
 
             const issues = gh.getIssues(owner, repo);
 
-            logger.log(`Attempting to create comment on PR #${prNumber} (${owner}/${repo})`);
-            logger.log('Issue content:');
+            logger.log(`#${prNumber}:Attempting to create comment on PR #${prNumber} (${owner}/${repo})`);
+            logger.log(`#${prNumber}: Issue content:`);
             logger.log(contents);
 
             issues.createIssueComment(prNumber, contents)
                 .then(result => {
-                    logger.log(`Comment created on PR #${prNumber}`);
+                    logger.log(`#${prNumber}: Comment created on PR #${prNumber}`);
                     resolve();
                 })
-                .catch(() => logger.error(`Error: Could not create comment on PR #${prNumber}`))
+                .catch(() => logger.error(`#${prNumber}: Error: Could not create comment`))
         }
     });
 }
