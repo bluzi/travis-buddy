@@ -1,7 +1,7 @@
 const request = require('request');
 const logger = console;
 
-const jobId = 295502225;
+const jobId = 295503515;
 
 
 const resolver = (log, params, comment) => {
@@ -17,10 +17,11 @@ request(`https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`, (err, res
 
     logger.log(`Resolving log... (length: ${log.length})`);
 
-    log = stripAnsi(log);
-    let mochaLog = log
-        .substr(log.indexOf('> mocha'))
-        .substr(log.indexOf('\n') + 1)
+    let mochaLog = stripAnsi(log);
+    
+    mochaLog = mochaLog.substr(mochaLog.indexOf('> mocha'));
+    
+    mochaLog = mochaLog.substr(mochaLog.indexOf('\n'));
 
     mochaLog = mochaLog.substr(0, mochaLog.indexOf('npm ERR!')).trim();
 
