@@ -1,14 +1,14 @@
 module.exports = (log, params, comment) => {
-    let mochaLog = log
-        .substr(log.indexOf('> mocha'))
-        .substr(log.indexOf('\n') + 1)
+    log = log.substr(log.indexOf('> mocha'));
+    
+    log = log.substr(log.indexOf('\n'));
 
-    mochaLog = mochaLog.substr(0, mochaLog.indexOf('npm ERR!')).trim();
+    log = log.substr(0, log.indexOf('npm ERR!')).trim();
 
-    mochaLog = mochaLog
-        .replace('✓', '<span color="green">✓</span>');
+    log = log
+            .replace('✓', '<span color="green">✓</span>');
 
     comment({
-        contents: mochaLog,
+        contents: log,
     });
 }
