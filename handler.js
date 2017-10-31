@@ -5,21 +5,20 @@ const path = require('path');
 
 module.exports = (owner, repo, jobId, prNumber, author, mode) => {
     return new Promise((resolve, reject) => {
-        const githubAccessToken = '1a0ef10bdff07cbbb59865382ee1a179d467ef99';
 
         const resolverPath = resolvers.find(resolver => resolver.mode = mode).path;
         const resolver = require(resolverPath);
 
-        console.log(`Resolver found in: ${resolverPath}`);
+        logger.log(`Resolver found in: ${resolverPath}`);
 
         request(`https://api.travis-ci.org/jobs/${jobId}/log`, (err, response, log) => {
-            console.log(`Resolving log... (length: ${log.length})`);
+            logger.log(`Resolving log... (length: ${log.length})`);
             resolver(log, {}, comment);
         });
 
         function comment(message) {
             const gh = new GitHub({
-                token: githubAccessToken
+                token: process.env.githubAccessToken
             });
 
             message.author = author;
@@ -28,16 +27,16 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
 
             const issues = gh.getIssues(owner, repo);
 
-            console.log(`Attempting to create comment on PR #${prNumber} (${owner}/${repo})`);
-            console.log('Issue content:');
-            console.log(contents);
+            logger.log(`Attempting to create comment on PR #${prNumber} (${owner}/${repo})`);
+            logger.log('Issue content:');
+            logger.log(contents);
 
             issues.createIssueComment(prNumber, contents)
                 .then(result => {
-                    console.log(`Comment created on PR #${prNumber}`);
+                    logger.log(`Comment created on PR #${prNumber}`);
                     resolve();
                 })
-                .catch(() => console.error(`Error: Could not create comment on PR #${prNumber}`))
+                .catch(() => logger.error(`Error: Could not create comment on PR #${prNumber}`))
         }
     });
 }

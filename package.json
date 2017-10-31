@@ -13,13 +13,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "github-api": "^3.0.0",
-    "request": "^2.83.0",
-    "travis-ci": "^2.1.1",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
-    "morgan": "~1.9.0"
+    "github-api": "^3.0.0",
+    "logdna": "^1.4.0",
+    "morgan": "~1.9.0",
+    "request": "^2.83.0",
+    "travis-ci": "^2.1.1"
   }
 }
