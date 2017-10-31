@@ -45,7 +45,8 @@ router.post('/:mode', (req, res, next) => {
     logger.log(tolog);
 
     handle(owner, repo, jobId, pullRequest, author, mode)
-        .then(() => res.status(200).send({ ok: true }).end());
+        .then(() => res.status(200).send({ ok: true }).end())
+        .catch(e => logger.error(log));
 });
 
 module.exports = router;

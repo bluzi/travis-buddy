@@ -5,11 +5,12 @@ const path = require('path');
 
 module.exports = (owner, repo, jobId, prNumber, author, mode) => {
     return new Promise((resolve, reject) => {
+        logger.log(`Looking for a resolver for mode '${mode}'`);
 
         const resolverPath = resolvers.find(resolver => resolver.mode = mode).path;
         const resolver = require(resolverPath);
 
-        logger.log(`Resolver found in: ${resolverPath}`);
+        logger.log(`Resolver found in: '${resolverPath}'`);
 
         request(`https://api.travis-ci.org/jobs/${jobId}/log`, (err, response, log) => {
             logger.log(`Resolving log... (length: ${log.length})`);
