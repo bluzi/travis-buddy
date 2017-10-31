@@ -8,6 +8,6 @@ module.exports = (log, params, comment) => {
     mochaLog = mochaLog.substr(0, mochaLog.indexOf('npm ERR!')).trim();
 
     comment({
-        contents: mochaLog,
+        contents: stripAnsi(log),
     });
 }
