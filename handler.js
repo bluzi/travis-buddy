@@ -21,8 +21,10 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
 
                 const lastLine = log.trim().split(/\r?\n/).pop();
                 if (lastLine.startsWith('Done.') === false) {
+                    logger.log('Done not found, requesting new log...');
                     setTimeout(requestLog, 1000);
                 } else {
+                    logger.log('Done found! yay!');
                     logger.log(`Resolving log... (length: ${log.length})`);
 
                     log = stripAnsi(log);

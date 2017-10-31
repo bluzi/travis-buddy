@@ -52,6 +52,7 @@ router.post('/:mode', (req, res, next) => {
             mode,
             pullRequest,
             buildNumber,
+            jobId,
         });
 
         // setTimeout(() => {
