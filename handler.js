@@ -2,6 +2,7 @@ const GitHub = require('github-api');
 const request = require('request');
 const resolvers = require('./resolvers.json');
 const path = require('path');
+const logger = require('./logger');
 
 module.exports = (owner, repo, jobId, prNumber, author, mode) => {
     return new Promise((resolve, reject) => {
