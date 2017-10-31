@@ -19,7 +19,7 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
             request(`https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`, (err, response, log) => {
                 if (err) return reject(err);
 
-                const lastLine = log.split(/\r?\n/).pop();
+                const lastLine = log.trim().split(/\r?\n/).pop();
                 if (lastLine.startsWith('Done.') === false) {
                     setTimeout(requestLog, 1000);
                 } else {
