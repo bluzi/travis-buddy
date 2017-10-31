@@ -43,8 +43,6 @@ router.post('/:mode', (req, res, next) => {
             buildNumber,
         });
 
-        logger.log(tolog);
-
         handle(owner, repo, jobId, pullRequest, author, mode)
             .then(() => res.status(200).send({ ok: true }).end())
             .catch(e => {
@@ -52,7 +50,7 @@ router.post('/:mode', (req, res, next) => {
                 res.status(500).end();
             });
     } catch (e) {
-        logger.error(e);
+        logger.error('Error in routes', e);
         res.status(500).end();
     }
 });
