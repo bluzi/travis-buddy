@@ -12,7 +12,7 @@ module.exports = (log, params, comment) => {
     logger.log(log);
 
     log = log
-            .replace('✓', '<span color="green">✓</span>');
+            .replace('✓', '![alt text](https://raw.githubusercontent.com/bluzi/travis-buddy/master/resources/checkmark.png "Checkmark")');
 
     logger.log(log);
 
