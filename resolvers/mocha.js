@@ -1,5 +1,3 @@
-const stripAnsi = require('strip-ansi');
-
 module.exports = (log, params, comment) => {
     let mochaLog = log
         .substr(log.indexOf('> mocha'))

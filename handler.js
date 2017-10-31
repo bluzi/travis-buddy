@@ -3,6 +3,8 @@ const request = require('request');
 const resolvers = require('./resolvers.json');
 const path = require('path');
 const logger = require('./logger');
+const stripAnsi = require('strip-ansi');
+
 
 module.exports = (owner, repo, jobId, prNumber, author, mode) => {
     return new Promise((resolve, reject) => {
@@ -15,8 +17,10 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
 
         request(`https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`, (err, response, log) => {
             if (err) return reject(err);
-            logger.log(log);
+
             logger.log(`Resolving log... (length: ${log.length})`);
+
+            log = stripAnsi(log);
             resolver(log, {}, comment);
         });
 
