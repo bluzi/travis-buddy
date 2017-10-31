@@ -1,6 +1,7 @@
 const logger = require('./../logger');
 
 module.exports = (log, params, comment) => {
+    logger.log('mocha');
     log = log.substr(log.indexOf('> mocha'));
     logger.log(log);
     

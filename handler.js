@@ -27,7 +27,9 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
                     logger.log('Done found! yay!');
                     logger.log(`Resolving log... (length: ${log.length})`);
 
+                    logger.log(log);
                     log = stripAnsi(log);
+                    logger.log(log);
                     resolver(log, {}, comment);
                 }
             });
