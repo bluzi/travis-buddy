@@ -65,7 +65,8 @@ router.post('/:mode', (req, res, next) => {
                 res.status(500).end();
             });
     } catch (e) {
-        logger.error('Error in routes', e);
+        logger.error('Error in routes');
+        logger.error(e);
         res.status(500).end();
     }
 });
