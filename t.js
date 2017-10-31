@@ -24,7 +24,7 @@ request(`https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`, (err, res
 
     mochaLog = mochaLog.substr(0, mochaLog.indexOf('npm ERR!')).trim();
 
-        mochaLog
+    mochaLog = mochaLog
             .replace('✓', '<span color="green">✓</span>');
 
     comment({
