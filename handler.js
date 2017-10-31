@@ -25,6 +25,8 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
 
             message.author = author;
 
+            logger.debug('Pre-format message', message);
+
             const contents = formatMessage(message);
 
             const issues = gh.getIssues(owner, repo);
