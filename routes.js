@@ -2,6 +2,8 @@ const express = require('express');
 const handle = require('./handler');
 const logger = require('./logger');
 
+// const samplePayload = require('./sample-payloads/payload2.json');
+
 const router = express.Router();
 
 /* GET home page. */
@@ -45,7 +47,7 @@ router.post('/:mode', (req, res, next) => {
         const author = payload.author_name;
 
 
-        logger.log(`#${pullRequest}: Handling request for '${pullRequestTitle}' by '${author}' in '${owner}/${repo}' (mode: '${mocha}', jobId: '${jobId}', build number: ${buildNumber})`, {
+        logger.log(`#${pullRequest}: Handling request for '${pullRequestTitle}' by '${author}' in '${owner}/${repo}' (mode: '${mode}', jobId: '${jobId}', build number: ${buildNumber})`, {
             meta: {
                 owner,
                 repo,
@@ -61,12 +63,13 @@ router.post('/:mode', (req, res, next) => {
         handle(owner, repo, jobId, pullRequest, author, mode)
             .then(() => res.status(200).send({ ok: true }).end())
             .catch(e => {
-                logger.error(log)
+                logger.error('Error in handler');
+                logger.error(e.message);
                 res.status(500).end();
             });
     } catch (e) {
         logger.error('Error in routes');
-        logger.error(e);
+        logger.error(e.message);
         res.status(500).end();
     }
 });
