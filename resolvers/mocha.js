@@ -3,7 +3,7 @@ module.exports = (log, params, comment) => {;
         .substr(log.indexOf('mocha'))
         .substr(log.indexOf('\n') + 1)
        
-    mochaLog = mochaLog.substr(0, mochaLog.indexOf('npm ERR!')).trim();
+    // mochaLog = mochaLog.substr(0, mochaLog.indexOf('npm ERR!')).trim();
 
     comment({
         contents: mochaLog,
