@@ -13,7 +13,9 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
 
         logger.log(`Resolver found in: '${resolverPath}'`);
 
-        request(`https://api.travis-ci.org/jobs/${jobId}/log`, (err, response, log) => {
+        request(`https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`, (err, response, log) => {
+            if (err) return reject(err);
+            logger.log(log);
             logger.log(`Resolving log... (length: ${log.length})`);
             resolver(log, {}, comment);
         });
