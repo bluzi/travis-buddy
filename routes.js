@@ -54,14 +54,14 @@ router.post('/:mode', (req, res, next) => {
             buildNumber,
         });
 
-        setTimeout(() => {
+        // setTimeout(() => {
             handle(owner, repo, jobId, pullRequest, author, mode)
                 .then(() => res.status(200).send({ ok: true }).end())
                 .catch(e => {
                     logger.error(log)
                     res.status(500).end();
                 });
-        }, 10000);
+        // }, 10000);
     } catch (e) {
         logger.error('Error in routes', e);
         res.status(500).end();
