@@ -25,7 +25,7 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
 
             message.author = author;
 
-            logger.debug('Pre-format message', message);
+            logger.debug(message);
 
             const contents = formatMessage(message);
 
