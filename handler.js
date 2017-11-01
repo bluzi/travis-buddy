@@ -34,9 +34,7 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
                     logger.log(`#${prNumber}: Done found after ${attempts}/${MAX_ATTEMPTS_TO_GET_DONE} attempts.`);
                     logger.log(`#${prNumber}: Resolving log... (length: ${log.length})`);
 
-                    logger.log(log);
                     log = stripAnsi(log);
-                    logger.log(log);
                     resolver(log, {}, comment);
                 }
             });
@@ -53,7 +51,7 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
 
             const issues = gh.getIssues(owner, repo);
 
-            logger.log(`#${prNumber}:Attempting to create comment on PR #${prNumber} (${owner}/${repo})`);
+            logger.log(`#${prNumber}: Attempting to create comment on PR #${prNumber} (${owner}/${repo})`);
 
             issues.createIssueComment(prNumber, contents)
                 .then(result => {
