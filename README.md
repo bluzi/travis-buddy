@@ -35,6 +35,12 @@ notifications:
   on_failure: always
 ```
 
+## Test Repositories
+The plan is to create a repository for each resolver (test library)
+So far, we have:
+
+- [Mocha](https://github.com/bluzi/travis-buddy-mocha-tests)
+
 ## Contribution
 
 We're working on a documentation that will explain how to run, test and help build *TravisBuddy*, so hold tight. 
