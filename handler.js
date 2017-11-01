@@ -34,9 +34,7 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
                     logger.log(`#${prNumber}: Done found after ${attempts}/${MAX_ATTEMPTS_TO_GET_DONE} attempts.`);
                     logger.log(`#${prNumber}: Resolving log... (length: ${log.length})`);
 
-                    logger.log(log);
                     log = stripAnsi(log);
-                    logger.log(log);
                     resolver(log, {}, comment);
                 }
             });
