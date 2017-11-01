@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/bluzi/name-db.svg?branch=master)](https://travis-ci.org/bluzi/name-db)
+[![Build Status](https://travis-ci.org/bluzi/travis-buddy.svg?branch=master)](https://travis-ci.org/bluzi/name-db)
 
 # TravisBuddy
 > *TravisBuddy* is an awesome bot that will make life much easier for your contributoers.
