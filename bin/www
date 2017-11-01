@@ -8,6 +8,7 @@ const app = require('../app');
 const debug = require('debug')('api:server');
 const http = require('http');
 const logger = require('./../logger');
+const ip = require('ip');
 /**
  * Get port from environment and store in Express.
  */
@@ -20,8 +21,7 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
-console.log(`Server is running on port ${port}`);
-logger.log(`Server is running on port ${port}`);
+logger.log(`Server is running on port ${ip.address()}:${port} (${process.env.environment || 'unknown'})`);
 
 
 /**

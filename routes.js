@@ -1,8 +1,8 @@
 const express = require('express');
 const handle = require('./handler');
 const logger = require('./logger');
-
-// const samplePayload = require('./sample-payloads/payload2.json');
+const utils = require('./utils');
+const fs = require('fs');
 
 const router = express.Router();
 
@@ -14,63 +14,54 @@ router.get('/', (req, res, next) => {
 router.get('/test/:jobId', (req, res, next) => {
     const test = require('./test-log');
 
-    test(req.params.jobId).then(log => {
-        res
-            .status(200)
-            .send(`<pre>${log.contents}</pre>`)
-            .end();
-    });
+    test(req.params.jobId)
+        .then(log => {
+            res
+                .status(200)
+                .send(`<pre>${log.contents}</pre>`)
+                .end();
+        })
+        .catch(e => {
+            logger.error('Error in tests', { error: e.message });
+            res
+                .status(500)
+                .send(e.toString())
+                .end();
+        });
 });
 
 router.post('/:mode', (req, res, next) => {
     try {
-        const payload = JSON.parse(req.body.payload);
+        fs.writeFileSync('t.json', JSON.stringify(req.body, null, 4));
+        const payload =  JSON.parse(req.body.payload);
+        const data = utils.getData(payload, req.params.mode);
 
+        let dropReason;
         if (!payload) {
-            logger.warn('Request dropped: No payload received');
-            return res.status(500).end();
+            dropReason = 'Request dropped: No payload received';
         } else if (!payload.pull_request || !payload.pull_request_number) {
-            logger.warn('Request dropped: Not a pull request');
-            return res.status(500).send().end();
+            dropReason = 'Request dropped: Not a pull request';
         } else if (payload.state !== 'failed') {
-            logger.warn(`Request dropped: State is not failed. (state: ${payload.state})`);
+            dropReason = 'Request dropped: State is not failed';
+        }
+
+        if (dropReason) {
+            logger.warn(`Request dropped! Reason:\n'${dropReason}'`, data);
             return res.status(500).send().end();
         }
 
-        const owner = payload.repository.owner_name;
-        const repo = payload.repository.name;
-        const mode = req.params.mode;
-        const pullRequest = payload.pull_request_number;
-        const pullRequestTitle = payload.pull_request_title;
-        const buildNumber = payload.id;
-        const jobId = payload.matrix[0].id;
-        const author = payload.author_name;
+        logger.log(`Handling request for '${data.pullRequestTitle}' by '${data.author}'`, data);
 
-
-        logger.log(`#${pullRequest}: Handling request for '${pullRequestTitle}' by '${author}' in '${owner}/${repo}' (mode: '${mode}', jobId: '${jobId}', build number: ${buildNumber})`, {
-            meta: {
-                owner,
-                repo,
-                mode,
-                pullRequest,
-                pullRequestTitle,
-                buildNumber,
-                jobId,
-                author,
-            }
-        });
-
-        handle(owner, repo, jobId, pullRequest, author, mode)
+        handle(data)
             .then(() => res.status(200).send({ ok: true }).end())
             .catch(e => {
-                logger.error('Error in handler');
-                logger.error(e.message);
+                logger.error('Error in handler', data);
+                logger.error(e.toString(), data);
                 res.status(500).end();
             });
     } catch (e) {
-        logger.error('Error in routes');
-        logger.error(e.message);
-        res.status(500).end();
+        logger.error('Error in routes', { error: e.message });
+        res.status(500).send(e.toString()).end();
     }
 });
 

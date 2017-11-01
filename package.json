@@ -8,20 +8,25 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./bin/www",
-    "prod": "PORT=80 npm start"
+    "prod": "PORT=80 npm start",
+    "test": "./test.sh"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "assert": "^1.4.1",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "github-api": "^3.0.0",
+    "ip": "^1.1.5",
     "logdna": "^1.4.0",
+    "mocha": "^4.0.1",
     "morgan": "~1.9.0",
     "request": "^2.83.0",
     "strip-ansi": "^4.0.0",
+    "supertest": "^3.0.0",
     "travis-ci": "^2.1.1"
   }
 }
