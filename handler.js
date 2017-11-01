@@ -51,7 +51,7 @@ module.exports = (owner, repo, jobId, prNumber, author, mode) => {
 
             const issues = gh.getIssues(owner, repo);
 
-            logger.log(`#${prNumber}:Attempting to create comment on PR #${prNumber} (${owner}/${repo})`);
+            logger.log(`#${prNumber}: Attempting to create comment on PR #${prNumber} (${owner}/${repo})`);
 
             issues.createIssueComment(prNumber, contents)
                 .then(result => {
