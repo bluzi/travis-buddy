@@ -2,7 +2,7 @@
     {
         "mode": "general",
         "regex": null,
-        "description": "Gets all ",
+        "description": "",
         "path": "./resolvers/mocha.js"
     }
 ]
