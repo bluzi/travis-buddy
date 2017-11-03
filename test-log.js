@@ -1,5 +1,5 @@
 const logger = require('./logger');
-const resolver = require('./resolvers/mocha');
+const resolver = require('./resolvers/general');
 const utils = require('./utils');
 
 module.exports = jobId => {
