@@ -37,7 +37,8 @@ module.exports = (data) => {
 
                 issues.createIssueComment(data.pullRequest, contents)
                     .then(result => {
-                        logger.log(`Comment created successfuly`, { contents });
+                        data.commentContent = contents;
+                        logger.log(`Comment created successfuly`, data);
                         resolve();
                     })
                     .catch(e => {

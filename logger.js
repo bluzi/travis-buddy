@@ -9,8 +9,6 @@ if (process.env.logdnaApiKey) {
         hostname: os.hostname(),
         ip: ip.address(),
     });
-} else {
-    logger = console;
 }
 
 function formatMessage(message, meta) {
@@ -26,23 +24,23 @@ function formatMessage(message, meta) {
 module.exports.log =
     (message, meta) => (
         console.log(formatMessage(message, meta)),
-        logger.log(formatMessage(message, meta), { meta })
+        logger && logger.log(formatMessage(message, meta), { meta })
     );
 
 module.exports.debug =
     (message, meta) => (
         console.debug(formatMessage(message)),
-        logger.debug(formatMessage(message, meta), { meta })
+        logger && logger.debug(formatMessage(message, meta), { meta })
     );
 
 module.exports.error =
     (message, meta) => (
         console.error(formatMessage(message)),
-        logger.error(formatMessage(message, meta), { meta })
+        logger && logger.error(formatMessage(message, meta), { meta })
     );
 
 module.exports.warn =
     (message, meta) => (
         module.exports.verboseMode && console.warn(formatMessage(message)),
-        logger.warn(formatMessage(message, meta), { meta })
+        logger && logger.warn(formatMessage(message, meta), { meta })
     );
