@@ -3,6 +3,6 @@
         "mode": "general",
         "regex": null,
         "description": "",
-        "path": "./resolvers/mocha.js"
+        "path": "./resolvers/general.js"
     }
 ]
