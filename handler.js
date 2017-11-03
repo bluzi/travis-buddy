@@ -4,6 +4,18 @@ const path = require('path');
 const logger = require('./logger');
 const utils = require('./utils');
 
+const githubAccessToken = process.env.githubAccessToken || (args => {
+    const githubArg = args.find(arg => arg.startsWith('githubAccessToken='));
+    if (githubArg) {
+        return githubArg.replace('githubAccessToken=', '');
+    }
+
+    return null;
+})(process.argv);
+
+if (!githubAccessToken) throw new Error(`Invalid GitHub access token ${githubAccessToken}`);
+
+logger.log(`Using GitHub token: ${githubAccessToken}`);
 
 module.exports = (data) => {
     return new Promise((resolve, reject) => {
