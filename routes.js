@@ -30,7 +30,8 @@ router.get('/test/:jobId', (req, res, next) => {
         });
 });
 
-router.post('/:mode', (req, res, next) => {
+router.post('/:mode?', (req, res, next) => {
+    debugger;
     try {
         fs.writeFileSync('t.json', JSON.stringify(req.body, null, 4));
         const payload =  JSON.parse(req.body.payload);

@@ -1,7 +1,8 @@
 [
     {
-        "mode": "mocha",
-        "description": "Mocha testing library",
+        "mode": "general",
+        "regex": null,
+        "description": "Gets all ",
         "path": "./resolvers/mocha.js"
     }
 ]

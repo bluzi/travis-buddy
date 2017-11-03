@@ -7,6 +7,9 @@ const utils = require('./utils');
 
 module.exports = (data) => {
     return new Promise((resolve, reject) => {
+
+        if (!data.mode) data.mode = 'general';
+
         logger.log(`Looking for a resolver for mode '${data.mode}'`, data);
 
         const resolverMeta = resolvers.find(resolver => resolver.mode = data.mode);
