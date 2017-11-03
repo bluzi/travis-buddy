@@ -44,7 +44,9 @@ Either make an enviorment variable called `githubAccessToken`, and set its value
 export githubAccessToken=yourAccessToken
 node bin/www
 ```
-*Replace `yourAccessToken` with your access token*
+*Replace `yourAccessToken` with your access token
+
+
 
 Or, execute `bin/www` with an argument, like that:
 ```shell
