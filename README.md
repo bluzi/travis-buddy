@@ -44,13 +44,13 @@ Either make an enviorment variable called `githubAccessToken`, and set its value
 export githubAccessToken=yourAccessToken
 node bin/www
 ```
-*Replace `yourAccessToken` with your access token in both methods*
+*Replace `yourAccessToken` with your access token*
 
 Or, execute `bin/www` with an argument, like that:
 ```shell
 node bin/www githubAccessToken=yourAccessToken
 ```
-*Replace `yourAccessToken` with your access token in both methods*
+*Replace `yourAccessToken` with your access token*
 
 Now your server should be up and running.
 
@@ -60,7 +60,7 @@ Example:
 export githubAccessToken=yourAccessToken
 npm test
 ```
-*Replace `yourAccessToken` with your access token in both methods*
+*Replace `yourAccessToken` with your access token*
 
 Now you should be able to contribute. :)
 
