@@ -7,7 +7,6 @@ module.exports = (log, data) => {
 
         scripts.forEach(script => {
             let scriptContents = log.substr(log.indexOf(script));
-            scriptContents = scriptContents.split('\n').slice(4).join('\n');
             scriptContents = scriptContents.substr(0, scriptContents.indexOf('The command')).trim();
 
             scriptContents = helpers
