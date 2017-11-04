@@ -14,8 +14,8 @@ module.exports = (log, data) => {
             // scriptContents = markdownEscape(scriptContents);
             // scriptContents = scriptContents.split('\n').map(line => line.trim()).join('\n');
 
-            scriptContents = helpers
-                .replaceAll(scriptContents, '✓', '![alt text](https://raw.githubusercontent.com/bluzi/travis-buddy/master/resources/checkmark.png "Checkmark")');
+            // scriptContents = helpers
+            //     .replaceAll(scriptContents, '✓', '![alt text](https://raw.githubusercontent.com/bluzi/travis-buddy/master/resources/checkmark.png "Checkmark")');
 
             scriptLogs.push({
                 command: script,
