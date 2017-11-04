@@ -12,6 +12,7 @@ module.exports = (log, data) => {
             scriptContents = scriptContents.substr(0, scriptContents.indexOf('The command')).trim();
 
             scriptContents = markdownEscape(scriptContents);
+            scriptContents = scriptContents.replace('\t', '');
 
             scriptContents = helpers
                 .replaceAll(scriptContents, '✓', '![alt text](https://raw.githubusercontent.com/bluzi/travis-buddy/master/resources/checkmark.png "Checkmark")');
