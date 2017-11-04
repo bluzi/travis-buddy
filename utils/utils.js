@@ -49,15 +49,5 @@ module.exports.getData = (payload, params) => ({
 
 module.exports.formatMessage = message => {
     const template = fs.readFileSync('resources/comment-template.md.ejs', 'utf8');
-
-    message.author = 'eliran';
     return ejs.render(template, message);
-    
-    // const contents = Object.entries(message.logs)
-    //     .map(curr => `### ${curr[0]}\n${curr[1]}`)
-    //     .join('\n\n');
-
-    // return template
-    //         .replace('{author}', message.author)
-    //         .replace('{contents}', contents);
 }
