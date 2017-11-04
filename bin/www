@@ -7,7 +7,7 @@
 const app = require('../app');
 const debug = require('debug')('api:server');
 const http = require('http');
-const logger = require('./../logger');
+const logger = require('../utils/logger');
 const ip = require('ip');
 /**
  * Get port from environment and store in Express.

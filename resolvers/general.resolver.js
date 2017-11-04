@@ -1,4 +1,4 @@
-const helpers = require('./../helpers/helpers.js');
+const helpers = require('../utils/helpers');
 
 module.exports = (log, params, comment) => {
     return new Promise((resolve, reject) => {

@@ -1,6 +1,6 @@
-const logger = require('./logger');
-const resolver = require('./resolvers/general');
-const utils = require('./utils');
+const logger = require('../utils/logger');
+const resolver = require('../resolvers/general.resolver');
+const utils = require('../utils/utils');
 
 module.exports = jobId => {
     logger.log(`Testing job '${jobId}'`);

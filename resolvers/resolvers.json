@@ -3,6 +3,6 @@
         "mode": "general",
         "regex": null,
         "description": "",
-        "path": "./resolvers/general.js"
+        "path": "./general.resolver"
     }
 ]

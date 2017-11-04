@@ -45,7 +45,7 @@ module.exports.getData = (payload, mode) => ({
 });
 
 module.exports.formatMessage = message => {
-    const template = fs.readFileSync('./comment-template.md', 'utf8');
+    const template = fs.readFileSync('resources/comment-template.md', 'utf8');
     return template
             .replace('{author}', message.author)
             .replace('{contents}', message.contents);

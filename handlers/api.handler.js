@@ -1,8 +1,8 @@
 const GitHub = require('github-api');
-const resolvers = require('./resolvers.json');
+const resolvers = require('../resolvers/resolvers.json');
 const path = require('path');
-const logger = require('./logger');
-const utils = require('./utils');
+const logger = require('../utils/logger');
+const utils = require('../utils/utils');
 
 const githubAccessToken = process.env.githubAccessToken || (args => {
     const githubArg = args.find(arg => arg.startsWith('githubAccessToken='));
@@ -30,7 +30,7 @@ module.exports = (data) => {
             return reject(`Unable to find resolver for '${data.mode}'`);
         }
         
-        const resolver = require(resolverMeta.path);
+        const resolver = require('../resolvers/' + resolverMeta.path);
 
         logger.log(`Resolver found in: '${resolverMeta.path}'`, data);
 
