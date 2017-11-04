@@ -13,9 +13,8 @@ module.exports.requestLog = (jobId, data, attempts = 0) => {
 
             const lastLine = log.trim().split(/\r?\n/).pop();
             if (lastLine.startsWith('Done.') === false) {
-                logger.log(`Done not found, requesting new log...`, data);
-
                 if (attempts >= MAX_ATTEMPTS_TO_GET_DONE) {
+                    logger.log(`Done not found, requesting new log... (${attempts}/${MAX_ATTEMPTS_TO_GET_DONE}`, data);
                     return reject(`Too many attempts to find done (MAX_ATTEMPTS: ${MAX_ATTEMPTS_TO_GET_DONE})`);
                 } else {
                     setTimeout(() => module.exports.requestLog(++attempts).then(resolve).catch(reject), 1000);
