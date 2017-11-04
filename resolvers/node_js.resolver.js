@@ -11,12 +11,12 @@ module.exports = (log, data) => {
             scriptContents = scriptContents.split('\n').slice(1).join('\n');
             scriptContents = scriptContents.substr(0, scriptContents.indexOf('The command')).trim();
 
-            scriptContents = markdownEscape(scriptContents);
-            scriptContents = scriptContents.split('\n').map(line => line.trim()).join('\n');
+            // scriptContents = markdownEscape(scriptContents);
+            // scriptContents = scriptContents.split('\n').map(line => line.trim()).join('\n');
 
             scriptContents = helpers
                 .replaceAll(scriptContents, '✓', '![alt text](https://raw.githubusercontent.com/bluzi/travis-buddy/master/resources/checkmark.png "Checkmark")');
-            
+
             scriptLogs.push({
                 command: script,
                 contents: scriptContents,
