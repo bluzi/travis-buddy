@@ -49,7 +49,12 @@ module.exports.getData = (payload, params) => ({
 
 module.exports.formatMessage = message => {
     const template = fs.readFileSync('resources/comment-template.md', 'utf8');
+
+    const contents = Object.entries(message.logs)
+        .map(curr => `### ${curr[0]}\n${curr[1]}`)
+        .join('\n\n');
+
     return template
             .replace('{author}', message.author)
-            .replace('{contents}', message.contents);
+            .replace('{contents}', contents);
 }

@@ -9,7 +9,7 @@ router.get('/:jobId', (req, res, next) => {
         .then(log => {
             res
                 .status(200)
-                .send(`<pre>${log.contents}</pre>`)
+                .send(`<pre>${log}</pre>`)
                 .end();
         })
         .catch(e => {
