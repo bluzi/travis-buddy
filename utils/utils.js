@@ -44,7 +44,7 @@ module.exports.getData = (payload, params) => ({
     branch: payload.branch,
     travisType: payload.type,
     language: payload.config.language,
-    scripts: payload.config.script
+    scripts: payload.config.script,
 });
 
 module.exports.formatMessage = message => {
