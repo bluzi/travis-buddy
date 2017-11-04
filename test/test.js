@@ -23,7 +23,7 @@ describe('POST /', () => {
             .post('/')
             .send({ payload: JSON.stringify(samplePayload) })            
             .expect(200)
-            .expect({ ok: true })
+            .expect({ err: false })
             .end((err, res) => {
                 if (err) return done(err);
                 done();

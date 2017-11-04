@@ -10,12 +10,10 @@ router.get('/', (req, res, next) => {
     res.send({ state: 'running' });
 });
 
-router.post('/:mode?', (req, res, next) => {
-    debugger;
+router.post('/', (req, res, next) => {
     try {
-        fs.writeFileSync('t.json', JSON.stringify(req.body, null, 4));
         const payload =  JSON.parse(req.body.payload);
-        const data = utils.getData(payload, req.params.mode);
+        const data = utils.getData(payload, req.params);
 
         let dropReason;
         if (!payload) {
@@ -27,22 +25,22 @@ router.post('/:mode?', (req, res, next) => {
         }
 
         if (dropReason) {
-            logger.warn(`Request dropped! Reason:\n'${dropReason}'`, data);
-            return res.status(500).send().end();
+            logger.warn(`Request dropped! Reason: '${dropReason}'`, data);
+            return res.status(500).send({ err: true, reason: dropReason }).end();
         }
 
         logger.log(`Handling request for '${data.pullRequestTitle}' by '${data.author}'`, data);
 
         handle(data)
-            .then(() => res.status(200).send({ ok: true }).end())
+            .then(() => res.status(200).send({ err: false }).end())
             .catch(e => {
                 logger.error('Error in handler', data);
                 logger.error(e.toString(), data);
-                res.status(500).end();
+                res.status(500).send({ err: true, reason: e.toString() }).end();
             });
     } catch (e) {
         logger.error('Error in routes', { error: e.message });
-        res.status(500).send(e.toString()).end();
+        res.status(500).send({ err: true, reason: e.toString() }).end();
     }
 });
 

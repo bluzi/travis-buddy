@@ -1,5 +1,5 @@
 const logger = require('../utils/logger');
-const resolver = require('../resolvers/general.resolver');
+const resolver = require('../resolvers/node_js.resolver');
 const utils = require('../utils/utils');
 
 module.exports = jobId => {

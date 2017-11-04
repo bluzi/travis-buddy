@@ -1,6 +1,6 @@
 const helpers = require('../utils/helpers');
 
-module.exports = (log, params, comment) => {
+module.exports = (log, data) => {
     return new Promise((resolve, reject) => {
         log = log.substr(log.indexOf('npm test'));
         log = log.split('\n').slice(4).join('\n');

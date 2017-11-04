@@ -30,10 +30,11 @@ module.exports.requestLog = (jobId, data, attempts = 0) => {
     });
 };
 
-module.exports.getData = (payload, mode) => ({
+module.exports.getData = (payload, params) => ({
+    params: params,
+
     owner: payload.repository.owner_name,
     repo: payload.repository.name,
-    mode: mode,
     pullRequest: payload.pull_request_number,
     pullRequestTitle: payload.pull_request_title,
     buildNumber: payload.id,
@@ -42,6 +43,8 @@ module.exports.getData = (payload, mode) => ({
     state: payload.state,
     branch: payload.branch,
     travisType: payload.type,
+    language: payload.config.language,
+    scripts: payload.config.script
 });
 
 module.exports.formatMessage = message => {
