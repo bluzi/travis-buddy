@@ -18,7 +18,7 @@ module.exports.requestLog = (jobId, data, attempts = 0) => {
                 if (attempts >= MAX_ATTEMPTS_TO_GET_DONE) {
                     return reject(`Too many attempts to find done (MAX_ATTEMPTS: ${MAX_ATTEMPTS_TO_GET_DONE})`);
                 } else {
-                    setTimeout(() => requestLog(++attempts).then(resolve).catch(reject), 1000);
+                    setTimeout(() => module.exports.requestLog(++attempts).then(resolve).catch(reject), 1000);
                 }
             } else {
                 logger.log(`Done found after ${attempts}/${MAX_ATTEMPTS_TO_GET_DONE} attempts.`, data);
