@@ -2,6 +2,7 @@ const logger = require('./logger');
 const request = require('request');
 const stripAnsi = require('strip-ansi');
 const fs = require('fs');
+const ejs = require('ejs');
 
 
 const MAX_ATTEMPTS_TO_GET_DONE = 10;
@@ -47,13 +48,16 @@ module.exports.getData = (payload, params) => ({
 });
 
 module.exports.formatMessage = message => {
-    const template = fs.readFileSync('resources/comment-template.md', 'utf8');
+    const template = fs.readFileSync('resources/comment-template.md.ejs', 'utf8');
 
-    const contents = Object.entries(message.logs)
-        .map(curr => `### ${curr[0]}\n${curr[1]}`)
-        .join('\n\n');
+    message.author = 'eliran';
+    return ejs.render(template, message);
+    
+    // const contents = Object.entries(message.logs)
+    //     .map(curr => `### ${curr[0]}\n${curr[1]}`)
+    //     .join('\n\n');
 
-    return template
-            .replace('{author}', message.author)
-            .replace('{contents}', contents);
+    // return template
+    //         .replace('{author}', message.author)
+    //         .replace('{contents}', contents);
 }
