@@ -9,7 +9,8 @@ module.exports = (log, data) => {
         scripts.forEach(script => {
             let scriptContents = log.substr(log.indexOf(script));
             scriptContents = scriptContents.split('\n').slice(1).join('\n');
-            scriptContents = scriptContents.substr(0, scriptContents.indexOf('The command')).trim();
+            scriptContents = scriptContents.substr(0, scriptContents.indexOf('" exited with ')).trim();
+            scriptContents = scriptContents.split('\n').slice(0, -1).join('\n');
 
             // scriptContents = markdownEscape(scriptContents);
             // scriptContents = scriptContents.split('\n').map(line => line.trim()).join('\n');
