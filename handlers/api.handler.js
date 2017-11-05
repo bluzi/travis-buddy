@@ -20,6 +20,7 @@ logger.log(`Using GitHub token: ${githubAccessToken}`);
 module.exports = (data) => {
     return new Promise((resolve, reject) => {
 
+        data.language = 'node_js';
         logger.log(`Looking for a resolver for '${data.language}'`, data);
 
         const resolverPath = `resolvers/${data.language}.resolver.js`;
