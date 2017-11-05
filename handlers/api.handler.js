@@ -3,6 +3,7 @@ const path = require('path');
 const logger = require('../utils/logger');
 const utils = require('../utils/utils');
 const fs = require('fs');
+const resolver = require('../resolvers/simple.resolver');
 
 const githubAccessToken = process.env.githubAccessToken || (args => {
     const githubArg = args.find(arg => arg.startsWith('githubAccessToken='));
@@ -19,20 +20,6 @@ logger.log(`Using GitHub token: ${githubAccessToken}`);
 
 module.exports = (data) => {
     return new Promise((resolve, reject) => {
-
-        data.language = 'node_js';
-        logger.log(`Looking for a resolver for '${data.language}'`, data);
-
-        const resolverPath = `resolvers/${data.language}.resolver.js`;
-
-        if (!fs.existsSync(resolverPath)) {
-            return reject(`Unable to find resolver for '${data.language}' at '${resolverPath}'`);
-        }
-        
-        const resolver = require('../' + resolverPath);
-
-        logger.log(`Resolver found`, data);
-
         utils.requestLog(data.jobId, data)
             .then(log => resolver(log, data))
             .then(message => {
