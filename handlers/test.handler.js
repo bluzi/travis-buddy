@@ -7,7 +7,10 @@ module.exports = jobId => {
     return new Promise((resolve, reject) => {
         utils.requestLog(jobId)
             .then(resolver)
-            .then(message => utils.formatMessage(message))
+            .then(message => {
+                message.author = 'eliran';
+                return utils.formatMessage(message);
+            })
             .then(resolve)
             .catch(reject);
     });
