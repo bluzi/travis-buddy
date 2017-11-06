@@ -35,7 +35,7 @@ module.exports.debug =
 
 module.exports.error =
     (message, meta) => (
-        console.error(formatMessage(message)),
+        console.error(formatMessage(message), meta),
         logger && logger.error(formatMessage(message, meta), { meta })
     );
 

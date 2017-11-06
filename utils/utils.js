@@ -1,8 +1,6 @@
 const logger = require('./logger');
 const request = require('request');
 const stripAnsi = require('strip-ansi');
-const fs = require('fs');
-const ejs = require('ejs');
 
 
 const MAX_ATTEMPTS_TO_GET_DONE = 10;
@@ -47,10 +45,17 @@ module.exports.getData = (payload, params) => ({
     scripts: payload.config.script,
 });
 
-module.exports.formatMessage = (jobs, author) => {
-    const template = fs.readFileSync('resources/comment-template.md.ejs', 'utf8');
-    return ejs.render(template, {
-        jobs,
-        author
-    });
-}
+module.exports.getGithubAccessToken = () => {
+    const githubAccessToken = process.env.githubAccessToken || (args => {
+        const githubArg = args.find(arg => arg.startsWith('githubAccessToken='));
+        if (githubArg) {
+            return githubArg.replace('githubAccessToken=', '');
+        }
+    
+        return null;
+    })(process.argv);
+
+    if (!githubAccessToken) throw new Error(`Invalid GitHub access token ${githubAccessToken}`);
+
+    return githubAccessToken;
+};

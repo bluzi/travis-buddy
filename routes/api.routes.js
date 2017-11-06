@@ -1,5 +1,6 @@
 const express = require('express');
-const handle = require('../handlers/api.handler');
+const failure = require('../handlers/failure.handler');
+const success = require('../handlers/success.handler');
 const logger = require('../utils/logger');
 const utils = require('../utils/utils');
 const fs = require('fs');
@@ -20,8 +21,8 @@ router.post('/', (req, res, next) => {
             dropReason = 'Request dropped: No payload received';
         } else if (!payload.pull_request || !payload.pull_request_number) {
             dropReason = 'Request dropped: Not a pull request';
-        } else if (payload.state !== 'failed') {
-            dropReason = 'Request dropped: State is not failed';
+        } else if (payload.state !== 'failed' && payload.state !== 'success') {
+            dropReason = `Request dropped: Wrong state ('${payload.state}')`;
         }
 
         if (dropReason) {
@@ -31,7 +32,9 @@ router.post('/', (req, res, next) => {
 
         logger.log(`Handling request for '${data.pullRequestTitle}' by '${data.author}'`, data);
 
-        handle(data)
+        handleRequest = (payload.state === 'failed') ? failure : success;
+        
+        handleRequest(data)
             .then(() => res.status(200).send({ err: false }).end())
             .catch(e => {
                 logger.error('Error in handler', data);
