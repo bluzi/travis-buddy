@@ -10,6 +10,7 @@
     "start": "node ./bin/www",
     "prod": "PORT=80 npm start",
     "test": "mocha",
+    "lint": "eslint .",
     "local-test": "./test.sh"
   },
   "author": "",
