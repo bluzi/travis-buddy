@@ -4,8 +4,8 @@ const logger = require('../utils/logger');
 
 const router = express.Router();
 
-router.get('/:jobId', (req, res, next) => {
-    handle(req.params.jobId)
+router.get('/:language/:jobId', (req, res, next) => {
+    handle(route.params.language, req.params.jobId)
         .then(log => {
             res
                 .status(200)
