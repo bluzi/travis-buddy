@@ -20,15 +20,18 @@ logger.log(`Using GitHub token: ${githubAccessToken}`);
 
 module.exports = (data) => {
     return new Promise((resolve, reject) => {
-        utils.requestLog(data.jobId, data)
-            .then(log => resolver(log, data))
-            .then(message => {
+        const resolverPromises = data.jobs.map(jobId => 
+            utils.requestLog(jobId, data)
+                .then(log => resolver(log, data))
+        );
+
+        Promise.all(resolverPromises)
+            .then(logs => {
                 const gh = new GitHub({
                     token: process.env.githubAccessToken
                 });
 
-                message.author = data.author;
-                const contents = utils.formatMessage(message);
+                const contents = utils.formatMessage(logs, data.author);
                 const issues = gh.getIssues(data.owner, data.repo);
 
                 logger.log(`Attempting to create a comment in PR`, data);
@@ -42,7 +45,7 @@ module.exports = (data) => {
                     .catch(e => {
                         logger.error(`Could not create comment`, data);
                         logger.error(e.toString());
-                    })
+                    });
             })
             .catch(reject);
     });

@@ -34,7 +34,7 @@ module.exports = (log, data) => {
         });
 
         resolve({
-            logs: scriptLogs
+            scripts: scriptLogs
         });
     });
 }

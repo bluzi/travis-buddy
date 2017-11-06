@@ -38,7 +38,7 @@ module.exports.getData = (payload, params) => ({
     pullRequest: payload.pull_request_number,
     pullRequestTitle: payload.pull_request_title,
     buildNumber: payload.id,
-    jobId: payload.matrix[0].id,
+    jobs: payload.matrix.map(job => job.id),
     author: payload.author_name,
     state: payload.state,
     branch: payload.branch,
@@ -47,7 +47,10 @@ module.exports.getData = (payload, params) => ({
     scripts: payload.config.script,
 });
 
-module.exports.formatMessage = message => {
+module.exports.formatMessage = (jobs, author) => {
     const template = fs.readFileSync('resources/comment-template.md.ejs', 'utf8');
-    return ejs.render(template, message);
+    return ejs.render(template, {
+        jobs,
+        author
+    });
 }
