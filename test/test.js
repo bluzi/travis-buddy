@@ -3,10 +3,10 @@ const app = require('../app');
 const samplePayload = require('./../sample-payloads/payload2.json');
 
 
-describe('GET /', () => {
+describe('GET /status', () => {
   it('should be running and return HTTP status 200', (done) => {
     request(app)
-      .get('/')
+      .get('/status')
       .expect(200)
       .expect({ state: 'running' })
       .end((err) => {

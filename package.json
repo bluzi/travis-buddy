@@ -27,6 +27,7 @@
     "logdna": "^1.4.0",
     "markdown-escape": "^1.0.2",
     "mocha": "^4.0.1",
+    "octicons": "^7.0.1",
     "request": "^2.83.0",
     "strip-ansi": "^4.0.0",
     "supertest": "^3.0.0",
