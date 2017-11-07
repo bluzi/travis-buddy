@@ -1,0 +1,15 @@
+{
+    "node_js": "npm test",
+    "c": "./configure && make && make test",
+    "csharp": "xbuild /p:Configuration=Release",
+    "cpp": "./configure && make && make test",
+    "clojure": "lein test",
+    "d": "dub test",
+    "erlang": "rebar compile && rebar skip_deps=true eunit",
+    "elixir": "mix test",
+    "go": "go test",
+    "perl": "make test",
+    "php": "phpunit",
+    "ruby": "rake",
+    "rust": "cargo build --verbose; cargo test --verbose"
+}

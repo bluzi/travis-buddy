@@ -10,6 +10,7 @@
     "start": "node ./bin/www",
     "prod": "PORT=80 npm start",
     "test": "mocha",
+    "lint": "eslint .",
     "local-test": "./test.sh"
   },
   "author": "",
@@ -26,9 +27,16 @@
     "logdna": "^1.4.0",
     "markdown-escape": "^1.0.2",
     "mocha": "^4.0.1",
+    "octicons": "^7.0.1",
     "request": "^2.83.0",
     "strip-ansi": "^4.0.0",
     "supertest": "^3.0.0",
     "travis-ci": "^2.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-import": "^2.8.0"
   }
 }

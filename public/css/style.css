@@ -1,0 +1,55 @@
+header {
+    z-index: 1;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    color: rgba(255,255,255,0.75);
+    background-color: #24292e;
+}
+
+header .buttons {
+    float: right;
+}
+
+header .buttons .octicon {
+}
+
+header a {
+    color: lightgray;
+}
+
+header a {
+    color: lightgray;
+}
+
+header h1 {
+    font-size: 20px;
+    float: left;
+}
+
+section.logo {
+    margin: 50px auto;
+    text-align: center;
+}
+
+section.logo img {
+    height: 400px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 0.9em;
+}
+
+footer a {
+    font-weight: bold;
+}
+
+footer a:before {
+    content: '@';
+}
+
+footer a:hover {
+    text-decoration: none;
+    opacity: 0.9;
+}

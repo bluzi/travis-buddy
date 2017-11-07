@@ -1,31 +1,34 @@
-const helpers = require('../utils/helpers');
-const markdownEscape = require('markdown-escape')
+const defaultScripts = require('../resources/default-scripts.json');
 
-module.exports = (log, data) => {
-    return new Promise((resolve, reject) => {
-        let scriptLogs = [];
-        scripts = (!data || !data.scripts) ? ['npm test'] : Array.isArray(data.scripts) ? data.scripts : [data.scripts];
+module.exports = (log, data) => new Promise((resolve, reject) => {
+  const scriptLogs = [];
+  let allScripts;
 
-        scripts.forEach(script => {
-            let scriptContents = log.substr(log.indexOf(script));
-            scriptContents = scriptContents.split('\n').slice(1).join('\n');
-            scriptContents = scriptContents.substr(0, scriptContents.indexOf('" exited with ')).trim();
-            scriptContents = scriptContents.split('\n').slice(0, -1).join('\n');
+  if (!data.scripts) {
+    if (!defaultScripts[data.language]) {
+      return reject(new Error(`Deafult script was not found for '${data.language}'`));
+    }
 
-            // scriptContents = markdownEscape(scriptContents);
-            // scriptContents = scriptContents.split('\n').map(line => line.trim()).join('\n');
+    allScripts = [defaultScripts[data.language]];
+  } else if (Array.isArray(data.scripts)) {
+    allScripts = data.scripts;
+  } else {
+    allScripts = [data.scripts];
+  }
 
-            // scriptContents = helpers
-            //     .replaceAll(scriptContents, '✓', '![alt text](https://raw.githubusercontent.com/bluzi/travis-buddy/master/resources/checkmark.png "Checkmark")');
+  allScripts.forEach((script) => {
+    let scriptContents = log.substr(log.indexOf(script));
+    scriptContents = scriptContents.split('\n').slice(1).join('\n');
+    scriptContents = scriptContents.substr(0, scriptContents.indexOf('" exited with ')).trim();
+    scriptContents = scriptContents.split('\n').slice(0, -1).join('\n');
 
-            scriptLogs.push({
-                command: script,
-                contents: scriptContents,
-            });
-        });
-
-        resolve({
-            logs: scriptLogs
-        });
+    scriptLogs.push({
+      command: script,
+      contents: scriptContents,
     });
-}
+  });
+
+  return resolve({
+    scripts: scriptLogs,
+  });
+});
