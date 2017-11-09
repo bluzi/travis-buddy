@@ -7,14 +7,6 @@ const utils = require('../utils/utils');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.render('index');
-});
-
-router.get('/status', (req, res) => {
-  res.send({ state: 'running' });
-});
-
 router.post('/', (req, res) => {
   try {
     const payload = JSON.parse(req.body.payload);
