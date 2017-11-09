@@ -2,10 +2,13 @@
 <html lang="en">
 
 <head>
-    <title>TravisBuddy</title>
+    <title>TravisBuddy's Home</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/9.6.0/build.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css" />
     <link rel="stylesheet" href="/public/css/style.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 
 <body>
@@ -15,6 +18,18 @@
                 <h1>TravisBuddy</h1>
             </a>
 
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#">Getting started</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact us</a>
+                    </li>
+                </ul>
+            </nav>
+
+
             <div class="buttons">
                 <a class="btn btn-sm" role="button">
                     <span class="octicon octicon-person"></span>
@@ -23,7 +38,6 @@
             </div>
         </div>
     </header>
-
     <div class="container">
         <section class="logo">
             <img src="https://travis-ci.org/images/logos/TravisCI-Mascot-1.png" />
@@ -33,16 +47,25 @@
             Not the bot you deserve, but the one you need
         </div>
 
-        <p>
-            TravisBuddy will comment on pull requests in your public repository everytime a test failed in one of them. The comment will
-            include only the part of the build log that applies to your testing framework, so your contirbutors won't have
-            to enter Travis's website and search the long and annoying build log for the reason the tests failed.
-        </p>
+        <main>
+            <p>
+                TravisBuddy will comment on pull requests in your public repository everytime a test failed in one of them. The comment will
+                include only the part of the build log that applies to your testing framework, so your contirbutors won't
+                have to enter Travis's website and search the long and annoying build log for the reason the tests failed.
+            </p>
+
+            <p class="text-center">
+                <a class="btn btn-primary" href="#">Get started</a>
+                <a class="btn" href="https://github.com/bluzi/travis-buddy">Contirubte</a>
+            </p>
+        </main>
     </div>
 
     <footer>
-        <a href="https://www.travisbuddy.com">TravisBuddy</a> is an open-source project, hosted on
-        <a href="https://github.com/bluzi/travis-buddy">GitHub</a>
+        <div class="container">
+            <a href="https://www.travisbuddy.com">TravisBuddy</a> is an open-source project, hosted on
+            <a href="https://github.com/bluzi/travis-buddy">GitHub</a>
+        </div>
     </footer>
 </body>
 

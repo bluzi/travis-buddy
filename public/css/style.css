@@ -1,13 +1,12 @@
 header {
     z-index: 1;
-    padding-top: 12px;
-    padding-bottom: 12px;
     color: rgba(255,255,255,0.75);
     background-color: #24292e;
 }
 
 header .buttons {
     float: right;
+    line-height: 50px;
 }
 
 header .buttons .octicon {
@@ -24,6 +23,27 @@ header a {
 header h1 {
     font-size: 20px;
     float: left;
+    line-height: 50px;
+}
+
+header nav {
+    float: left;
+    margin-left: 60px;
+    line-height: 50px;
+}
+
+header nav ul {
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    list-style: none;
+    float: left;
+}
+
+header nav ul li:not(:first-child) {
+    margin-left: 30px;
 }
 
 section.logo {
@@ -32,7 +52,7 @@ section.logo {
 }
 
 section.logo img {
-    height: 400px;
+    height: 350px;
 }
 
 footer {
@@ -52,4 +72,28 @@ footer a:before {
 footer a:hover {
     text-decoration: none;
     opacity: 0.9;
+}
+
+@media only screen and (max-width: 500px) {
+    header nav {
+        display: none;
+    }
+
+    .container {
+        width: 100%;
+        padding: 0px 10px;
+    }
+
+    section.logo img {
+        width: 80%;
+        height: 80%;
+    }
+
+    main {
+        text-align: center;
+    }
+
+    footer {
+        margin-bottom: 20px;
+    }
 }
