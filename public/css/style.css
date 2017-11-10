@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 header {
     z-index: 1;
     color: rgba(255,255,255,0.75);
@@ -55,10 +59,26 @@ section.logo img {
     height: 350px;
 }
 
+section.logo.not-found img {
+    filter: grayscale(99%);
+    opacity: 0.5;
+    transform: rotate(200deg);
+}
+
+.background-logo {
+    position: absolute;
+    right: 0;
+    top: 75%;
+    transform: translateX(20%) translateY(-50%);
+    filter: grayscale(90%);
+    opacity: 0.05;
+}
+
 footer {
     text-align: center;
     margin-top: 50px;
     font-size: 0.9em;
+    margin-bottom: 20px;
 }
 
 footer a {
@@ -72,6 +92,34 @@ footer a:before {
 footer a:hover {
     text-decoration: none;
     opacity: 0.9;
+}
+
+main {
+    margin-top: 20px;
+}
+
+.quote {
+    padding: 5px;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    margin: 0;
+    font-size: 85%;
+    background-color: rgba(0,0,0,0.04);
+    border-radius: 3px;
+    font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+    font-size: 1em;
+}
+
+.margin-top {
+    margin-top: 40px;
+}
+
+form.contact-us {
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
 }
 
 @media only screen and (max-width: 500px) {
@@ -89,11 +137,11 @@ footer a:hover {
         height: 80%;
     }
 
-    main {
+    main:not(.no-center) {
         text-align: center;
     }
-
-    footer {
-        margin-bottom: 20px;
+    
+    .background-logo {
+        display: none;
     }
 }

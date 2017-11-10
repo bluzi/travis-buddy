@@ -57,41 +57,41 @@ describe('GET /', () => {
   });
 });
 
-// describe('GET /getting-started', () => {
-//   it('should return HTML and status 200', (done) => {
-//     request(app)
-//       .get('/getting-started')
-//       .expect(200)
-//       .expect('Content-Type', /html/)
-//       .end((err) => {
-//         if (err) return done(err);
-//         done();
-//       });
-//   });
-// });
+describe('GET /getting-started', () => {
+  it('should return HTML and status 200', (done) => {
+    request(app)
+      .get('/getting-started')
+      .expect(200)
+      .expect('Content-Type', /html/)
+      .end((err) => {
+        if (err) return done(err);
+        done();
+      });
+  });
+});
 
-// describe('GET /contact-us', () => {
-//   it('should return HTML and status 200', (done) => {
-//     request(app)
-//       .get('/contact-us')
-//       .expect(200)
-//       .expect('Content-Type', /html/)
-//       .end((err) => {
-//         if (err) return done(err);
-//         done();
-//       });
-//   });
-// });
+describe('GET /contact-us', () => {
+  it('should return HTML and status 200', (done) => {
+    request(app)
+      .get('/contact-us')
+      .expect(200)
+      .expect('Content-Type', /html/)
+      .end((err) => {
+        if (err) return done(err);
+        done();
+      });
+  });
+});
 
-// describe('GET /dashboard', () => {
-//   it('should return HTML and status 200', (done) => {
-//     request(app)
-//       .get('/dashboard')
-//       .expect(200)
-//       .expect('Content-Type', /html/)
-//       .end((err) => {
-//         if (err) return done(err);
-//         done();
-//       });
-//   });
-// });
+describe('GET /dashboard', () => {
+  it('should return HTML and status 200', (done) => {
+    request(app)
+      .get('/dashboard')
+      .expect(200)
+      .expect('Content-Type', /html/)
+      .end((err) => {
+        if (err) return done(err);
+        done();
+      });
+  });
+});
