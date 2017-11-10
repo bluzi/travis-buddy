@@ -10,7 +10,7 @@ module.exports = (language, jobId) => {
       .then(log => resolver(log, { language }))
       .then((log) => {
         const logs = [log];
-        return messageFormatter.failure(logs, 'John Doe');        
+        return messageFormatter.failure(logs, 'John Doe');
       })
       .then(resolve)
       .catch(reject);

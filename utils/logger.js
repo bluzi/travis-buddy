@@ -16,8 +16,8 @@ const bunyanLogger = bunyan.createLogger({
   streams: [{
     level: 'debug',
     type: 'raw',
-    stream: prettyStdOut
-  }]
+    stream: prettyStdOut,
+  }],
 });
 
 let logdnaLogger;
@@ -40,24 +40,33 @@ function formatMessage(message, meta) {
 
 module.exports.log =
   (message, meta) => {
-    logdnaLogger && logdnaLogger.log(formatMessage(message, meta), { meta });
+    if (logdnaLogger) {
+      logdnaLogger.log(formatMessage(message, meta), { meta });
+    }
     bunyanLogger.info(message);
   };
 
 module.exports.debug =
   (message, meta) => {
-    logdnaLogger && logdnaLogger.debug(formatMessage(message, meta), { meta });
+    if (logdnaLogger) {
+      logdnaLogger.debug(formatMessage(message, meta), { meta });
+    }
     bunyanLogger.debug(message, meta || '');
   };
 
 module.exports.error =
   (message, meta) => {
-    logdnaLogger && logdnaLogger.error(formatMessage(message, meta), { meta });
+    if (logdnaLogger) {
+      logdnaLogger.error(formatMessage(message, meta), { meta });
+    }
     bunyanLogger.error(message, meta || '');
   };
 
 module.exports.warn =
   (message, meta) => {
-    logdnaLogger && logdnaLogger.warn(formatMessage(message, meta), { meta });
+    if (logdnaLogger) {
+      logdnaLogger.warn(formatMessage(message, meta), { meta });
+    }
+
     bunyanLogger.warn(message);
   };
