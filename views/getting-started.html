@@ -33,8 +33,19 @@
                     </li>
                 </ul>
             </nav>
+
+            <div class="buttons">
+                <a class="btn btn-sm" href="/dashboard">
+                    <span class="octicon octicon-person"></span>
+                    Dashboard
+                </a>
+            </div>
         </div>
     </header>
+
+    <div class="background-logo">
+        <img src="https://travis-ci.org/images/logos/TravisCI-Mascot-1.png" />
+    </div>
 
     <main class="no-center">
         <div class="container">
@@ -54,9 +65,7 @@
                         notifications:
                             webhooks: https://www.travisbuddy.com/
                     </code>
-                </pre> 
-
-                If not, enable Travis CI in your repository by following
+                </pre> If not, enable Travis CI in your repository by following
                 <a href="https://docs.travis-ci.com/user/getting-started/">the tutorial in their website</a>
                 according to the tech you're using, and then add the code above to
                 <span class="quote">travis.yml</span>.
@@ -64,7 +73,8 @@
 
             <p>
                 Here's how your
-                <span class="quote">travis.yml</span> should look like if yo're using <span class="quote">node_js</span>:
+                <span class="quote">travis.yml</span> should look like if yo're using
+                <span class="quote">node_js</span>:
                 <pre>
                     <code class="language-yaml">
                         language: node_js
@@ -78,7 +88,9 @@
 
             <h3 class="margin-top">Disable success message</h3>
             <p>
-                If you only want <em>TravisBuddy</em> to create comments when the tests fails, add <span class="quote">on_success: never</span> to the notifications node, like that:
+                If you only want
+                <em>TravisBuddy</em> to create comments when the tests fails, add
+                <span class="quote">on_success: never</span> to the notifications node, like that:
                 <pre>
                     <code class="language-yaml">
                         notifications:
@@ -90,11 +102,11 @@
 
             <h2 class="margin-top">Private Repositories</h2>
             <em>TravisBuddy</em> is not yet supported on private repositories.
-            <br /> 
-            However, we're working on it, so stay alarmed.
+            <br /> However, we're working on it, so stay alarmed.
 
             <h2 class="margin-top">What if I still can't get it to work?</h2>
-            Feel free to <a href="/contact-us">contact us using the website</a>, or 
+            Feel free to
+            <a href="/contact-us">contact us using the website</a>, or
             <a href="https://github.com/bluzi/travis-buddy/issues">leave an issue in our GitHub repository</a>.
         </div>
     </main>

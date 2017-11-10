@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 header {
     z-index: 1;
     color: rgba(255,255,255,0.75);
@@ -55,10 +59,26 @@ section.logo img {
     height: 350px;
 }
 
+section.logo.not-found img {
+    filter: grayscale(99%);
+    opacity: 0.5;
+    transform: rotate(200deg);
+}
+
+.background-logo {
+    position: absolute;
+    right: 0;
+    top: 75%;
+    transform: translateX(20%) translateY(-50%);
+    filter: grayscale(90%);
+    opacity: 0.05;
+}
+
 footer {
     text-align: center;
     margin-top: 50px;
     font-size: 0.9em;
+    margin-bottom: 20px;
 }
 
 footer a {
@@ -112,8 +132,8 @@ main {
     main:not(.no-center) {
         text-align: center;
     }
-
-    footer {
-        margin-bottom: 20px;
+    
+    .background-logo {
+        display: none;
     }
 }
