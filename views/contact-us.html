@@ -30,14 +30,70 @@
             </nav>
         </div>
     </header>
-    <div class="container">
-        <section class="logo">
-            <img src="https://travis-ci.org/images/logos/TravisCI-Mascot-1.png" />
-        </section>
 
-        <div class="text-center lead">
-            Coming soon
+    <div class="background-logo">
+        <img src="https://travis-ci.org/images/logos/TravisCI-Mascot-1.png" />
+    </div>
+
+    <main>
+        <div class="container">
+            <h1>Contact Us</h1>
+
+            <div class="lead">
+                Let us know what's on your mind
+            </div>
+
+            <h2 class="margin-top">Using GitHub</h2>
+            If you have any techinical issues, ideas, thoughts, etc - feel free to
+            <a href="https://github.com/bluzi/travis-buddy/issues">use the issues page</a>.
+
+            <h2 class="margin-top">Using Email</h2>
+            Email is great, feel free to address any issues you have to:
+            <a href="mailto:eliran013@gmail.com">eliran013@gmail.com</a>.
+
+            <h2 class="margin-top">The Easy Way</h2>
+            Just leave your message here and hit the send button. It'll find its way to us.
+
+            <form class="contact-us" method="post" action="https://formspree.io/eliran013@gmail.com">
+                <input type="hidden" name="_next" value="/contact-us?sent" />
+                <div class="flash hidden">
+                    Thanks! Your message as been delivered!
+                </div>
+
+                <dl class="form-group">
+                    <dt>
+                        <label>Name</label>
+                    </dt>
+                    <dd>
+                        <input class="form-control" type="text" name="name" placeholder="(John Doe)" />
+                    </dd>
+                </dl>
+
+                <dl class="form-group">
+                    <dt>
+                        <label>Email</label>
+                    </dt>
+                    <dd>
+                        <input class="form-control" type="email" name="email" placeholder="(your-name@your-email-provider.com)" />
+                    </dd>
+                </dl>
+
+                <dl class="form-group">
+                    <dt>
+                        <label>Contents</label>
+                    </dt>
+                    <dd>
+                        <textarea name="contents" class="form-control" placeholder="Dear TravisBuddy Dev Team,&#10;&#10;You're awesome, but...&#10;&#10;Sincerely yours,&#10;Your secret admirer"></textarea>
+                    </dd>
+                </dl>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                    <button type="reset" class="btn">Clear</button>
+                </div>
+            </form>
         </div>
+    </main>
 
     <footer>
         <div class="container">
@@ -45,6 +101,12 @@
             <a href="https://github.com/bluzi/travis-buddy">GitHub</a>
         </div>
     </footer>
+
+    <script>
+        if (window.location.href.endsWith('sent')) {
+            document.querySelector('form.contact-us .flash').classList.remove('hidden');
+        }
+    </script>
 </body>
 
 </html>

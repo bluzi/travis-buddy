@@ -114,6 +114,14 @@ main {
     margin-top: 40px;
 }
 
+form.contact-us {
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
 @media only screen and (max-width: 500px) {
     header nav {
         display: none;
