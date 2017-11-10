@@ -1,10 +1,24 @@
 const Logger = require('logdna');
 const os = require('os');
 const ip = require('ip');
+const bunyan = require('bunyan');
+const PrettyStream = require('bunyan-prettystream');
+const prettyStdOut = new PrettyStream({
+  mode: 'dev',
+});
+prettyStdOut.pipe(process.stdout);
+const bunyanLogger = bunyan.createLogger({
+  name: process.env.environment,
+  streams: [{
+    level: 'debug',
+    type: 'raw',
+    stream: prettyStdOut
+  }]
+});
 
-let logger;
+let logdnaLogger;
 if (process.env.logdnaApiKey) {
-  logger = Logger.createLogger(process.env.logdnaApiKey, {
+  logdnaLogger = Logger.createLogger(process.env.logdnaApiKey, {
     env: process.env.environment || 'unknown',
     hostname: os.hostname(),
     ip: ip.address(),
@@ -21,13 +35,25 @@ function formatMessage(message, meta) {
 }
 
 module.exports.log =
-    (message, meta) => logger && logger.log(formatMessage(message, meta), { meta });
+  (message, meta) => {
+    logdnaLogger && logdnaLogger.log(formatMessage(message, meta), { meta });
+    bunyanLogger.info(message);
+  };
 
 module.exports.debug =
-    (message, meta) => logger && logger.debug(formatMessage(message, meta), { meta });
+  (message, meta) => {
+    logdnaLogger && logdnaLogger.debug(formatMessage(message, meta), { meta });
+    bunyanLogger.debug(message, meta || '');
+  };
 
 module.exports.error =
-    (message, meta) => logger && logger.error(formatMessage(message, meta), { meta });
+  (message, meta) => {
+    logdnaLogger && logdnaLogger.error(formatMessage(message, meta), { meta });
+    bunyanLogger.error(message, meta || '');
+  };
 
 module.exports.warn =
-    (message, meta) => logger && logger.warn(formatMessage(message, meta), { meta });
+  (message, meta) => {
+    logdnaLogger && logdnaLogger.warn(formatMessage(message, meta), { meta });
+    bunyanLogger.warn(message);
+  };
