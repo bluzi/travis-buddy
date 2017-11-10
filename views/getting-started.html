@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/9.6.0/build.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/4.4.0/font/octicons.css" />
     <link rel="stylesheet" href="/public/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/themes/prism.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/plugins/normalize-whitespace/prism-normalize-whitespace.min.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
@@ -30,14 +35,70 @@
             </nav>
         </div>
     </header>
-    <div class="container">
-        <section class="logo">
-            <img src="https://travis-ci.org/images/logos/TravisCI-Mascot-1.png" />
-        </section>
 
-        <div class="text-center lead">
-            Coming soon
+    <main class="no-center">
+        <div class="container">
+            <h1>Getting Started</h1>
+
+            <div class="lead">
+                Get TravisBuddy set up on your repository in 2 minutes!
+            </div>
+
+            <h2>Public Repositories</h2>
+
+            <p>
+                If you're already using Travis CI, modify your
+                <span class="quote">travis.yml</span> and add the following lines:
+                <pre>
+                    <code class="language-yaml">
+                        notifications:
+                            webhooks: https://www.travisbuddy.com/
+                    </code>
+                </pre> 
+
+                If not, enable Travis CI in your repository by following
+                <a href="https://docs.travis-ci.com/user/getting-started/">the tutorial in their website</a>
+                according to the tech you're using, and then add the code above to
+                <span class="quote">travis.yml</span>.
+            </p>
+
+            <p>
+                Here's how your
+                <span class="quote">travis.yml</span> should look like if yo're using <span class="quote">node_js</span>:
+                <pre>
+                    <code class="language-yaml">
+                        language: node_js
+                        node_js:
+                            - "8"
+                        notifications:
+                            webhooks: https://www.travisbuddy.com/
+                    </code>
+                </pre>
+            </p>
+
+            <h3 class="margin-top">Disable success message</h3>
+            <p>
+                If you only want <em>TravisBuddy</em> to create comments when the tests fails, add <span class="quote">on_success: never</span> to the notifications node, like that:
+                <pre>
+                    <code class="language-yaml">
+                        notifications:
+                            webhooks: https://www.travisbuddy.com/
+                            on_success: never
+                    </code>
+                </pre>
+            </p>
+
+            <h2 class="margin-top">Private Repositories</h2>
+            <em>TravisBuddy</em> is not yet supported on private repositories.
+            <br /> 
+            However, we're working on it, so stay alarmed.
+
+            <h2 class="margin-top">What if I still can't get it to work?</h2>
+            Feel free to <a href="/contact-us">contact us using the website</a>, or 
+            <a href="https://github.com/bluzi/travis-buddy/issues">leave an issue in our GitHub repository</a>.
         </div>
+    </main>
+
 
     <footer>
         <div class="container">
