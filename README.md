@@ -10,7 +10,7 @@
 The comment will include only the part of the build log that applies to your testing framework, 
 so your contirbutors won't have to enter Travis's website and search the long and annoying build log for the reason the tests failed.
 
-![TravisBuddy example comment](https://user-images.githubusercontent.com/13808883/32201227-75bec3b4-bdde-11e7-92d6-f58c51e0945a.png)
+![TravisBuddy example comment](https://image.ibb.co/kxn4xb/Screenshot_from_2017_11_11_13_36_33.png)
 
 
 ## Getting Started
