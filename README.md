@@ -3,8 +3,6 @@
 # TravisBuddy
 > *TravisBuddy* is an awesome bot that will make life much easier for your contributoers.
 
-### Please not that TravisBuddy is still under development. Please do not integrate it yet. (However, we're getting there, no worries)
-
 ## Overview
 *TravisBuddy* will comment on pull requests in your public repository everytime a test failed in one of them. 
 The comment will include only the part of the build log that applies to your testing framework, 
