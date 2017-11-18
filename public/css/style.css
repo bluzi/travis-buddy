@@ -1,3 +1,7 @@
+html {
+    font-size: 14px;
+}
+
 body {
     overflow-x: hidden;
 }
@@ -10,10 +14,7 @@ header {
 
 header .buttons {
     float: right;
-    line-height: 50px;
-}
-
-header .buttons .octicon {
+    line-height: 3rem;
 }
 
 header a {
@@ -25,15 +26,15 @@ header a {
 }
 
 header h1 {
-    font-size: 20px;
+    font-size: 1.3rem;
     float: left;
-    line-height: 50px;
+    line-height: 3rem;
 }
 
 header nav {
     float: left;
-    margin-left: 60px;
-    line-height: 50px;
+    margin-left: 4.5rem;
+    line-height: 3rem;
 }
 
 header nav ul {
@@ -47,16 +48,16 @@ header nav ul li {
 }
 
 header nav ul li:not(:first-child) {
-    margin-left: 30px;
+    margin-left: 2rem;
 }
 
 section.logo {
-    margin: 50px auto;
+    margin: 3em auto;
     text-align: center;
 }
 
 section.logo img {
-    height: 350px;
+    height: 25rem;
 }
 
 section.logo.not-found img {
@@ -74,11 +75,15 @@ section.logo.not-found img {
     opacity: 0.05;
 }
 
+.background-logo img {
+    height: 35rem;
+}
+
 footer {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 4rem;
     font-size: 0.9em;
-    margin-bottom: 20px;
+    margin-bottom: 2.5rem;
 }
 
 footer a {
@@ -95,7 +100,7 @@ footer a:hover {
 }
 
 main {
-    margin-top: 20px;
+    margin-top: 3rem;
 }
 
 .quote {
@@ -111,11 +116,11 @@ main {
 }
 
 .margin-top {
-    margin-top: 40px;
+    margin-top: 2.5rem;
 }
 
 form.contact-us {
-    margin-top: 20px;
+    margin-top: 2.5rem;
 }
 
 .hidden {
