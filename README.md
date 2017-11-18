@@ -3,37 +3,47 @@
 # TravisBuddy
 > *TravisBuddy* is an awesome bot that will make life much easier for your contributoers.
 
-### Please not that TravisBuddy is still under development. Please do not integrate it yet. (However, we're getting there, no worries)
-
 ## Overview
 *TravisBuddy* will comment on pull requests in your public repository everytime a test failed in one of them. 
 The comment will include only the part of the build log that applies to your testing framework, 
 so your contirbutors won't have to enter Travis's website and search the long and annoying build log for the reason the tests failed.
 
-![TravisBuddy example comment](https://user-images.githubusercontent.com/13808883/32201227-75bec3b4-bdde-11e7-92d6-f58c51e0945a.png)
+![TravisBuddy example comment](https://image.ibb.co/kxn4xb/Screenshot_from_2017_11_11_13_36_33.png)
 
 
-## Integration
-*TravisBuddy* is super easy to integrate with! Just add the following lines to your `travis.yml`:
+## Getting Started
+### Public Repositories
+If you're already using Travis CI, modify your `travis.yml` and add the following lines:
 ```yml
 notifications:
-  webhooks: http://54.157.44.69
-  on_success: never  
-  on_failure: always
+    webhooks: https://www.travisbuddy.com/
 ```
 
-That's it! now, once a test will fail in a pull request in your repository, *TravisBuddy* will announce it and make it easy for the contributor to fix the error ASAP.
+If not, enable Travis CI in your repository by following the [tutorial in their website](https://docs.travis-ci.com/user/getting-started/) according to the tech you're using, and then add the code above to `travis.yml`.
 
-Here's an example of a complete `travis.yml`:
+Here's how your `travis.yml` should look like if yo're using `node_js`:
 ```yml
-language: node_js   
+language: node_js
 node_js:
-  - "8"
+    - "8"
 notifications:
-  webhooks: http://54.157.44.69
-  on_success: never
-  on_failure: always
+    webhooks: https://www.travisbuddy.com/
 ```
+
+#### Disable success message
+If you only want TravisBuddy to create comments when the tests fails, add `on_success: never` to the notifications node, like that:
+```yml
+notifications:
+    webhooks: https://www.travisbuddy.com/
+    on_success: neve
+```
+
+### Private Repositories
+TravisBuddy is not yet supported on private repositories. 
+However, we're working on it, so stay alarmed.
+
+### What if I still can't get it to work?
+Feel free to [contact us using the website](https://www.travisbuddy.com/contact-us), or [leave an issue in our GitHub repository](https://github.com/bluzi/travis-buddy/issues).
 
 ## Run locally
 To run a local instance of *TravisBuddy*, you'll need a github access token. You can get one by following [this link](https://github.com/settings/tokens), then press `Generate new token`, and hit the `Generate token` button.
