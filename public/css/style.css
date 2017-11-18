@@ -63,7 +63,6 @@ section.logo img {
 section.logo.not-found img {
     filter: grayscale(99%);
     opacity: 0.5;
-    transform: rotate(200deg);
 }
 
 .background-logo {
