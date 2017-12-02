@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="460" height="300" src="https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/logo.png">
+</p>
+
 [![Build Status](https://travis-ci.org/bluzi/travis-buddy.svg?branch=master)](https://travis-ci.org/bluzi/travis-buddy)
 
 # TravisBuddy
