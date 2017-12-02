@@ -1,8 +1,9 @@
+[![Build Status](https://travis-ci.org/bluzi/travis-buddy.svg?branch=master)](htts://travis-ci.org/bluzi/travis-buddy) 
+![Heroku](https://heroku-badge.herokuapp.com/?app=travis-buddy-service&style=flat)
+
 <p align="center">
   <img width="450" src="https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/logo.png">
 </p>
-
-[![Build Status](https://travis-ci.org/bluzi/travis-buddy.svg?branch=master)](https://travis-ci.org/bluzi/travis-buddy)
 
 # TravisBuddy
 > *TravisBuddy* is an awesome bot that will make life much easier for your contributoers.
