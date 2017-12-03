@@ -1,5 +1,5 @@
 {
-  "name": "travis-mocha-bot",
+  "name": "travis-buddy",
   "version": "1.0.0",
   "engines": {
     "node": "8.6.0"
