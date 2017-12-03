@@ -3,28 +3,30 @@ const request = require('request');
 const stripAnsi = require('strip-ansi');
 
 
-const MAX_ATTEMPTS_TO_GET_DONE = 10;
+const MAX_ATTEMPTS_TO_GET_DONE = process.env.maxAttemptsToGetDone || 10;
+logger.log(`Max attempts to get done is: ${MAX_ATTEMPTS_TO_GET_DONE}`);
 
 module.exports.requestLog = (jobId, data, attempts = 0) => new Promise((resolve, reject) => {
   request(`https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`, (err, response, log) => {
     if (err) return reject(err);
 
     const lastLine = log.trim().split(/\r?\n/).pop();
-    if (lastLine.startsWith('Done.') === false) {
-      if (attempts >= MAX_ATTEMPTS_TO_GET_DONE) {
-        logger.log(`Done not found, requesting new log... (${attempts}/${MAX_ATTEMPTS_TO_GET_DONE}`, data);
-        return reject(new Error(`Too many attempts to find done (MAX_ATTEMPTS: ${MAX_ATTEMPTS_TO_GET_DONE})`));
+    if (lastLine.startsWith('Done.') || attempts >= MAX_ATTEMPTS_TO_GET_DONE) {
+      if (lastLine.startsWith('Done.')) {
+        logger.log(`Done found after ${attempts}/${MAX_ATTEMPTS_TO_GET_DONE} attempts.`, data);
+      } else {
+        logger.log('Max attempts achived, giving up done');
       }
 
-      return setTimeout(() => {
-        module.exports.requestLog(jobId, data, attempts + 1).then(resolve).catch(reject);
-      }, 1000);
+      const cleanLog = stripAnsi(log);
+      return resolve(cleanLog);
     }
 
-    logger.log(`Done found after ${attempts}/${MAX_ATTEMPTS_TO_GET_DONE} attempts.`, data);
+    logger.log(`Done not found, requesting new log... (${attempts}/${MAX_ATTEMPTS_TO_GET_DONE}`, data);
 
-    const cleanLog = stripAnsi(log);
-    return resolve(cleanLog);
+    return setTimeout(() => {
+      module.exports.requestLog(jobId, data, attempts + 1).then(resolve).catch(reject);
+    }, 1000);
   });
 });
 
