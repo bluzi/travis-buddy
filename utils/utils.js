@@ -27,7 +27,6 @@ module.exports.requestLog = (jobId, data, attempts = 0) => new Promise((resolve,
     return setTimeout(() => {
       module.exports.requestLog(jobId, data, attempts + 1).then(resolve).catch(reject);
     }, 1000);
-
   });
 });
 

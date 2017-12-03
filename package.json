@@ -11,6 +11,7 @@
     "prod": "PORT=80 npm start",
     "test": "mocha",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "local-test": "./test.sh"
   },
   "author": "",
