@@ -3,7 +3,8 @@ const request = require('request');
 const stripAnsi = require('strip-ansi');
 
 
-const MAX_ATTEMPTS_TO_GET_DONE = 10;
+const MAX_ATTEMPTS_TO_GET_DONE = process.env.maxAttemptsToGetDone || 10;
+logger.log(`Max attempts to get done is: ${MAX_ATTEMPTS_TO_GET_DONE}`);
 
 module.exports.requestLog = (jobId, data, attempts = 0) => new Promise((resolve, reject) => {
   request(`https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`, (err, response, log) => {
