@@ -3,6 +3,7 @@ const utils = require('./utils');
 const request = require('request');
 const YAML = require('yamljs');
 const detectIndent = require('detect-indent');
+const logger = require('./logger');
 
 const gh = new GitHub({
   token: utils.getGithubAccessToken(),
@@ -82,7 +83,7 @@ request(
               base: repo.branch,
               maintainer_can_modify: true,
             })
-              .then(() => console.log('done'));
+              .then(() => logger.log('done'));
           });
       });
   },
