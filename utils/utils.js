@@ -38,7 +38,7 @@ module.exports.getData = (payload, params) => ({
   pullRequest: payload.pull_request_number,
   pullRequestTitle: payload.pull_request_title,
   buildNumber: payload.id,
-  jobs: payload.matrix.map(job => job.id),
+  jobs: payload.matrix.filter(job => job.state === 'failed').map(job => job.id),
   author: payload.author_name,
   state: payload.state,
   branch: payload.branch,
