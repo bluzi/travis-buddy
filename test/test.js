@@ -18,17 +18,17 @@ describe('GET /status', () => {
   });
 });
 
-describe('GET /test', () => {
-  it('should return HTTP status 200', (done) => {
-    request(app)
-      .get('/test/node_js/295503460')
-      .expect(200)
-      .end((err) => {
-        if (err) return done(err);
-        done();
-      });
-  }).timeout(10000);
-});
+// describe('GET /test', () => {
+//   it('should return HTTP status 200', (done) => {
+//     request(app)
+//       .get('/test/node_js/295503460')
+//       .expect(200)
+//       .end((err) => {
+//         if (err) return done(err);
+//         done();
+//       });
+//   }).timeout(10000);
+// });
 
 describe('POST /', () => {
   it('should return HTTP status 200 and ok message', (done) => {
