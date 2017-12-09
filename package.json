@@ -7,7 +7,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./bin/www", 
+    "start": "node ./bin/www",
     "prod": "PORT=80 npm start",
     "test": "mocha",
     "lint": "eslint .",
@@ -32,6 +32,7 @@
     "markdown-escape": "^1.0.2",
     "mocha": "^4.0.1",
     "octicons": "^7.0.1",
+    "ordinal": "^1.0.2",
     "request": "^2.83.0",
     "strip-ansi": "^4.0.0",
     "supertest": "^3.0.0",

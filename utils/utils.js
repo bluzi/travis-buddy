@@ -38,7 +38,7 @@ module.exports.getData = (payload, params) => ({
   pullRequest: payload.pull_request_number,
   pullRequestTitle: payload.pull_request_title,
   buildNumber: payload.id,
-  jobs: payload.matrix.filter(job => job.state === 'failed').map(job => job.id),
+  jobs: payload.matrix.filter(job => job.state === 'failed').map(job => module.exports.createJobObject(job)),
   author: payload.author_name,
   state: payload.state,
   branch: payload.branch,
@@ -46,6 +46,17 @@ module.exports.getData = (payload, params) => ({
   language: payload.config.language,
   scripts: payload.config.script,
 });
+
+module.exports.createJobObject = job => ({
+  id: job.id,
+  displayName: module.exports.getJobDisplayName(job),
+});
+
+module.exports.getJobDisplayName = (job) => {
+  if (job.config.language === 'node_js') return `Node.js: ${job.config.node_js}`;
+
+  return `Build #${job.number}`;
+};
 
 module.exports.getGithubAccessToken = () => {
   const githubAccessToken = process.env.githubAccessToken || ((args) => {
