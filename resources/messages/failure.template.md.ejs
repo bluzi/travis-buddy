@@ -4,6 +4,7 @@ Please read the following log in order to understand the failure reason.
 It'll be awesome if you fix what's wrong and commit the changes.
 
 <% jobs.forEach((job, index) => { %>
+### <%- job.displayName %>
 <% job.scripts.forEach(log => { %>
 <details>
   <summary>
@@ -13,7 +14,7 @@ It'll be awesome if you fix what's wrong and commit the changes.
   </summary>
 
 ```
-<%-         log.contents %>
+<%- log.contents %>
 ```
 </details>
 <br />

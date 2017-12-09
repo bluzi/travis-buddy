@@ -1,6 +1,6 @@
 const defaultScripts = require('../resources/default-scripts.json');
 
-module.exports = (log, data) => new Promise((resolve, reject) => {
+module.exports = (job, log, data) => new Promise((resolve, reject) => {
   const scriptLogs = [];
   let allScripts;
 
@@ -31,7 +31,5 @@ module.exports = (log, data) => new Promise((resolve, reject) => {
     }
   });
 
-  return resolve({
-    scripts: scriptLogs,
-  });
+  return resolve({ ...job, scripts: scriptLogs });
 });

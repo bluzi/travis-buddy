@@ -3,6 +3,8 @@ const fs = require('fs');
 
 module.exports.failure = (jobs, author) => {
   const template = fs.readFileSync('resources/messages/failure.template.md.ejs', 'utf8');
+  console.log('jobs:');
+  console.log(jobs);
   return ejs.render(template, {
     jobs,
     author,

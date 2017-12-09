@@ -5,17 +5,17 @@ const resolver = require('../resolvers/simple.resolver');
 const messageFormatter = require('../utils/message-formatter');
 
 module.exports = data => new Promise((resolve, reject) => {
-  const resolverPromises = data.jobs.map(jobId =>
-    utils.requestLog(jobId, data)
-      .then(log => resolver(log, data)));
+  const resolverPromises = data.jobs.map(job =>
+    utils.requestLog(job.id, data)
+      .then(log => resolver(job, log, data)));
 
   Promise.all(resolverPromises)
-    .then((logs) => {
+    .then((jobs) => {
       const gh = new GitHub({
         token: utils.getGithubAccessToken(),
       });
 
-      const contents = messageFormatter.failure(logs, data.author);
+      const contents = messageFormatter.failure(jobs, data.author);
 
       logger.log('Attempting to create failure comment in PR', data);
 
