@@ -41,7 +41,7 @@ If you only want TravisBuddy to create comments when the tests fails, add `on_su
 ```yml
 notifications:
     webhooks: https://www.travisbuddy.com/
-    on_success: neve
+    on_success: never
 ```
 
 ### Private Repositories

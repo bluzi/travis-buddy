@@ -21,11 +21,14 @@ module.exports = (log, data) => new Promise((resolve, reject) => {
     scriptContents = scriptContents.split('\n').slice(1).join('\n');
     scriptContents = scriptContents.substr(0, scriptContents.indexOf('" exited with ')).trim();
     scriptContents = scriptContents.split('\n').slice(0, -1).join('\n');
+    scriptContents = scriptContents.trim();
 
-    scriptLogs.push({
-      command: script,
-      contents: scriptContents,
-    });
+    if (scriptContents) {
+      scriptLogs.push({
+        command: script,
+        contents: scriptContents,
+      });
+    }
   });
 
   return resolve({
