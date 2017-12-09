@@ -7,6 +7,7 @@ List of GitHub repositories using TravisBuddy:
 - [VSCodeVim/Vim](https://github.com/VSCodeVim/Vim)
 - [Chimeejs/chimee](https://github.com/Chimeejs/chimee)
 - [Wikiki/bulma-switch](https://github.com/Wikiki/bulma-switch)
-- [didi/Zarel/Pokemon-Showdown](https://github.com/didi/Zarel/Pokemon-Showdown)
+- [Zarel/Pokemon-Showdown](https://github.com/Zarel/Pokemon-Showdown)
+- [dherges/ng-packagr](https://github.com/dherges/ng-packagr)
 
 Feel free to add your repository if you're using TravisBuddy.
