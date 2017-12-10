@@ -1,6 +1,7 @@
 const logger = require('./logger');
 const request = require('request');
 const stripAnsi = require('strip-ansi');
+const ordinal = require('ordinal');
 
 
 const MAX_ATTEMPTS_TO_GET_DONE = process.env.maxAttemptsToGetDone || 10;
@@ -38,7 +39,7 @@ module.exports.getData = (payload, params) => ({
   pullRequest: payload.pull_request_number,
   pullRequestTitle: payload.pull_request_title,
   buildNumber: payload.id,
-  jobs: payload.matrix.filter(job => job.state === 'failed').map(job => module.exports.createJobObject(job)),
+  jobs: payload.matrix.filter(job => job.state === 'failed').map((job, index) => module.exports.createJobObject(job, index)),
   author: payload.author_name,
   state: payload.state,
   branch: payload.branch,
@@ -47,15 +48,15 @@ module.exports.getData = (payload, params) => ({
   scripts: payload.config.script,
 });
 
-module.exports.createJobObject = job => ({
+module.exports.createJobObject = (job, index) => ({
   id: job.id,
-  displayName: module.exports.getJobDisplayName(job),
+  displayName: module.exports.getJobDisplayName(job, index),
 });
 
-module.exports.getJobDisplayName = (job) => {
+module.exports.getJobDisplayName = (job, index) => {
   if (job.config.language === 'node_js') return `Node.js: ${job.config.node_js}`;
 
-  return `Build #${job.number}`;
+  return `${ordinal(index + 1)} Build`;
 };
 
 module.exports.getGithubAccessToken = () => {
