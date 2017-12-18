@@ -1,4 +1,3 @@
-const GitHub = require('github-api');
 const utils = require('../utils/utils');
 const logger = require('../utils/logger');
 const messageFormatter = require('../utils/message-formatter');

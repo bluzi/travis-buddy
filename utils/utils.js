@@ -75,25 +75,21 @@ module.exports.getGithubAccessToken = () => {
   return githubAccessToken;
 };
 
-module.exports.getGithubApi = () => {
-  return new GitHub({
-    token: module.exports.getGithubAccessToken(),
+module.exports.getGithubApi = () => new GitHub({
+  token: module.exports.getGithubAccessToken(),
+});
+
+module.exports.starRepo = (owner, repoName) => new Promise((resolve, reject) => {
+  const gh = module.exports.getGithubApi();
+  const repo = gh.getRepo(owner, repoName);
+
+  repo.isStarred((err, isStarred) => {
+    if (err) return reject(new Error('Error checking if repo is starred'));
+
+    if (!isStarred) {
+      return repo.star(starError => (starError ? reject(new Error('Error starring repository')) : resolve(true)));
+    }
+
+    return resolve(false);
   });
-}
-
-module.exports.starRepo = (owner, repoName) => {
-  return new Promise((resolve, reject) => {
-    const gh = module.exports.getGithubApi();
-    const repo = gh.getRepo(owner, repoName);
-
-    repo.isStarred((err, isStarred) => {
-      if (err) return reject('Error checking if repo is starred');
-
-      if (!isStarred) {
-        repo.star(err => err ? reject('Error starring repository') : resolve(true));
-      } else {
-        resolve(false);
-      }
-    });
-  });
-}
+});

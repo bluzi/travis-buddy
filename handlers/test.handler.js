@@ -13,7 +13,6 @@ module.exports = (language, jobId) => {
         return messageFormatter.failure(logs, 'John Doe');
       })
       .then(resolve)
-      .catch(reject)
-      .then(() => utils.starRepo(data.owner, data.repo).catch(logger.error));
+      .catch(reject);
   });
 };
