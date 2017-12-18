@@ -16,6 +16,8 @@ so your contirbutors won't have to enter Travis's website and search the long an
 
 ![TravisBuddy example comment](https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/example.png)
 
+## Repositories Using TravisBuddy
+TravisBuddy is already being trusted by few repositories on GitHub. It automatically stars every project using it, [so you can easily see who's using it](https://github.com/TravisBuddy?tab=stars).
 
 ## Getting Started
 ### Public Repositories
