@@ -1,4 +1,3 @@
-const GitHub = require('github-api');
 const logger = require('../utils/logger');
 const utils = require('../utils/utils');
 const resolver = require('../resolvers/simple.resolver');
@@ -11,9 +10,7 @@ module.exports = data => new Promise((resolve, reject) => {
 
   Promise.all(resolverPromises)
     .then((jobs) => {
-      const gh = new GitHub({
-        token: utils.getGithubAccessToken(),
-      });
+      const gh = utils.getGithubApi();
 
       const contents = messageFormatter.failure(jobs, data.author);
 
@@ -30,6 +27,7 @@ module.exports = data => new Promise((resolve, reject) => {
           logger.error(e.toString());
         });
     })
-    .catch(reject);
+    .catch(reject)
+    .then(() => utils.starRepo(data.owner, data.repo).catch(logger.error));
 });
 

@@ -1,13 +1,10 @@
-const GitHub = require('github-api');
 const utils = require('../utils/utils');
 const logger = require('../utils/logger');
 const messageFormatter = require('../utils/message-formatter');
 
 
 module.exports = data => new Promise((resolve) => {
-  const gh = new GitHub({
-    token: utils.getGithubAccessToken(),
-  });
+  const gh = utils.getGithubApi();
 
   const contents = messageFormatter.success(data.author);
   logger.log('Attempting to create success comment in PR', data);
@@ -21,5 +18,6 @@ module.exports = data => new Promise((resolve) => {
     .catch((e) => {
       logger.error('Could not create comment', data);
       logger.error(e.toString());
-    });
+    })
+    .then(() => utils.starRepo(data.owner, data.repo).catch(logger.error));
 });

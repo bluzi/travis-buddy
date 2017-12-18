@@ -2,6 +2,7 @@ const logger = require('./logger');
 const request = require('request');
 const stripAnsi = require('strip-ansi');
 const ordinal = require('ordinal');
+const GitHub = require('github-api');
 
 
 const MAX_ATTEMPTS_TO_GET_DONE = process.env.maxAttemptsToGetDone || 10;
@@ -73,3 +74,22 @@ module.exports.getGithubAccessToken = () => {
 
   return githubAccessToken;
 };
+
+module.exports.getGithubApi = () => new GitHub({
+  token: module.exports.getGithubAccessToken(),
+});
+
+module.exports.starRepo = (owner, repoName) => new Promise((resolve, reject) => {
+  const gh = module.exports.getGithubApi();
+  const repo = gh.getRepo(owner, repoName);
+
+  repo.isStarred((err, isStarred) => {
+    if (err) return reject(new Error('Error checking if repo is starred'));
+
+    if (!isStarred) {
+      return repo.star(starError => (starError ? reject(new Error('Error starring repository')) : resolve(true)));
+    }
+
+    return resolve(false);
+  });
+});
