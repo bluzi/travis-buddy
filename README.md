@@ -39,7 +39,7 @@ notifications:
 ```
 
 #### Disable success message
-If you only want TravisBuddy to create comments when the tests fails, add `on_success: never` to the notifications node, like that:
+If you only want TravisBuddy to create comments when the tests fails, add `on_success: never` to the notifications node, like this:
 ```yml
 notifications:
     webhooks: https://www.travisbuddy.com/
@@ -57,7 +57,7 @@ Feel free to [contact us using the website](https://www.travisbuddy.com/contact-
 To run a local instance of *TravisBuddy*, you'll need a github access token. You can get one by following [this link](https://github.com/settings/tokens), then press `Generate new token`, and hit the `Generate token` button.
 
 Now, you can use one of these methods to run the project: 
-Either make an environment variable called `githubAccessToken`, and set its value to your access token, and execute `bin/www`, like that:
+Either make an environment variable called `githubAccessToken`, and set its value to your access token, and execute `bin/www`, like this:
 ```shell
 export githubAccessToken=yourAccessToken
 node bin/www
