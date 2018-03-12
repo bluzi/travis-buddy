@@ -12,7 +12,7 @@ module.exports = data => new Promise((resolve, reject) => {
     .then((jobs) => {
       const gh = utils.getGithubApi();
 
-      const contents = messageFormatter.failure(jobs, data.author);
+      const contents = messageFormatter.failure(data.failureTemplate, data.author, jobs);
 
       logger.log('Attempting to create failure comment in PR', data);
 

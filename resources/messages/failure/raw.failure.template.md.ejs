@@ -1,0 +1,5 @@
+<% jobs.forEach((job, index) => { %>
+  <% job.scripts.forEach(log => { %>
+    <%- log.contents %>
+  <% }); %>
+<% }); %>

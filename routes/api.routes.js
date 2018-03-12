@@ -34,6 +34,9 @@ router.post('/', (req, res) => {
 
     const handleRequest = (payload.state === 'failed') ? failure : success;
 
+    data.successTemplate = req.query.successTemplate;
+    data.failureTemplate = req.query.failureTemplate;
+
     return handleRequest(data)
       .then(() => res.status(200).send({ err: false }).end())
       .catch((e) => {
