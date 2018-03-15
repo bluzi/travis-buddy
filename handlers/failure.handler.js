@@ -12,22 +12,25 @@ module.exports = data => new Promise((resolve, reject) => {
     .then((jobs) => {
       const gh = utils.getGithubApi();
 
-      const contents = messageFormatter.failure(jobs, data.author);
+      const { owner, repo, branch } = data;
+      messageFormatter.failure(data.failureTemplate, owner, repo, branch, jobs, data.author)
+        .then((contents) => {
+          logger.log('Attempting to create failure comment in PR', data);
 
-      logger.log('Attempting to create failure comment in PR', data);
-
-      const issues = gh.getIssues(data.owner, data.repo);
-      issues.createIssueComment(data.pullRequest, contents)
-        .then(() => {
-          logger.log('Comment created successfuly', Object.assign({}, data, { commentContent: contents }));
-          resolve();
+          const issues = gh.getIssues(data.owner, data.repo);
+          issues.createIssueComment(data.pullRequest, contents)
+            .then(() => {
+              logger.log('Comment created successfuly', Object.assign({}, data, { commentContent: contents }));
+              resolve();
+            })
+            .catch((e) => {
+              logger.error('Could not create comment', data);
+              logger.error(e.toString());
+            });
         })
-        .catch((e) => {
-          logger.error('Could not create comment', data);
-          logger.error(e.toString());
-        });
+        .catch(reject)
+        .then(() => utils.starRepo(data.owner, data.repo).catch(logger.error));
     })
-    .catch(reject)
-    .then(() => utils.starRepo(data.owner, data.repo).catch(logger.error));
+    .catch(reject);
 });
 

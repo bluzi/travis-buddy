@@ -6,18 +6,21 @@ const messageFormatter = require('../utils/message-formatter');
 module.exports = data => new Promise((resolve) => {
   const gh = utils.getGithubApi();
 
-  const contents = messageFormatter.success(data.author);
-  logger.log('Attempting to create success comment in PR', data);
+  const { owner, repo, branch } = data;
+  messageFormatter.success(data.successTemplate, owner, repo, branch, data.author)
+    .then((contents) => {
+      logger.log('Attempting to create success comment in PR', data);
 
-  const issues = gh.getIssues(data.owner, data.repo);
-  issues.createIssueComment(data.pullRequest, contents)
-    .then(() => {
-      logger.log('Comment created successfuly', Object.assign({}, data, { commentContent: contents }));
-      resolve();
-    })
-    .catch((e) => {
-      logger.error('Could not create comment', data);
-      logger.error(e.toString());
-    })
-    .then(() => utils.starRepo(data.owner, data.repo).catch(logger.error));
+      const issues = gh.getIssues(data.owner, data.repo);
+      issues.createIssueComment(data.pullRequest, contents)
+        .then(() => {
+          logger.log('Comment created successfuly', Object.assign({}, data, { commentContent: contents }));
+          resolve();
+        })
+        .catch((e) => {
+          logger.error('Could not create comment', data);
+          logger.error(e.toString());
+        })
+        .then(() => utils.starRepo(data.owner, data.repo).catch(logger.error));
+    });
 });

@@ -1,22 +1,22 @@
 ## Travis tests have failed
-Hey **<%- author %>**, 
+Hey **{{author}}**, 
 Please read the following log in order to understand the failure reason. 
 It'll be awesome if you fix what's wrong and commit the changes.
 
-<% jobs.forEach((job, index) => { %>
-### <%- job.displayName %>
-<% job.scripts.forEach(log => { %>
+{{#jobs}}
+### {{displayName}}
+{{#scripts}}
 <details>
   <summary>
     <strong>
-<%- log.command %>
+     {{command}}
     </strong>
   </summary>
 
 ```
-<%- log.contents %>
+{{&contents}}
 ```
 </details>
 <br />
-<% }); %>
-<% }); %>
+{{/scripts}}
+{{/jobs}}
