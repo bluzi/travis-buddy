@@ -6,7 +6,6 @@ const mustache = require('mustache');
 
 function getTemplate(owner, repo, branch) {
   const githubUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/travis-buddy-failure-template.md`;
-  console.log(githubUrl);
   return new Promise((resolve, reject) =>
     request(githubUrl, (err, res) => {
       if (err) return reject(err);
@@ -23,7 +22,7 @@ module.exports.failure = async (template, owner, repo, branch, jobs, author) =>
   getTemplate(owner, repo, branch)
     .catch(() => {
       logger.debug('Cannot find template file on GitHub', { owner, repo, branch });
-      return fs.readFileSync(`resources/messages/failure/${template || 'default'}.failure.template.md`, 'utf8');      
+      return fs.readFileSync(`resources/messages/failure/${template || 'default'}.failure.template.md`, 'utf8');
     })
     .then(templateContents => mustache.render(templateContents, {
       jobs,
@@ -31,7 +30,7 @@ module.exports.failure = async (template, owner, repo, branch, jobs, author) =>
     }));
 
 module.exports.success = async (template, owner, repo, branch, author) => {
-  const templateContents = fs.readFileSync(`resources/messages/success/${template || 'default'}.success.template.md`, 'utf8');  
+  const templateContents = fs.readFileSync(`resources/messages/success/${template || 'default'}.success.template.md`, 'utf8');
   return mustache.render(templateContents, {
     author,
   });
