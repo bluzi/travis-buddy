@@ -38,7 +38,7 @@
 	"commit": "857f45b7e2b4457c25bc8d42c1b191b729627db8",
 	"base_commit": "857f45b7e2b4457c25bc8d42c1b191b729627db8",
 	"head_commit": null,
-	"branch": "bluzi-patch-3",
+	"branch": "bluzi-travis-buddy-test",
 	"message": "Update .travis.yml",
 	"compare_url": "https://github.com/bluzi/name-db/compare/9641fb84cf87...857f45b7e2b4",
 	"committed_at": "2017-10-30T21:23:26Z",
@@ -47,7 +47,7 @@
 	"committer_name": "GitHub",
 	"committer_email": "noreply@github.com",
 	"pull_request": true,
-	"pull_request_number": 32,
+	"pull_request_number": 501,
 	"pull_request_title": "create sdfdsfsd",
 	"tag": null,
 	"repository": {
