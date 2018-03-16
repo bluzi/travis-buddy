@@ -3,7 +3,7 @@
 <a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://www.statuscake.com/App/button/index.php?Track=2MnfbAoOjQ&Days=1&Design=7" /></a>
 
 <p align="center">
-  <img width="450" src="https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/header.jpg">
+  <img src="https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/header.jpg">
 </p>
 
 # TravisBuddy
