@@ -78,5 +78,5 @@ Note that there are [open issues](https://github.com/bluzi/travis-buddy/issues) 
 This project is licensed under the MIT License.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/logo.png">
+  <img width="420" src="https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/logo.png">
 </p>
