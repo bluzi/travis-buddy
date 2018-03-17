@@ -1,6 +1,6 @@
 const GitHub = require('github-api');
 const utils = require('./utils');
-const request = require('request');
+const request = require('request-promise-native');
 const YAML = require('yamljs');
 const detectIndent = require('detect-indent');
 const logger = require('./logger');
@@ -35,56 +35,60 @@ const pr = {
   TravisBuddy :green_heart:`,
 };
 
-request(
-  `https://raw.githubusercontent.com/${repo.owner}/${repo.name}/${repo.branch}/.travis.yml`,
-  (err, response, travisConf) => {
-    if (err) throw err;
-    if (!travisConf) throw new Error('.trvais.yml does not exist in the repository');
+async function pullRequest() {
+  const options = {
+    uri: `https://raw.githubusercontent.com/${repo.owner}/${repo.name}/${repo.branch}/.travis.yml`,
+    method: 'GET',
+    resolveWithFullResponse: true,
+  };
 
-    const travisYaml = YAML.parse(travisConf);
-    if (!travisYaml) throw new Error('Could not parse travis configuration');
+  const res = await request(options);
+  const travisConf = res.body;
 
-    if (!travisYaml.notifications) {
-      travisYaml.notifications = {};
-    }
+  if (!res.body) {
+    throw new Error('.trvais.yml does not exist in the repository');
+  }
 
-    if (!travisYaml.notifications.webhooks) {
-      travisYaml.notifications.webhooks = {
-        urls: [],
-        on_success: 'never',
-        on_failure: 'always',
-        on_start: 'never',
-        on_cancel: 'never',
-        on_error: 'never',
-      };
-    }
+  const travisYaml = YAML.parse(travisConf);
+  const repository = gh.getRepo(repo.owner, repo.name);
+  const indent = detectIndent(travisConf);
 
-    if (typeof travisYaml.notifications.webhooks === 'string') {
-      travisYaml.notifications.webhooks = {
-        urls: [travisYaml.notifications.webhooks],
-        on_failure: 'always',
-      };
-    }
+  if (!travisYaml) throw new Error('Could not parse travis configuration');
 
-    travisYaml.notifications.webhooks.urls.push('https://www.travisbuddy.com/');
+  if (!travisYaml.notifications) {
+    travisYaml.notifications = {};
+  }
+  if (!travisYaml.notifications.webhooks) {
+    travisYaml.notifications.webhooks = {
+      urls: [],
+      on_success: 'never',
+      on_failure: 'always',
+      on_start: 'never',
+      on_cancel: 'never',
+      on_error: 'never',
+    };
+  }
+  if (typeof travisYaml.notifications.webhooks === 'string') {
+    travisYaml.notifications.webhooks = {
+      urls: [travisYaml.notifications.webhooks],
+      on_failure: 'always',
+    };
+  }
 
-    const indent = detectIndent(travisConf);
+  travisYaml.notifications.webhooks.urls.push('https://www.travisbuddy.com/');
 
-    const repository = gh.getRepo(repo.owner, repo.name);
-    repository.fork()
-      .then(() => {
-        const fork = gh.getRepo('travisbuddy', repo.name);
-        fork.writeFile(repo.branch, '.travis.yml', YAML.stringify(travisYaml, 100, indent.amount || 2), pr.commitMessage, {})
-          .then(() => {
-            repository.createPullRequest({
-              title: pr.title,
-              body: pr.body,
-              head: `travisbuddy:${repo.branch}`,
-              base: repo.branch,
-              maintainer_can_modify: true,
-            })
-              .then(() => logger.log('done'));
-          });
-      });
-  },
-);
+  await repository.fork();
+
+  const fork = gh.getRepo('travisbuddy', repo.name);
+  await fork.writeFile(repo.branch, '.travis.yml', YAML.stringify(travisYaml, 100, indent.amount || 2), pr.commitMessage, {});
+  await repository.createPullRequest({
+    title: pr.title,
+    body: pr.body,
+    head: `travisbuddy:${repo.branch}`,
+    base: repo.branch,
+    maintainer_can_modify: true,
+  });
+  logger.log('done');
+}
+
+pullRequest();

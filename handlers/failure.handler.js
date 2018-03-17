@@ -5,7 +5,9 @@ const messageFormatter = require('../utils/message-formatter');
 
 async function failureHandler(data) {
   const gh = utils.getGithubApi();
-  const { owner, repo, branch, author, failureTemplate} = data;
+  const {
+    owner, repo, branch, author, failureTemplate,
+  } = data;
 
   const resolverPromises = data.jobs.map(async (job) => {
     const log = await utils.requestLog(job.id, data);

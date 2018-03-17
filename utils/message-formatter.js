@@ -1,20 +1,23 @@
 const fs = require('fs');
-const request = require('request');
+const request = require('request-promise-native');
 const logger = require('./logger');
 const mustache = require('mustache');
 
 
-function getTemplate(owner, repo, branch) {
-  const githubUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/travis-buddy-failure-template.md`;
-  return new Promise((resolve, reject) =>
-    request(githubUrl, (err, res) => {
-      if (err) return reject(err);
-      if (res.statusCode !== 200 && res.statusCode !== 201) {
-        return reject(new Error(`HTTP Status ${res.statusCode}: ${res.statusMessage}`));
-      }
+async function getTemplate(owner, repo, branch) {
+  const options = {
+    uri: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/travis-buddy-failure-template.md`,
+    method: 'GET',
+    resolveWithFullResponse: true,
+  };
 
-      return resolve(res.body);
-    }));
+  const res = await request(options);
+
+  if (res.statusCode !== 200 && res.statusCode !== 201) {
+    throw new Error(`HTTP Status ${res.statusCode}: ${res.statusMessage}`);
+  }
+
+  return res.body;
 }
 
 
