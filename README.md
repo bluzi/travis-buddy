@@ -1,18 +1,14 @@
-[![Build Status](https://travis-ci.org/bluzi/travis-buddy.svg?branch=master)](htts://travis-ci.org/bluzi/travis-buddy) 
-![Heroku](https://heroku-badge.herokuapp.com/?app=travis-buddy-service&style=flat) 
-<a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://www.statuscake.com/App/button/index.php?Track=2MnfbAoOjQ&Days=1&Design=7" /></a>
-
 <p align="center">
   <img src="https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/header.jpg">
 </p>
 
-# TravisBuddy
-> *TravisBuddy* is an awesome bot that will make life much easier for your contributors.
+# TravisBuddy [![Build Status](https://travis-ci.org/bluzi/travis-buddy.svg?branch=master)](htts://travis-ci.org/bluzi/travis-buddy) ![Heroku](https://heroku-badge.herokuapp.com/?app=travis-buddy-service&style=flat) <a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://www.statuscake.com/App/button/index.php?Track=2MnfbAoOjQ&Days=1&Design=7" /></a>
+*TravisBuddy* is a cloud service that creates comments in failed pull requests and tell the author what went wrong and what they can do to fix it.
 
-## Overview
-*TravisBuddy* will comment on pull requests in your public repository everytime a test failed in one of them. 
-The comment will include only the part of the build log that applies to your testing framework, 
-so your contributors won't have to enter Travis's website and search the long and annoying build log for the reason the tests failed.
+## Why should I use it?
+* It takes 2 minutes to integrate TravisBuddy with your GitHub repository, assuming it's already integrated with TravisCI
+* It will save precious time to you and to your contributors, as you won't have to explain what went wrong, and they won't have to go through the whole build log in TravisCI.
+* It's free, open source and awesome. 
 
 ![TravisBuddy example comment](https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/example.png)
 
@@ -59,36 +55,10 @@ However, we're working on it, so stay alarmed.
 ### What if I still can't get it to work?
 Feel free to [contact us using the website](https://www.travisbuddy.com/contact-us), or [leave an issue in our GitHub repository](https://github.com/bluzi/travis-buddy/issues).
 
-## Run locally
-To run a local instance of *TravisBuddy*, you'll need a github access token. You can get one by following [this link](https://github.com/settings/tokens), then press `Generate new token`, and hit the `Generate token` button.
-
-Now, you can use one of these methods to run the project: 
-Either make an environment variable called `githubAccessToken`, and set its value to your access token, and execute `bin/www`, like this:
-```shell
-export githubAccessToken=yourAccessToken
-node bin/www
-```
-*Replace `yourAccessToken` with your access token
-
-
-
-Or, execute `bin/www` with an argument, like that:
-```shell
-node bin/www githubAccessToken=yourAccessToken
-```
-*Replace `yourAccessToken` with your access token*
-
-Now your server should be up and running.
-
-To run the tests, you must create an environment variable called `githubAccessToken`, fill it wil your access token, then execute `npm test`.
-Example:
-```sh
-export githubAccessToken=yourAccessToken
-npm test
-```
-*Replace `yourAccessToken` with your access token*
-
-Now you should be able to contribute. :)
+## Run Locally
+It's not easy to run local instnace of *TravisBuddy* - just clone the repository, run `npm i` and use: 
+* `npm test` for tests
+* `npm start` to run
 
 ## Test Repositories
 The plan is to create a repository for each resolver (test library)
@@ -99,8 +69,10 @@ So far, we have:
 - [Jasmine](https://github.com/bluzi/travis-buddy-jasmine-tests)
 
 ## Contribution
-Feel free to create issues or solve some and create a pull request.
+Feel free to create issues or create pull requests.
 Follow the "Run locally" section of this documentation to learn how to debug the project. 
+
+Note that there are [open issues](https://github.com/bluzi/travis-buddy/issues) with detailed instruction on how to resolve them, so if you want to help - just pick one labeled `good first issue`.
 
 ## License
 This project is licensed under the MIT License.
