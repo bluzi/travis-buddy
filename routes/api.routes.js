@@ -11,7 +11,7 @@ router.get('/status', (req, res) => {
   res.send({ state: 'running' });
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const payload = JSON.parse(req.body.payload);
     const data = utils.getData(payload, req.params);
@@ -37,13 +37,14 @@ router.post('/', (req, res) => {
     data.successTemplate = req.query.successTemplate;
     data.failureTemplate = req.query.failureTemplate;
 
-    return handleRequest(data)
-      .then(() => res.status(200).send({ err: false }).end())
-      .catch((e) => {
-        logger.error('Error in handler', data);
-        logger.error(e.toString(), data);
-        res.status(500).send({ err: true, reason: e.toString() }).end();
-      });
+    try {
+      await handleRequest(data);
+      return res.status(200).send({ err: false }).end();
+    } catch (e) {
+      logger.error('Error in handler', data);
+      logger.error(e.toString(), data);
+      return res.status(500).send({ err: true, reason: e.toString() }).end();
+    }
   } catch (e) {
     logger.error('Error in routes', { error: e.message });
     return res.status(500).send({ err: true, reason: e.toString() }).end();

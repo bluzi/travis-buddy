@@ -18,19 +18,24 @@ function getTemplate(owner, repo, branch) {
 }
 
 
-module.exports.failure = async (template, owner, repo, branch, jobs, author) =>
-  getTemplate(owner, repo, branch)
-    .catch(() => {
-      logger.debug('Cannot find template file on GitHub', { owner, repo, branch });
-      return fs.readFileSync(`resources/messages/failure/${template || 'default'}.failure.template.md`, 'utf8');
-    })
-    .then(templateContents => mustache.render(templateContents, {
+module.exports.failure = async (template, owner, repo, branch, jobs, author) => {
+  try {
+    const templateContents = getTemplate(owner, repo, branch);
+    mustache.render(templateContents, {
       jobs,
       author,
-    }));
+    });
+    return true;
+  } catch (e) {
+    logger.debug('Cannot find template file on GitHub', { owner, repo, branch });
+    const file = fs.readFileSync(`resources/messages/failure/${template || 'default'}.failure.template.md`, 'utf8');
+    return file;
+  }
+};
+
 
 module.exports.success = async (template, owner, repo, branch, author) => {
-  const templateContents = fs.readFileSync(`resources/messages/success/${template || 'default'}.success.template.md`, 'utf8');
+  const templateContents = await fs.readFile(`resources/messages/success/${template || 'default'}.success.template.md`, 'utf8');
   return mustache.render(templateContents, {
     author,
   });
