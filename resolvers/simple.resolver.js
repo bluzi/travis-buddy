@@ -1,12 +1,12 @@
 const defaultScripts = require('../resources/default-scripts.json');
 
-module.exports = (job, log, data) => new Promise((resolve, reject) => {
+module.exports = async (job, log, data) => {
   const scriptLogs = [];
   let allScripts;
 
   if (!data.scripts) {
     if (!defaultScripts[data.language]) {
-      return reject(new Error(`Deafult script was not found for '${data.language}'`));
+      throw new Error(`Deafult script was not found for '${data.language}'`);
     }
 
     allScripts = [defaultScripts[data.language]];
@@ -31,5 +31,5 @@ module.exports = (job, log, data) => new Promise((resolve, reject) => {
     }
   });
 
-  return resolve({ ...job, scripts: scriptLogs });
-});
+  return { ...job, scripts: scriptLogs };
+};
