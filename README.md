@@ -25,7 +25,7 @@ notifications:
 
 If not, enable Travis CI in your repository by following the [tutorial in their website](https://docs.travis-ci.com/user/getting-started/) according to the tech you're using, and then add the code above to `.travis.yml`.
 
-Here's how your `.travis.yml` should look like if yo're using `node_js`:
+Here's how your `.travis.yml` should look like if you're using `node_js`:
 ```yml
 language: node_js
 node_js:
