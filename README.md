@@ -25,7 +25,7 @@ notifications:
 
 If not, enable Travis CI in your repository by following the [tutorial in their website](https://docs.travis-ci.com/user/getting-started/) according to the tech you're using, and then add the code above to `.travis.yml`.
 
-Here's how your `.travis.yml` should look like if yo're using `node_js`:
+Here's how your `.travis.yml` should look like if you're using `node_js`:
 ```yml
 language: node_js
 node_js:
@@ -56,7 +56,7 @@ However, we're working on it, so stay alarmed.
 Feel free to [contact us using the website](https://www.travisbuddy.com/contact-us), or [leave an issue in our GitHub repository](https://github.com/bluzi/travis-buddy/issues).
 
 ## Run Locally
-It's not easy to run local instnace of *TravisBuddy* - just clone the repository, run `npm i` and use: 
+It's easy to run a local instance of *TravisBuddy* - just clone the repository, run `npm i` and use: 
 * `npm test` for tests
 * `npm start` to run
 
