@@ -14,7 +14,7 @@ router.get('/status', (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const payload = JSON.parse(req.body.payload);
-    const data = utils.getData(payload, req.params);
+    const data = await utils.getData(payload, req.params);
 
     let dropReason;
     if (!payload) {

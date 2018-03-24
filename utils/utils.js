@@ -38,7 +38,7 @@ module.exports.requestLog = async (jobId, data, attempts = 0) => {
   });
 };
 
-module.exports.getData = (payload, params) => ({
+module.exports.getData = async (payload, params) => ({
   params,
 
   owner: payload.repository.owner_name,
@@ -48,12 +48,26 @@ module.exports.getData = (payload, params) => ({
   buildNumber: payload.id,
   jobs: payload.matrix.filter(job => job.state === 'failed').map((job, index) => module.exports.createJobObject(job, index)),
   author: payload.author_name,
+  pullRequestAuthor: await module.exports.getPullRequestAuthor(
+    payload.repository.owner_name,
+    payload.repository.name,
+    payload.pull_request_number,
+  ),
   state: payload.state,
   branch: payload.branch,
   travisType: payload.type,
   language: payload.config.language,
   scripts: payload.config.script,
 });
+
+module.exports.getPullRequestAuthor = async (owner, repo, pullRequestNumber) =>
+  new Promise((resolve, reject) => {
+    const github = module.exports.getGithubApi();
+    github.getRepo(owner, repo).getPullRequest(pullRequestNumber, (err, pullRequest) => {
+      if (err) return reject(err);
+      return resolve(pullRequest.user.login);
+    });
+  });
 
 module.exports.createJobObject = (job, index) => ({
   id: job.id,
