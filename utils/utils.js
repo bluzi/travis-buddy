@@ -58,10 +58,12 @@ module.exports.getData = (payload, params) => ({
 module.exports.createJobObject = (job, index) => ({
   id: job.id,
   displayName: module.exports.getJobDisplayName(job, index),
+  script: job.config.script,
 });
 
 module.exports.getJobDisplayName = (job, index) => {
   if (job.config.language === 'node_js') return `Node.js: ${job.config.node_js}`;
+  else if (job.config.language === 'ruby') return `Ruby: ${job.config.rvm}`;
 
   return `${ordinal(index + 1)} Build`;
 };

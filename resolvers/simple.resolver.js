@@ -5,11 +5,15 @@ module.exports = async (job, log, data) => {
   let allScripts;
 
   if (!data.scripts) {
-    if (!defaultScripts[data.language]) {
-      throw new Error(`Deafult script was not found for '${data.language}'`);
-    }
+    if (job.script) {
+      allScripts = [job.script];
+    } else {
+      if (!defaultScripts[data.language]) {
+        throw new Error(`Deafult script was not found for '${data.language}'`);
+      }
 
-    allScripts = [defaultScripts[data.language]];
+      allScripts = [defaultScripts[data.language]];
+    }
   } else if (Array.isArray(data.scripts)) {
     allScripts = data.scripts;
   } else {
