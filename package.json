@@ -10,6 +10,8 @@
     "start": "node ./bin/www",
     "prod": "PORT=80 npm start",
     "test": "mocha",
+    "test:inspect": "mocha --inspect",
+    "test:inspect-brk": "mocha --inspect --inspect-brk",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "local-test": "./test.sh"
