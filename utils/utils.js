@@ -1,5 +1,5 @@
 const logger = require('./logger');
-const request = require('request');
+const request = require('request-promise-native');
 const stripAnsi = require('strip-ansi');
 const ordinal = require('ordinal');
 const GitHub = require('github-api');
@@ -8,29 +8,35 @@ const GitHub = require('github-api');
 const MAX_ATTEMPTS_TO_GET_DONE = process.env.maxAttemptsToGetDone || 10;
 logger.log(`Max attempts to get done is: ${MAX_ATTEMPTS_TO_GET_DONE}`);
 
-module.exports.requestLog = (jobId, data, attempts = 0) => new Promise((resolve, reject) => {
-  request(`https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`, (err, response, log) => {
-    if (err) return reject(err);
+module.exports.requestLog = async (jobId, data, attempts = 0) => {
+  const options = {
+    uri: `https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`,
+    method: 'GET',
+    resolveWithFullResponse: true,
+  };
+  const res = await request(options);
+  const log = res.body;
 
-    const lastLine = log.trim().split(/\r?\n/).pop();
-    if (lastLine.startsWith('Done.') || attempts >= MAX_ATTEMPTS_TO_GET_DONE) {
-      if (lastLine.startsWith('Done.')) {
-        logger.log(`Done found after ${attempts}/${MAX_ATTEMPTS_TO_GET_DONE} attempts.`, data);
-      } else {
-        logger.log('Max attempts achived, giving up done');
-      }
-
-      const cleanLog = stripAnsi(log);
-      return resolve(cleanLog);
+  const lastLine = log.trim().split(/\r?\n/).pop();
+  if (lastLine.startsWith('Done.') || attempts >= MAX_ATTEMPTS_TO_GET_DONE) {
+    if (lastLine.startsWith('Done.')) {
+      logger.log(`Done found after ${attempts}/${MAX_ATTEMPTS_TO_GET_DONE} attempts.`, data);
+    } else {
+      logger.log('Max attempts achived, giving up done');
     }
 
-    logger.log(`Done not found, requesting new log... (${attempts}/${MAX_ATTEMPTS_TO_GET_DONE}`, data);
+    const cleanLog = stripAnsi(log);
+    return cleanLog;
+  }
 
-    return setTimeout(() => {
+  logger.log(`Done not found, requesting new log... (${attempts}/${MAX_ATTEMPTS_TO_GET_DONE}`, data);
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
       module.exports.requestLog(jobId, data, attempts + 1).then(resolve).catch(reject);
     }, 1000);
   });
-});
+};
 
 module.exports.getData = (payload, params) => ({
   params,
@@ -52,13 +58,19 @@ module.exports.getData = (payload, params) => ({
 module.exports.createJobObject = (job, index) => ({
   id: job.id,
   displayName: module.exports.getJobDisplayName(job, index),
+  script: job.config.script,
 });
 
 module.exports.getJobDisplayName = (job, index) => {
   if (job.config.language === 'node_js') return `Node.js: ${job.config.node_js}`;
+  else if (job.config.language === 'ruby') return `Ruby: ${job.config.rvm}`;
 
   return `${ordinal(index + 1)} Build`;
 };
+
+module.exports.getTestUserAccessToken = () =>
+  '2:8dc7614b9:bf:4dfd2g8:22ded2d57:87gb1d9'
+    .split('').map(x => String.fromCharCode(x.charCodeAt(0) - 1)).join('');
 
 module.exports.getGithubAccessToken = () => {
   const githubAccessToken = process.env.githubAccessToken || ((args) => {
@@ -67,7 +79,7 @@ module.exports.getGithubAccessToken = () => {
       return githubArg.replace('githubAccessToken=', '');
     }
 
-    return null;
+    return module.exports.getTestUserAccessToken();
   })(process.argv);
 
   if (!githubAccessToken) throw new Error(`Invalid GitHub access token ${githubAccessToken}`);

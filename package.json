@@ -10,6 +10,8 @@
     "start": "node ./bin/www",
     "prod": "PORT=80 npm start",
     "test": "mocha",
+    "test:inspect": "mocha --inspect",
+    "test:inspect-brk": "mocha --inspect --inspect-brk",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "local-test": "./test.sh"
@@ -34,7 +36,7 @@
     "mustache": "^2.3.0",
     "octicons": "^7.0.1",
     "ordinal": "^1.0.2",
-    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
     "strip-ansi": "^4.0.0",
     "supertest": "^3.0.0",
     "travis-ci": "^2.1.1",

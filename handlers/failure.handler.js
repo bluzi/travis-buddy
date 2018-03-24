@@ -3,34 +3,39 @@ const utils = require('../utils/utils');
 const resolver = require('../resolvers/simple.resolver');
 const messageFormatter = require('../utils/message-formatter');
 
-module.exports = data => new Promise((resolve, reject) => {
-  const resolverPromises = data.jobs.map(job =>
-    utils.requestLog(job.id, data)
-      .then(log => resolver(job, log, data)));
+async function failureHandler(data) {
+  const gh = utils.getGithubApi();
+  const {
+    owner, repo, branch, author, failureTemplate,
+  } = data;
 
-  Promise.all(resolverPromises)
-    .then((jobs) => {
-      const gh = utils.getGithubApi();
+  const resolverPromises = data.jobs.map(async (job) => {
+    const log = await utils.requestLog(job.id, data);
+    return resolver(job, log, data);
+  });
 
-      const { owner, repo, branch } = data;
-      messageFormatter.failure(data.failureTemplate, owner, repo, branch, jobs, data.author)
-        .then((contents) => {
-          logger.log('Attempting to create failure comment in PR', data);
+  const jobs = await Promise.all(resolverPromises);
+  const contents =
+    await messageFormatter.failure(failureTemplate, owner, repo, branch, jobs, author);
 
-          const issues = gh.getIssues(data.owner, data.repo);
-          issues.createIssueComment(data.pullRequest, contents)
-            .then(() => {
-              logger.log('Comment created successfuly', Object.assign({}, data, { commentContent: contents }));
-              resolve();
-            })
-            .catch((e) => {
-              logger.error('Could not create comment', data);
-              logger.error(e.toString());
-            });
-        })
-        .catch(reject)
-        .then(() => utils.starRepo(data.owner, data.repo).catch(logger.error));
-    })
-    .catch(reject);
-});
+  logger.log('Attempting to create failure comment in PR', data);
+  const issues = gh.getIssues(data.owner, data.repo);
+
+  try {
+    await issues.createIssueComment(data.pullRequest, contents);
+    logger.log('Comment created successfuly', Object.assign({}, data, { commentContent: contents }));
+    return;
+  } catch (e) {
+    logger.error('Could not create comment', data);
+    logger.error(e.toString());
+  }
+
+  try {
+    await utils.starRepo(data.owner, data.repo);
+  } catch (e) {
+    logger.error(e);
+  }
+}
+
+module.exports = failureHandler;
 
