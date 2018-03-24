@@ -6,7 +6,7 @@ const messageFormatter = require('../utils/message-formatter');
 async function failureHandler(data) {
   const gh = utils.getGithubApi();
   const {
-    owner, repo, branch, author, failureTemplate,
+    owner, repo, branch, author, pullRequestAuthor, failureTemplate,
   } = data;
 
   const resolverPromises = data.jobs.map(async (job) => {
@@ -16,14 +16,25 @@ async function failureHandler(data) {
 
   const jobs = await Promise.all(resolverPromises);
   const contents =
-    await messageFormatter.failure(failureTemplate, owner, repo, branch, jobs, author);
+    await messageFormatter.failure(
+      failureTemplate,
+      owner,
+      repo,
+      branch,
+      jobs,
+      author,
+      pullRequestAuthor,
+    );
 
   logger.log('Attempting to create failure comment in PR', data);
   const issues = gh.getIssues(data.owner, data.repo);
 
   try {
-    await issues.createIssueComment(data.pullRequest, contents);
-    logger.log('Comment created successfuly', Object.assign({}, data, { commentContent: contents }));
+    const commentResult = await issues.createIssueComment(data.pullRequest, contents);
+    const commentId = commentResult.data.id;
+
+    const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${data.pullRequest}#issuecomment-${commentId}`;
+    logger.log(`Comment created successfuly: ${pullRequestUrl}`, Object.assign({}, data, { commentContent: contents }));
     return;
   } catch (e) {
     logger.error('Could not create comment', data);

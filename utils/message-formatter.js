@@ -21,7 +21,7 @@ async function getTemplate(owner, repo, branch) {
 }
 
 
-module.exports.failure = async (template, owner, repo, branch, jobs, author) => {
+module.exports.failure = async (template, owner, repo, branch, jobs, author, pullRequestAuthor) => {
   let templateContents;
   try {
     templateContents = await getTemplate(owner, repo, branch);
@@ -33,6 +33,7 @@ module.exports.failure = async (template, owner, repo, branch, jobs, author) => 
   return mustache.render(templateContents, {
     jobs,
     author,
+    pullRequestAuthor,
   });
 };
 
