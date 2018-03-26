@@ -22,7 +22,7 @@ module.exports = async (job, log, data) => {
 
   allScripts.forEach((script) => {
     let scriptContents = log.substr(log.indexOf(script));
-    let exitCode = /exited\swith\s(\d)/g.exec(scriptContents);
+    const exitCode = /exited\swith\s(\d)/g.exec(scriptContents);
     if (Number(exitCode[1]) !== 0) {
       scriptContents = scriptContents.split('\n').slice(1).join('\n');
       scriptContents = scriptContents.substr(0, scriptContents.indexOf('" exited with ')).trim();
