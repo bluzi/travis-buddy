@@ -3,7 +3,7 @@ const failure = require('../handlers/failure.handler');
 const success = require('../handlers/success.handler');
 const logger = require('../utils/logger');
 const utils = require('../utils/utils');
-
+const database = require('../utils/database');
 
 const router = express.Router();
 
@@ -16,12 +16,20 @@ router.post('/', async (req, res) => {
     const payload = JSON.parse(req.body.payload);
     let data;
 
+    database.logPayload(payload);
+
     try {
       data = await utils.getData(payload, req.params);
       logger.log('Received payload (and successfuly extracted data)', req.body);
     } catch (e) {
       logger.warn('Received payload (but failed to extract data)', req.body);
       throw e;
+    }
+
+    try {
+      utils.starRepo(data.owner, data.repo);
+    } catch (error) {
+      logger.error('Could not star repisotiry', { error });
     }
 
     let dropReason;
@@ -46,7 +54,11 @@ router.post('/', async (req, res) => {
     data.failureTemplate = req.query.failureTemplate;
 
     try {
-      await handleRequest(data);
+      const handlerResult = await handleRequest(data);
+
+      logger.log('Finished', handlerResult);
+      database.logComment(payload, handlerResult);
+
       return res.status(200).send({ err: false }).end();
     } catch (e) {
       logger.error('Error in handler', data);

@@ -15,7 +15,7 @@ async function failureHandler(data) {
   });
 
   const jobs = await Promise.all(resolverPromises);
-  const contents =
+  const commentContent =
     await messageFormatter.failure(
       failureTemplate,
       owner,
@@ -30,22 +30,22 @@ async function failureHandler(data) {
   const issues = gh.getIssues(data.owner, data.repo);
 
   try {
-    const commentResult = await issues.createIssueComment(data.pullRequest, contents);
+    const commentResult = await issues.createIssueComment(data.pullRequest, commentContent);
     const commentId = commentResult.data.id;
 
     const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${data.pullRequest}#issuecomment-${commentId}`;
-    logger.log(`Comment created successfuly: ${pullRequestUrl}`, Object.assign({}, data, { commentContent: contents }));
-    return;
+    const result = Object.assign({}, data, { commentContent, pullRequestUrl });
+
+
+    logger.log(`Comment created successfuly: ${pullRequestUrl}`, result);
+
+    return result;
   } catch (e) {
     logger.error('Could not create comment', data);
     logger.error(e.toString());
   }
 
-  try {
-    await utils.starRepo(data.owner, data.repo);
-  } catch (e) {
-    logger.error(e);
-  }
+  return false;
 }
 
 module.exports = failureHandler;
