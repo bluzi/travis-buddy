@@ -4,7 +4,6 @@ const samplePayload = require('./../sample-payloads/payload2.json');
 const GitHub = require('github-api');
 const utils = require('../utils/utils');
 
-
 describe('api', () => {
   describe('POST /', () => {
     it('should return HTTP status 200 and ok message', (done) => {
