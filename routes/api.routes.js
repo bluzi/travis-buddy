@@ -14,7 +14,15 @@ router.get('/status', (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const payload = JSON.parse(req.body.payload);
-    const data = await utils.getData(payload, req.params);
+    let data;
+
+    try {
+      data = await utils.getData(payload, req.params);
+      logger.log('Received payload (and successfuly extracted data)', req.body);
+    } catch (e) {
+      logger.warn('Received payload (but failed to extract data)', req.body);
+      throw e;
+    }
 
     let dropReason;
     if (!payload) {
