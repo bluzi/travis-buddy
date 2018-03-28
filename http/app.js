@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const logger = require('../utils/logger');
+const path = require('path');
 
 const apiRoutes = require('../routes/api.routes');
 const testRoutes = require('../routes/test.routes');
@@ -16,6 +17,7 @@ app.use(cookieParser());
 
 app.engine('html', ejs.renderFile);
 app.set('view engine', 'html');
+app.set('views', path.join(__dirname, '../public/views'));
 
 app.use('/public', express.static('public'));
 
