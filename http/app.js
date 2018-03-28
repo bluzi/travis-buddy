@@ -2,10 +2,11 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
+const logger = require('../utils/logger');
 
-const apiRoutes = require('./routes/api.routes');
-const testRoutes = require('./routes/test.routes');
-const websiteRoutes = require('./routes/website.routes');
+const apiRoutes = require('../routes/api.routes');
+const testRoutes = require('../routes/test.routes');
+const websiteRoutes = require('../routes/website.routes');
 
 const app = express();
 
@@ -29,14 +30,12 @@ app.use((req, res) => {
     .render('not-found');
 });
 
-// error handler
-app.use((err, req, res) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// Error handler
+app.use((error, req, res) => {
+  logger.log(error.message, { error, body: req.body });
 
-  // render the error page
-  res.status(err.status || 500);
+  // Render the error page
+  res.status(error.status || 500);
   res.end();
 });
 
