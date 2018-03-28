@@ -38,9 +38,10 @@ module.exports.failure = async (template, owner, repo, branch, jobs, author, pul
 };
 
 
-module.exports.success = async (template, owner, repo, branch, author) => {
-  const templateContents = await fs.readFile(`resources/messages/success/${template || 'default'}.success.template.md`, 'utf8');
+module.exports.success = async (template, owner, repo, branch, author, pullRequestAuthor) => {
+  const templateContents = fs.readFileSync(`resources/messages/success/${template || 'default'}.success.template.md`, 'utf8');
   return mustache.render(templateContents, {
     author,
+    pullRequestAuthor,
   });
 };

@@ -10,9 +10,10 @@ async function successHandler(data) {
     repo,
     branch,
     author,
+    pullRequestAuthor,
   } = data;
 
-  const contents = await messageFormatter.success(successTemplate, owner, repo, branch, author);
+  const contents = await messageFormatter.success(successTemplate, owner, repo, branch, author, pullRequestAuthor);
 
   logger.log('Attempting to create success comment in PR', data);
   const issues = gh.getIssues(owner, repo);
