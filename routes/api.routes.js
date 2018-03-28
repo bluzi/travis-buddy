@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
       dropReason = 'Request dropped: No payload received';
     } else if (!payload.pull_request || !payload.pull_request_number) {
       dropReason = 'Request dropped: Not a pull request';
-    } else if (payload.state !== 'failed' && payload.state !== 'success') {
+    } else if (payload.state !== 'failed' && payload.state !== 'passed') {
       dropReason = `Request dropped: Wrong state ('${payload.state}')`;
     }
 
