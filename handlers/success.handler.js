@@ -36,11 +36,9 @@ async function successHandler(data) {
 
     return result;
   } catch (e) {
-    logger.error('Could not create comment', data);
-    logger.error(e.toString());
+    logger.error('Could not create comment');
+    throw e;
   }
-
-  return false;
 }
 
 module.exports = successHandler;

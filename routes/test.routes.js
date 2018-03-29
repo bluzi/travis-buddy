@@ -12,11 +12,8 @@ router.get('/:language/:jobId', async (req, res) => {
       .send(`<pre>${log}</pre>`)
       .end();
   } catch (e) {
-    logger.error('Error in tests', { error: e.message });
-    res
-      .status(500)
-      .send(e.toString())
-      .end();
+    logger.error('Error in test route');
+    throw e;
   }
 });
 
