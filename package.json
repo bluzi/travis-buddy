@@ -14,7 +14,9 @@
     "test:inspect-brk": "mocha --inspect --inspect-brk",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "local-test": "./test.sh"
+    "local-test": "./test.sh",
+    "sort": "npm-sort",
+    "before-pr": "npm run sort && npm test && npm run lint"
   },
   "author": "",
   "license": "ISC",
@@ -46,6 +48,7 @@
   "devDependencies": {
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.8.0",
+    "npm-sort": "0.0.4"
   }
 }
