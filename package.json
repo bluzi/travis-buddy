@@ -7,14 +7,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "node http/server.js",
     "prod": "PORT=80 npm start",
     "test": "mocha",
     "test:inspect": "mocha --inspect",
     "test:inspect-brk": "mocha --inspect --inspect-brk",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "local-test": "./test.sh"
+    "local-test": "./test.sh",
+    "sort": "npm-sort",
+    "before-pr": "npm run sort && npm test && npm run lint"
   },
   "author": "",
   "license": "ISC",
@@ -33,6 +35,7 @@
     "logdna": "^1.4.0",
     "markdown-escape": "^1.0.2",
     "mocha": "^5.0.3",
+    "mongoose": "^5.0.12",
     "mustache": "^2.3.0",
     "octicons": "^7.0.1",
     "ordinal": "^1.0.2",
@@ -45,6 +48,7 @@
   "devDependencies": {
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.8.0",
+    "npm-sort": "0.0.4"
   }
 }

@@ -1,9 +1,8 @@
 const request = require('supertest');
-const app = require('../app');
-const samplePayload = require('./../sample-payloads/payload2.json');
+const app = require('../http/app');
+const samplePayload = require('./samples/payload.json');
 const GitHub = require('github-api');
 const utils = require('../utils/utils');
-
 
 describe('api', () => {
   describe('POST /', () => {

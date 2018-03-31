@@ -52,7 +52,7 @@ module.exports.getData = async (payload, params) => ({
     payload.repository.owner_name,
     payload.repository.name,
     payload.pull_request_number,
-  ),
+  ) || payload.author_name,
   state: payload.state,
   branch: payload.branch,
   travisType: payload.type,
@@ -66,7 +66,11 @@ module.exports.getPullRequestAuthor = async (owner, repo, pullRequestNumber) =>
     github.getRepo(owner, repo).getPullRequest(pullRequestNumber, (err, pullRequest) => {
       if (err) return reject(err);
       return resolve(pullRequest.user.login);
-    });
+    }).catch(() => logger.warn(`Could not find author in: ${owner}/${repo} #${pullRequestNumber}`, {
+      owner,
+      repo,
+      pullRequestNumber,
+    }));
   });
 
 module.exports.createJobObject = (job, index) => ({

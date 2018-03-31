@@ -13,7 +13,7 @@ async function successHandler(data) {
     pullRequestAuthor,
   } = data;
 
-  const contents = await messageFormatter.success(
+  const commentContent = await messageFormatter.success(
     successTemplate,
     owner,
     repo,
@@ -26,20 +26,18 @@ async function successHandler(data) {
   const issues = gh.getIssues(owner, repo);
 
   try {
-    const commentResult = await issues.createIssueComment(data.pullRequest, contents);
+    const commentResult = await issues.createIssueComment(data.pullRequest, commentContent);
     const commentId = commentResult.data.id;
 
     const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${data.pullRequest}#issuecomment-${commentId}`;
-    logger.log(`Comment created successfuly: ${pullRequestUrl}`, Object.assign({}, data, { commentContent: contents }));
-  } catch (e) {
-    logger.error('Could not create comment', data);
-    logger.error(e.toString());
-  }
+    const result = Object.assign({}, data, { commentContent, pullRequestUrl });
 
-  try {
-    utils.starRepo(owner, repo);
+    logger.log(`Comment created successfuly: ${pullRequestUrl}`, result);
+
+    return result;
   } catch (e) {
-    logger.error(e);
+    logger.error('Could not create comment');
+    throw e;
   }
 }
 
