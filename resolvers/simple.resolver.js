@@ -23,20 +23,25 @@ module.exports = async (job, log, data) => {
 
   allScripts.forEach(script => {
     let scriptContents = log.substr(log.indexOf(script));
-    const exitCode = /exited\swith\s(\d+)/g.exec(scriptContents).slice(1);
-    logger.log(`Exit code for script '${script}' is: '${exitCode}'`);
-    if (exitCode && Number(exitCode) !== 0) {
+
+    const exitCode = /exited\swith\s(\d+)/g.exec(scriptContents);
+    if (!exitCode || Number(exitCode[1]) !== 0) {
       scriptContents = scriptContents
         .split('\n')
         .slice(1)
         .join('\n');
-      scriptContents = scriptContents
-        .substr(0, scriptContents.indexOf('" exited with '))
-        .trim();
-      scriptContents = scriptContents
-        .split('\n')
-        .slice(0, -1)
-        .join('\n');
+
+      if (scriptContents.indexOf('" exited with ') > 0) {
+        scriptContents = scriptContents
+          .substr(0, scriptContents.indexOf('" exited with '))
+          .trim();
+
+        scriptContents = scriptContents
+          .split('\n')
+          .slice(0, -1)
+          .join('\n');
+      }
+
       scriptContents = scriptContents.trim();
 
       if (scriptContents) {
@@ -45,6 +50,12 @@ module.exports = async (job, log, data) => {
           contents: scriptContents,
         });
       }
+    }
+
+    if (exitCode) {
+      logger.log(`Exit code for script '${script}' is: '${exitCode[1]}'`);
+    } else {
+      logger.warn(`Could not find exit code for script '${script}'`);
     }
   });
 

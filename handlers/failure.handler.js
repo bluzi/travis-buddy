@@ -20,6 +20,11 @@ async function failureHandler(data) {
   });
 
   const jobs = await Promise.all(resolverPromises);
+
+  if (!jobs || jobs.length === 0) {
+    throw new Error('Could not resolve build log!');
+  }
+
   const commentContent = await messageFormatter.failure(
     failureTemplate,
     owner,
