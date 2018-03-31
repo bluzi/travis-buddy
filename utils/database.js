@@ -52,29 +52,32 @@ if (!process.env.MONGODB_URI) {
 
   db.on('error', err => logger.error('MongoDB connection error', err));
 
-  logComment = (payload, data) => CommentModel.create({
-    timestamp: new Date().getTime(),
-    timeStarted,
-    environment,
-    payload,
-    data,
-  });
+  logComment = (payload, data) =>
+    CommentModel.create({
+      timestamp: new Date().getTime(),
+      timeStarted,
+      environment,
+      payload,
+      data,
+    });
 
-  logPayload = payload => PayloadModel.create({
-    timestamp: new Date().getTime(),
-    timeStarted,
-    environment,
-    payload,
-  });
+  logPayload = payload =>
+    PayloadModel.create({
+      timestamp: new Date().getTime(),
+      timeStarted,
+      environment,
+      payload,
+    });
 
-  logError = (data, error) => ErrorModel.create({
-    timestamp: new Date().getTime(),
-    timeStarted,
-    environment,
-    data,
-    error: error.message,
-    stack: error.stack,
-  });
+  logError = (data, error) =>
+    ErrorModel.create({
+      timestamp: new Date().getTime(),
+      timeStarted,
+      environment,
+      data,
+      error: error.message,
+      stack: error.stack,
+    });
 }
 
 module.exports = {

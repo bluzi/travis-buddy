@@ -1,151 +1,151 @@
 html {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 body {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 header {
-    z-index: 1;
-    color: rgba(255,255,255,0.75);
-    background-color: #24292e;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.75);
+  background-color: #24292e;
 }
 
 header .buttons {
-    float: right;
-    line-height: 3rem;
+  float: right;
+  line-height: 3rem;
 }
 
 header a {
-    color: lightgray;
+  color: lightgray;
 }
 
 header a {
-    color: lightgray;
+  color: lightgray;
 }
 
 header h1 {
-    font-size: 1.3rem;
-    float: left;
-    line-height: 3rem;
+  font-size: 1.3rem;
+  float: left;
+  line-height: 3rem;
 }
 
 header nav {
-    float: left;
-    margin-left: 4.5rem;
-    line-height: 3rem;
+  float: left;
+  margin-left: 4.5rem;
+  line-height: 3rem;
 }
 
 header nav ul {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 header nav ul li {
-    list-style: none;
-    float: left;
+  list-style: none;
+  float: left;
 }
 
 header nav ul li:not(:first-child) {
-    margin-left: 2rem;
+  margin-left: 2rem;
 }
 
 section.logo {
-    margin: 3em auto;
-    text-align: center;
+  margin: 3em auto;
+  text-align: center;
 }
 
 section.logo img {
-    height: 25rem;
+  height: 25rem;
 }
 
 section.logo.not-found img {
-    filter: grayscale(99%);
-    opacity: 0.5;
+  filter: grayscale(99%);
+  opacity: 0.5;
 }
 
 .background-logo {
-    position: absolute;
-    right: 0;
-    top: 75%;
-    transform: translateX(20%) translateY(-50%);
-    filter: grayscale(90%);
-    opacity: 0.05;
+  position: absolute;
+  right: 0;
+  top: 75%;
+  transform: translateX(20%) translateY(-50%);
+  filter: grayscale(90%);
+  opacity: 0.05;
 }
 
 .background-logo img {
-    height: 35rem;
+  height: 35rem;
 }
 
 footer {
-    text-align: center;
-    margin-top: 4rem;
-    font-size: 0.9em;
-    margin-bottom: 2.5rem;
+  text-align: center;
+  margin-top: 4rem;
+  font-size: 0.9em;
+  margin-bottom: 2.5rem;
 }
 
 footer a {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 footer a:before {
-    content: '@';
+  content: '@';
 }
 
 footer a:hover {
-    text-decoration: none;
-    opacity: 0.9;
+  text-decoration: none;
+  opacity: 0.9;
 }
 
 main {
-    margin-top: 3rem;
+  margin-top: 3rem;
 }
 
 .quote {
-    padding: 5px;
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
-    margin: 0;
-    font-size: 85%;
-    background-color: rgba(0,0,0,0.04);
-    border-radius: 3px;
-    font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
-    font-size: 1em;
+  padding: 5px;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 3px;
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  font-size: 1em;
 }
 
 .margin-top {
-    margin-top: 2.5rem;
+  margin-top: 2.5rem;
 }
 
 form.contact-us {
-    margin-top: 2.5rem;
+  margin-top: 2.5rem;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 @media only screen and (max-width: 500px) {
-    header nav {
-        display: none;
-    }
+  header nav {
+    display: none;
+  }
 
-    .container {
-        width: 100%;
-        padding: 0px 10px;
-    }
+  .container {
+    width: 100%;
+    padding: 0px 10px;
+  }
 
-    section.logo img {
-        width: 80%;
-        height: 80%;
-    }
+  section.logo img {
+    width: 80%;
+    height: 80%;
+  }
 
-    main:not(.no-center) {
-        text-align: center;
-    }
-    
-    .background-logo {
-        display: none;
-    }
+  main:not(.no-center) {
+    text-align: center;
+  }
+
+  .background-logo {
+    display: none;
+  }
 }

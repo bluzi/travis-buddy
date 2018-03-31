@@ -21,14 +21,22 @@ module.exports = async (job, log, data) => {
     allScripts = [data.scripts];
   }
 
-  allScripts.forEach((script) => {
+  allScripts.forEach(script => {
     let scriptContents = log.substr(log.indexOf(script));
     const exitCode = /exited\swith\s(\d+)/g.exec(scriptContents).slice(1);
     logger.log(`Exit code for script '${script}' is: '${exitCode}'`);
     if (exitCode && Number(exitCode) !== 0) {
-      scriptContents = scriptContents.split('\n').slice(1).join('\n');
-      scriptContents = scriptContents.substr(0, scriptContents.indexOf('" exited with ')).trim();
-      scriptContents = scriptContents.split('\n').slice(0, -1).join('\n');
+      scriptContents = scriptContents
+        .split('\n')
+        .slice(1)
+        .join('\n');
+      scriptContents = scriptContents
+        .substr(0, scriptContents.indexOf('" exited with '))
+        .trim();
+      scriptContents = scriptContents
+        .split('\n')
+        .slice(0, -1)
+        .join('\n');
       scriptContents = scriptContents.trim();
 
       if (scriptContents) {

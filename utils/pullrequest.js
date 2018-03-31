@@ -37,7 +37,9 @@ const pr = {
 
 async function pullRequest() {
   const options = {
-    uri: `https://raw.githubusercontent.com/${repo.owner}/${repo.name}/${repo.branch}/.travis.yml`,
+    uri: `https://raw.githubusercontent.com/${repo.owner}/${repo.name}/${
+      repo.branch
+    }/.travis.yml`,
     method: 'GET',
     resolveWithFullResponse: true,
   };
@@ -80,7 +82,13 @@ async function pullRequest() {
   await repository.fork();
 
   const fork = gh.getRepo('travisbuddy', repo.name);
-  await fork.writeFile(repo.branch, '.travis.yml', YAML.stringify(travisYaml, 100, indent.amount || 2), pr.commitMessage, {});
+  await fork.writeFile(
+    repo.branch,
+    '.travis.yml',
+    YAML.stringify(travisYaml, 100, indent.amount || 2),
+    pr.commitMessage,
+    {},
+  );
   await repository.createPullRequest({
     title: pr.title,
     body: pr.body,
