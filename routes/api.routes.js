@@ -18,12 +18,42 @@ router.post('/', async (req, res) => {
 
   database.logPayload(payload);
 
+  let dropReason;
+  if (!payload) {
+    dropReason = 'Request dropped: No payload received';
+  } else if (!payload.pull_request || !payload.pull_request_number) {
+    dropReason = 'Request dropped: Not a pull request';
+  } else if (
+    payload.state !== 'failed' &&
+    payload.state !== 'passed' &&
+    payload.state !== 'errored'
+  ) {
+    dropReason = `Request dropped: Wrong state ('${payload.state}')`;
+  }
+
+  if (dropReason) {
+    logger.warn(`Request dropped! Reason: '${dropReason}'`, data);
+    return res
+      .status(200)
+      .send({ err: true, reason: dropReason })
+      .end();
+  }
+
   try {
     data = await utils.getData(payload, req.params);
-    logger.log('Received payload (and successfuly extracted data)', req.body);
-  } catch (e) {
-    logger.warn('Received payload (but failed to extract data)', req.body);
-    throw e;
+    logger.log('Received payload (and successfuly extracted data)', {
+      payload,
+    });
+  } catch (error) {
+    logger.warn('Received payload (but failed to extract data)', {
+      payload,
+      error,
+    });
+
+    return res
+      .status(200)
+      .send({ err: true, reason: 'Failed to extract data' })
+      .end();
   }
 
   try {
@@ -33,34 +63,16 @@ router.post('/', async (req, res) => {
     throw e;
   }
 
-  let dropReason;
-  if (!payload) {
-    dropReason = 'Request dropped: No payload received';
-  } else if (!payload.pull_request || !payload.pull_request_number) {
-    dropReason = 'Request dropped: Not a pull request';
-  } else if (payload.state !== 'failed' && payload.state !== 'passed' && payload.state !== 'errored') {
-    dropReason = `Request dropped: Wrong state ('${payload.state}')`;
-  }
-
-  if (dropReason) {
-    logger.warn(`Request dropped! Reason: '${dropReason}'`, data);
-    return res
-      .status(500)
-      .send({ err: true, reason: dropReason })
-      .end();
-  }
-
   logger.log(
     `Handling request for '${data.pullRequestTitle}' by '${data.author}'`,
     data,
   );
 
-
-  const handleRequest = ({
+  const handleRequest = {
     failed: failureHandler,
     passed: successHandler,
     errored: errorHandler,
-  })[payload.state];
+  }[payload.state];
 
   data.successTemplate = req.query.successTemplate;
   data.failureTemplate = req.query.failureTemplate;
