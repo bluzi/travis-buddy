@@ -6,6 +6,9 @@
   },
   "description": "",
   "main": "index.js",
+  "lint-staged": {
+    "*.{js,json,css,md}": ["prettier --write", "git add"]
+  },
   "scripts": {
     "start": "node http/server.js",
     "prod": "PORT=80 npm start",
@@ -16,7 +19,9 @@
     "lint:fix": "eslint . --fix",
     "local-test": "./test.sh",
     "sort": "npm-sort",
-    "before-pr": "npm run sort && npm test && npm run lint"
+    "before-pr": "npm run sort && npm test && npm run lint",
+    "precommit": "lint-staged",
+    "prettier": "prettier '**/*.{js,ts,css,md}' --write"
   },
   "author": "",
   "license": "ISC",
@@ -48,7 +53,11 @@
   "devDependencies": {
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.8.0",
-    "npm-sort": "0.0.4"
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.1",
+    "npm-sort": "0.0.4",
+    "prettier": "1.11.1"
   }
 }

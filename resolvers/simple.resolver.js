@@ -1,4 +1,5 @@
 const defaultScripts = require('../resources/default-scripts.json');
+const logger = require('../utils/logger');
 
 module.exports = async (job, log, data) => {
   const scriptLogs = [];
@@ -20,18 +21,30 @@ module.exports = async (job, log, data) => {
     allScripts = [data.scripts];
   }
 
-  allScripts.forEach((script) => {
+  allScripts.forEach(script => {
     let scriptContents = log.substr(log.indexOf(script));
-    scriptContents = scriptContents.split('\n').slice(1).join('\n');
-    scriptContents = scriptContents.substr(0, scriptContents.indexOf('" exited with ')).trim();
-    scriptContents = scriptContents.split('\n').slice(0, -1).join('\n');
-    scriptContents = scriptContents.trim();
+    const exitCode = /exited\swith\s(\d+)/g.exec(scriptContents).slice(1);
+    logger.log(`Exit code for script '${script}' is: '${exitCode}'`);
+    if (exitCode && Number(exitCode) !== 0) {
+      scriptContents = scriptContents
+        .split('\n')
+        .slice(1)
+        .join('\n');
+      scriptContents = scriptContents
+        .substr(0, scriptContents.indexOf('" exited with '))
+        .trim();
+      scriptContents = scriptContents
+        .split('\n')
+        .slice(0, -1)
+        .join('\n');
+      scriptContents = scriptContents.trim();
 
-    if (scriptContents) {
-      scriptLogs.push({
-        command: script,
-        contents: scriptContents,
-      });
+      if (scriptContents) {
+        scriptLogs.push({
+          command: script,
+          contents: scriptContents,
+        });
+      }
     }
   });
 

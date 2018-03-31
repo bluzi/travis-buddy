@@ -26,18 +26,23 @@ async function successHandler(data) {
   const issues = gh.getIssues(owner, repo);
 
   try {
-    const commentResult = await issues.createIssueComment(data.pullRequest, commentContent);
+    const commentResult = await issues.createIssueComment(
+      data.pullRequest,
+      commentContent,
+    );
     const commentId = commentResult.data.id;
 
-    const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${data.pullRequest}#issuecomment-${commentId}`;
+    const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${
+      data.pullRequest
+    }#issuecomment-${commentId}`;
     const result = Object.assign({}, data, { commentContent, pullRequestUrl });
 
     logger.log(`Comment created successfuly: ${pullRequestUrl}`, result);
 
     return result;
-  } catch (e) {
-    logger.error('Could not create comment');
-    throw e;
+  } catch (error) {
+    logger.error('Could not create comment', { data, error });
+    throw error;
   }
 }
 
