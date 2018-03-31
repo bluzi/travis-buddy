@@ -20,9 +20,14 @@ router.post('/', async (req, res) => {
 
   try {
     data = await utils.getData(payload, req.params);
-    logger.log('Received payload (and successfuly extracted data)', req.body);
-  } catch (e) {
-    logger.warn('Received payload (but failed to extract data)', req.body);
+    logger.log('Received payload (and successfuly extracted data)', {
+      payload,
+    });
+  } catch (error) {
+    logger.warn('Received payload (but failed to extract data)', {
+      payload,
+      error,
+    });
     throw e;
   }
 
