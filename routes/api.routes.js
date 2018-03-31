@@ -38,14 +38,18 @@ router.post('/', async (req, res) => {
     dropReason = 'Request dropped: No payload received';
   } else if (!payload.pull_request || !payload.pull_request_number) {
     dropReason = 'Request dropped: Not a pull request';
-  } else if (payload.state !== 'failed' && payload.state !== 'passed' && payload.state !== 'errored') {
+  } else if (
+    payload.state !== 'failed' &&
+    payload.state !== 'passed' &&
+    payload.state !== 'errored'
+  ) {
     dropReason = `Request dropped: Wrong state ('${payload.state}')`;
   }
 
   if (dropReason) {
     logger.warn(`Request dropped! Reason: '${dropReason}'`, data);
     return res
-      .status(500)
+      .status(200)
       .send({ err: true, reason: dropReason })
       .end();
   }
@@ -55,12 +59,11 @@ router.post('/', async (req, res) => {
     data,
   );
 
-
-  const handleRequest = ({
+  const handleRequest = {
     failed: failureHandler,
     passed: successHandler,
     errored: errorHandler,
-  })[payload.state];
+  }[payload.state];
 
   data.successTemplate = req.query.successTemplate;
   data.failureTemplate = req.query.failureTemplate;
