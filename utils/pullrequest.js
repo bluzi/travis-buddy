@@ -6,13 +6,13 @@ const detectIndent = require('detect-indent');
 const logger = require('./logger');
 
 const gh = new GitHub({
-  token: utils.getGithubAccessToken(),
+  token: utils.getGithubAccessToken()
 });
 
 const repo = {
   owner: '',
   name: '',
-  branch: 'master',
+  branch: 'master'
 };
 
 const pr = {
@@ -32,14 +32,16 @@ const pr = {
   If you have any questions, feel free to comment on this PR, and I'll answer. 
 
   Thanks,
-  TravisBuddy :green_heart:`,
+  TravisBuddy :green_heart:`
 };
 
 async function pullRequest() {
   const options = {
-    uri: `https://raw.githubusercontent.com/${repo.owner}/${repo.name}/${repo.branch}/.travis.yml`,
+    uri: `https://raw.githubusercontent.com/${repo.owner}/${repo.name}/${
+      repo.branch
+    }/.travis.yml`,
     method: 'GET',
-    resolveWithFullResponse: true,
+    resolveWithFullResponse: true
   };
 
   const res = await request(options);
@@ -65,13 +67,13 @@ async function pullRequest() {
       on_failure: 'always',
       on_start: 'never',
       on_cancel: 'never',
-      on_error: 'never',
+      on_error: 'never'
     };
   }
   if (typeof travisYaml.notifications.webhooks === 'string') {
     travisYaml.notifications.webhooks = {
       urls: [travisYaml.notifications.webhooks],
-      on_failure: 'always',
+      on_failure: 'always'
     };
   }
 
@@ -80,13 +82,19 @@ async function pullRequest() {
   await repository.fork();
 
   const fork = gh.getRepo('travisbuddy', repo.name);
-  await fork.writeFile(repo.branch, '.travis.yml', YAML.stringify(travisYaml, 100, indent.amount || 2), pr.commitMessage, {});
+  await fork.writeFile(
+    repo.branch,
+    '.travis.yml',
+    YAML.stringify(travisYaml, 100, indent.amount || 2),
+    pr.commitMessage,
+    {}
+  );
   await repository.createPullRequest({
     title: pr.title,
     body: pr.body,
     head: `travisbuddy:${repo.branch}`,
     base: repo.branch,
-    maintainer_can_modify: true,
+    maintainer_can_modify: true
   });
   logger.log('done');
 }

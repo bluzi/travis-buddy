@@ -10,7 +10,7 @@ async function successHandler(data) {
     repo,
     branch,
     author,
-    pullRequestAuthor,
+    pullRequestAuthor
   } = data;
 
   const commentContent = await messageFormatter.success(
@@ -19,17 +19,22 @@ async function successHandler(data) {
     repo,
     branch,
     author,
-    pullRequestAuthor,
+    pullRequestAuthor
   );
 
   logger.log('Attempting to create success comment in PR', data);
   const issues = gh.getIssues(owner, repo);
 
   try {
-    const commentResult = await issues.createIssueComment(data.pullRequest, commentContent);
+    const commentResult = await issues.createIssueComment(
+      data.pullRequest,
+      commentContent
+    );
     const commentId = commentResult.data.id;
 
-    const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${data.pullRequest}#issuecomment-${commentId}`;
+    const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${
+      data.pullRequest
+    }#issuecomment-${commentId}`;
     const result = Object.assign({}, data, { commentContent, pullRequestUrl });
 
     logger.log(`Comment created successfuly: ${pullRequestUrl}`, result);

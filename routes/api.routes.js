@@ -43,12 +43,18 @@ router.post('/', async (req, res) => {
 
   if (dropReason) {
     logger.warn(`Request dropped! Reason: '${dropReason}'`, data);
-    return res.status(500).send({ err: true, reason: dropReason }).end();
+    return res
+      .status(500)
+      .send({ err: true, reason: dropReason })
+      .end();
   }
 
-  logger.log(`Handling request for '${data.pullRequestTitle}' by '${data.author}'`, data);
+  logger.log(
+    `Handling request for '${data.pullRequestTitle}' by '${data.author}'`,
+    data
+  );
 
-  const handleRequest = (payload.state === 'failed') ? failure : success;
+  const handleRequest = payload.state === 'failed' ? failure : success;
 
   data.successTemplate = req.query.successTemplate;
   data.failureTemplate = req.query.failureTemplate;
@@ -58,7 +64,10 @@ router.post('/', async (req, res) => {
   logger.log('Finished', handlerResult);
   database.logComment(payload, handlerResult);
 
-  return res.status(200).send({ err: false }).end();
+  return res
+    .status(200)
+    .send({ err: false })
+    .end();
 });
 
 module.exports = router;

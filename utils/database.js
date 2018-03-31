@@ -24,7 +24,7 @@ if (!process.env.MONGODB_URI) {
     timeStarted: Number,
     environment: String,
     payload: Object,
-    data: Object,
+    data: Object
   });
   const CommentModel = mongoose.model('Comment', CommentSchema);
 
@@ -34,7 +34,7 @@ if (!process.env.MONGODB_URI) {
     environment: String,
     data: Object,
     error: String,
-    stack: String,
+    stack: String
   });
   const ErrorModel = mongoose.model('Error', ErrorSchema);
 
@@ -42,7 +42,7 @@ if (!process.env.MONGODB_URI) {
     timestamp: Number,
     timeStarted: Number,
     environment: String,
-    payload: Object,
+    payload: Object
   });
   const PayloadModel = mongoose.model('Payload', PayloadSchema);
 
@@ -52,33 +52,36 @@ if (!process.env.MONGODB_URI) {
 
   db.on('error', err => logger.error('MongoDB connection error', err));
 
-  logComment = (payload, data) => CommentModel.create({
-    timestamp: new Date().getTime(),
-    timeStarted,
-    environment,
-    payload,
-    data,
-  });
+  logComment = (payload, data) =>
+    CommentModel.create({
+      timestamp: new Date().getTime(),
+      timeStarted,
+      environment,
+      payload,
+      data
+    });
 
-  logPayload = payload => PayloadModel.create({
-    timestamp: new Date().getTime(),
-    timeStarted,
-    environment,
-    payload,
-  });
+  logPayload = payload =>
+    PayloadModel.create({
+      timestamp: new Date().getTime(),
+      timeStarted,
+      environment,
+      payload
+    });
 
-  logError = (data, error) => ErrorModel.create({
-    timestamp: new Date().getTime(),
-    timeStarted,
-    environment,
-    data,
-    error: error.message,
-    stack: error.stack,
-  });
+  logError = (data, error) =>
+    ErrorModel.create({
+      timestamp: new Date().getTime(),
+      timeStarted,
+      environment,
+      data,
+      error: error.message,
+      stack: error.stack
+    });
 }
 
 module.exports = {
   logError,
   logComment,
-  logPayload,
+  logPayload
 };

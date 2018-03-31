@@ -4,20 +4,21 @@ const ip = require('ip');
 const bunyan = require('bunyan');
 const PrettyStream = require('bunyan-prettystream');
 
-
 const env = process.env.environment || 'unknown';
 
 const prettyStdOut = new PrettyStream({
-  mode: 'dev',
+  mode: 'dev'
 });
 prettyStdOut.pipe(process.stdout);
 const bunyanLogger = bunyan.createLogger({
   name: env,
-  streams: [{
-    level: 'debug',
-    type: 'raw',
-    stream: prettyStdOut,
-  }],
+  streams: [
+    {
+      level: 'debug',
+      type: 'raw',
+      stream: prettyStdOut
+    }
+  ]
 });
 
 let logdnaLogger;
@@ -25,7 +26,7 @@ if (process.env.logdnaApiKey) {
   logdnaLogger = Logger.createLogger(process.env.logdnaApiKey, {
     env,
     hostname: os.hostname(),
-    ip: ip.address(),
+    ip: ip.address()
   });
 }
 
@@ -38,35 +39,31 @@ function formatMessage(message, meta) {
   return message;
 }
 
-module.exports.log =
-  (message, meta) => {
-    if (logdnaLogger) {
-      logdnaLogger.log(formatMessage(message, meta), { meta });
-    }
-    bunyanLogger.info(message);
-  };
+module.exports.log = (message, meta) => {
+  if (logdnaLogger) {
+    logdnaLogger.log(formatMessage(message, meta), { meta });
+  }
+  bunyanLogger.info(message);
+};
 
-module.exports.debug =
-  (message, meta) => {
-    if (logdnaLogger) {
-      logdnaLogger.debug(formatMessage(message, meta), { meta });
-    }
-    bunyanLogger.debug(message, meta || '');
-  };
+module.exports.debug = (message, meta) => {
+  if (logdnaLogger) {
+    logdnaLogger.debug(formatMessage(message, meta), { meta });
+  }
+  bunyanLogger.debug(message, meta || '');
+};
 
-module.exports.error =
-  (message, meta) => {
-    if (logdnaLogger) {
-      logdnaLogger.error(formatMessage(message, meta), { meta });
-    }
-    bunyanLogger.error(message, meta || '');
-  };
+module.exports.error = (message, meta) => {
+  if (logdnaLogger) {
+    logdnaLogger.error(formatMessage(message, meta), { meta });
+  }
+  bunyanLogger.error(message, meta || '');
+};
 
-module.exports.warn =
-  (message, meta) => {
-    if (logdnaLogger) {
-      logdnaLogger.warn(formatMessage(message, meta), { meta });
-    }
+module.exports.warn = (message, meta) => {
+  if (logdnaLogger) {
+    logdnaLogger.warn(formatMessage(message, meta), { meta });
+  }
 
-    bunyanLogger.warn(message);
-  };
+  bunyanLogger.warn(message);
+};
