@@ -7,7 +7,7 @@ const PrettyStream = require('bunyan-prettystream');
 const env = process.env.environment || 'unknown';
 
 const prettyStdOut = new PrettyStream({
-  mode: 'dev'
+  mode: 'dev',
 });
 prettyStdOut.pipe(process.stdout);
 const bunyanLogger = bunyan.createLogger({
@@ -16,9 +16,9 @@ const bunyanLogger = bunyan.createLogger({
     {
       level: 'debug',
       type: 'raw',
-      stream: prettyStdOut
-    }
-  ]
+      stream: prettyStdOut,
+    },
+  ],
 });
 
 let logdnaLogger;
@@ -26,7 +26,7 @@ if (process.env.logdnaApiKey) {
   logdnaLogger = Logger.createLogger(process.env.logdnaApiKey, {
     env,
     hostname: os.hostname(),
-    ip: ip.address()
+    ip: ip.address(),
   });
 }
 

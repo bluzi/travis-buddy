@@ -11,7 +11,7 @@ async function failureHandler(data) {
     branch,
     author,
     pullRequestAuthor,
-    failureTemplate
+    failureTemplate,
   } = data;
 
   const resolverPromises = data.jobs.map(async job => {
@@ -27,7 +27,7 @@ async function failureHandler(data) {
     branch,
     jobs,
     author,
-    pullRequestAuthor
+    pullRequestAuthor,
   );
 
   logger.log('Attempting to create failure comment in PR', data);
@@ -36,7 +36,7 @@ async function failureHandler(data) {
   try {
     const commentResult = await issues.createIssueComment(
       data.pullRequest,
-      commentContent
+      commentContent,
     );
     const commentId = commentResult.data.id;
 

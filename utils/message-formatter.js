@@ -7,7 +7,7 @@ async function getTemplate(owner, repo, branch, type) {
   const options = {
     uri: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/travis-buddy-${type}-template.md`,
     method: 'GET',
-    resolveWithFullResponse: true
+    resolveWithFullResponse: true,
   };
 
   const res = await request(options);
@@ -26,7 +26,7 @@ module.exports.failure = async (
   branch,
   jobs,
   author,
-  pullRequestAuthor
+  pullRequestAuthor,
 ) => {
   let templateContents;
   try {
@@ -35,18 +35,18 @@ module.exports.failure = async (
     logger.debug('Cannot find template file on GitHub', {
       owner,
       repo,
-      branch
+      branch,
     });
     templateContents = fs.readFileSync(
       `resources/messages/failure/${template || 'default'}.failure.template.md`,
-      'utf8'
+      'utf8',
     );
   }
 
   return mustache.render(templateContents, {
     jobs,
     author,
-    pullRequestAuthor
+    pullRequestAuthor,
   });
 };
 
@@ -56,7 +56,7 @@ module.exports.success = async (
   repo,
   branch,
   author,
-  pullRequestAuthor
+  pullRequestAuthor,
 ) => {
   let templateContents;
   try {
@@ -65,16 +65,16 @@ module.exports.success = async (
     logger.debug('Cannot find template file on GitHub', {
       owner,
       repo,
-      branch
+      branch,
     });
     templateContents = fs.readFileSync(
       `resources/messages/success/${template || 'default'}.success.template.md`,
-      'utf8'
+      'utf8',
     );
   }
 
   return mustache.render(templateContents, {
     author,
-    pullRequestAuthor
+    pullRequestAuthor,
   });
 };

@@ -9,8 +9,8 @@ const server = http.createServer(app);
 server.on('listening', () =>
   logger.log(
     `Server is running on ${ip.address()}:${port} (environment: ${process.env
-      .environment || 'unknown'})`
-  )
+      .environment || 'unknown'})`,
+  ),
 );
 
 server.on('error', error => logger.error('Server error', { error }));

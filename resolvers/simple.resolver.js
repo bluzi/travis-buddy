@@ -42,7 +42,7 @@ module.exports = async (job, log, data) => {
       if (scriptContents) {
         scriptLogs.push({
           command: script,
-          contents: scriptContents
+          contents: scriptContents,
         });
       }
     }

@@ -10,7 +10,7 @@ async function successHandler(data) {
     repo,
     branch,
     author,
-    pullRequestAuthor
+    pullRequestAuthor,
   } = data;
 
   const commentContent = await messageFormatter.success(
@@ -19,7 +19,7 @@ async function successHandler(data) {
     repo,
     branch,
     author,
-    pullRequestAuthor
+    pullRequestAuthor,
   );
 
   logger.log('Attempting to create success comment in PR', data);
@@ -28,7 +28,7 @@ async function successHandler(data) {
   try {
     const commentResult = await issues.createIssueComment(
       data.pullRequest,
-      commentContent
+      commentContent,
     );
     const commentId = commentResult.data.id;
 

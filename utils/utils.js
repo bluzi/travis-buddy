@@ -11,7 +11,7 @@ module.exports.requestLog = async (jobId, data, attempts = 0) => {
   const options = {
     uri: `https://api.travis-ci.org/jobs/${jobId}/log.txt?deansi=true`,
     method: 'GET',
-    resolveWithFullResponse: true
+    resolveWithFullResponse: true,
   };
   const res = await request(options);
   const log = res.body;
@@ -24,7 +24,7 @@ module.exports.requestLog = async (jobId, data, attempts = 0) => {
     if (lastLine.startsWith('Done.')) {
       logger.log(
         `Done found after ${attempts}/${MAX_ATTEMPTS_TO_GET_DONE} attempts.`,
-        data
+        data,
       );
     } else {
       logger.log('Max attempts achived, giving up done');
@@ -36,7 +36,7 @@ module.exports.requestLog = async (jobId, data, attempts = 0) => {
 
   logger.log(
     `Done not found, requesting new log... (${attempts}/${MAX_ATTEMPTS_TO_GET_DONE}`,
-    data
+    data,
   );
 
   return new Promise((resolve, reject) => {
@@ -65,13 +65,13 @@ module.exports.getData = async (payload, params) => ({
     (await module.exports.getPullRequestAuthor(
       payload.repository.owner_name,
       payload.repository.name,
-      payload.pull_request_number
+      payload.pull_request_number,
     )) || payload.author_name,
   state: payload.state,
   branch: payload.branch,
   travisType: payload.type,
   language: payload.config.language,
-  scripts: payload.config.script
+  scripts: payload.config.script,
 });
 
 module.exports.getPullRequestAuthor = async (owner, repo, pullRequestNumber) =>
@@ -89,16 +89,16 @@ module.exports.getPullRequestAuthor = async (owner, repo, pullRequestNumber) =>
           {
             owner,
             repo,
-            pullRequestNumber
-          }
-        )
+            pullRequestNumber,
+          },
+        ),
       );
   });
 
 module.exports.createJobObject = (job, index) => ({
   id: job.id,
   displayName: module.exports.getJobDisplayName(job, index),
-  script: job.config.script
+  script: job.config.script,
 });
 
 module.exports.getJobDisplayName = (job, index) => {
@@ -135,7 +135,7 @@ module.exports.getGithubAccessToken = () => {
 
 module.exports.getGithubApi = () =>
   new GitHub({
-    token: module.exports.getGithubAccessToken()
+    token: module.exports.getGithubAccessToken(),
   });
 
 module.exports.starRepo = (owner, repoName) =>
@@ -151,7 +151,7 @@ module.exports.starRepo = (owner, repoName) =>
           starError =>
             starError
               ? reject(new Error('Error starring repository'))
-              : resolve(true)
+              : resolve(true),
         );
       }
 

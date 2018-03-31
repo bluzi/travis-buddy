@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
 
   logger.log(
     `Handling request for '${data.pullRequestTitle}' by '${data.author}'`,
-    data
+    data,
   );
 
   const handleRequest = payload.state === 'failed' ? failure : success;
