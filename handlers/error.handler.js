@@ -31,9 +31,9 @@ async function errorHandler(data) {
 
     const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${data.pullRequest}#issuecomment-${commentId}`;
     logger.log(`Comment created successfuly: ${pullRequestUrl}`, Object.assign({}, data, { commentContent: contents }));
-  } catch (e) {
-    logger.error('Could not create comment', data);
-    logger.error(e.toString());
+  } catch (error) {
+    logger.error('Could not create comment', { data, error });
+    throw error;
   }
 
   try {

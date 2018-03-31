@@ -40,9 +40,9 @@ async function failureHandler(data) {
     logger.log(`Comment created successfuly: ${pullRequestUrl}`, result);
 
     return result;
-  } catch (e) {
-    logger.error('Could not create comment');
-    throw e;
+  } catch (error) {
+    logger.error('Could not create comment', { data, error });
+    throw error;
   }
 }
 
