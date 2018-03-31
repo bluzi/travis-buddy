@@ -1,5 +1,4 @@
 const express = require('express');
-const failure = require('../handlers/failure.handler');
 const failureHandler = require('../handlers/failure.handler');
 const successHandler = require('../handlers/success.handler');
 const errorHandler = require('../handlers/error.handler');
