@@ -4,7 +4,8 @@ const failureHandler = require('../handlers/failure.handler');
 const successHandler = require('../handlers/success.handler');
 const errorHandler = require('../handlers/error.handler');
 const utils = require('../utils/utils');
-const database = require('../utils/database./utils/database');
+const database = require('../utils/database');
+const logger = require('../utils/logger');
 
 const router = express.Router();
 
