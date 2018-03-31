@@ -1,6 +1,7 @@
 const express = require('express');
-const failure = require('../handlers/failure.handler');
-const success = require('../handlers/success.handler');
+const failureHandler = require('../handlers/failure.handler');
+const successHandler = require('../handlers/success.handler');
+const errorHandler = require('../handlers/error.handler');
 const logger = require('../utils/logger');
 const utils = require('../utils/utils');
 
@@ -21,7 +22,7 @@ router.post('/', async (req, res) => {
       dropReason = 'Request dropped: No payload received';
     } else if (!payload.pull_request || !payload.pull_request_number) {
       dropReason = 'Request dropped: Not a pull request';
-    } else if (payload.state !== 'failed' && payload.state !== 'passed') {
+    } else if (payload.state !== 'failed' && payload.state !== 'passed' && payload.state !== 'errored') {
       dropReason = `Request dropped: Wrong state ('${payload.state}')`;
     }
 
@@ -32,10 +33,15 @@ router.post('/', async (req, res) => {
 
     logger.log(`Handling request for '${data.pullRequestTitle}' by '${data.author}'`, data);
 
-    const handleRequest = (payload.state === 'failed') ? failure : success;
+    const handleRequest = ({
+      failed: failureHandler,
+      passed: successHandler,
+      errored: errorHandler,
+    })[payload.state];
 
     data.successTemplate = req.query.successTemplate;
     data.failureTemplate = req.query.failureTemplate;
+    data.errorTemplate = req.query.errorTemplate;
 
     try {
       await handleRequest(data);

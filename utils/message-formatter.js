@@ -52,3 +52,18 @@ module.exports.success = async (template, owner, repo, branch, author, pullReque
     pullRequestAuthor,
   });
 };
+
+module.exports.error = async (template, owner, repo, branch, author, pullRequestAuthor) => {
+  let templateContents;
+  try {
+    templateContents = await getTemplate(owner, repo, branch, 'error');
+  } catch (e) {
+    logger.debug('Cannot find template file on GitHub', { owner, repo, branch });
+    templateContents = fs.readFileSync(`resources/messages/error/${template || 'default'}.error.template.md`, 'utf8');
+  }
+
+  return mustache.render(templateContents, {
+    author,
+    pullRequestAuthor,
+  });
+};
