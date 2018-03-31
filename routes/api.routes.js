@@ -49,7 +49,11 @@ router.post('/', async (req, res) => {
       payload,
       error,
     });
-    throw e;
+
+    return res
+      .status(200)
+      .send({ err: true, reason: 'Failed to extract data' })
+      .end();
   }
 
   try {
