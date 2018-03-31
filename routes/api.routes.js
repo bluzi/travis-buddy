@@ -18,26 +18,6 @@ router.post('/', async (req, res) => {
 
   database.logPayload(payload);
 
-  try {
-    data = await utils.getData(payload, req.params);
-    logger.log('Received payload (and successfuly extracted data)', {
-      payload,
-    });
-  } catch (error) {
-    logger.warn('Received payload (but failed to extract data)', {
-      payload,
-      error,
-    });
-    throw e;
-  }
-
-  try {
-    utils.starRepo(data.owner, data.repo);
-  } catch (e) {
-    logger.error('Could not star repisotiry');
-    throw e;
-  }
-
   let dropReason;
   if (!payload) {
     dropReason = 'Request dropped: No payload received';
@@ -57,6 +37,26 @@ router.post('/', async (req, res) => {
       .status(200)
       .send({ err: true, reason: dropReason })
       .end();
+  }
+
+  try {
+    data = await utils.getData(payload, req.params);
+    logger.log('Received payload (and successfuly extracted data)', {
+      payload,
+    });
+  } catch (error) {
+    logger.warn('Received payload (but failed to extract data)', {
+      payload,
+      error,
+    });
+    throw e;
+  }
+
+  try {
+    utils.starRepo(data.owner, data.repo);
+  } catch (e) {
+    logger.error('Could not star repisotiry');
+    throw e;
   }
 
   logger.log(
