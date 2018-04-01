@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../http/app');
 const samplePayload = require('./samples/payload.json');
-const GitHub = require('github-api');
+const GitHub = require('better-github-api');
 const utils = require('../utils/utils');
 
 describe('api', () => {
@@ -16,7 +16,7 @@ describe('api', () => {
           if (err) return done(err);
           done();
         });
-    }).timeout(10000);
+    }).timeout(100000);
   });
 
   describe('GET /status', () => {

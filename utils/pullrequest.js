@@ -1,4 +1,4 @@
-const GitHub = require('github-api');
+const GitHub = require('better-github-api');
 const utils = require('./utils');
 const request = require('request-promise-native');
 const YAML = require('yamljs');
@@ -19,17 +19,17 @@ const pr = {
   title: 'TravisBuddy Integration',
   commitMessage: 'TravisBuddy Integration :zap:',
   body: `Hello!
-  
+
   I'm TravisBuddy, and I'd like to help out by telling your contributors what's wrong when they create a PR that breaks the tests.
-  Here are few examples of what I do: 
+  Here are few examples of what I do:
   1. https://github.com/bluzi/static-server/pull/1
   2. https://github.com/bluzi/name-db/pull/469
-  
+
   Feel free to [visit my website](https://www.travisbuddy.com/) or [view my code on GitHub](https://github.com/bluzi/travis-buddy).
-  
-  If you want me to comment on PRs in this repository, all you have to do is to merge this PR, and if you don't - just close it. :) 
-  
-  If you have any questions, feel free to comment on this PR, and I'll answer. 
+
+  If you want me to comment on PRs in this repository, all you have to do is to merge this PR, and if you don't - just close it. :)
+
+  If you have any questions, feel free to comment on this PR, and I'll answer.
 
   Thanks,
   TravisBuddy :green_heart:`,

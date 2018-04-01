@@ -77,6 +77,7 @@ router.post('/', async (req, res) => {
   data.successTemplate = req.query.successTemplate;
   data.failureTemplate = req.query.failureTemplate;
   data.errorTemplate = req.query.errorTemplate;
+  data.insertMode = req.query.insertMode || 'append';
 
   const handlerResult = await handleRequest(data);
 

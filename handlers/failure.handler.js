@@ -4,7 +4,6 @@ const resolver = require('../resolvers/simple.resolver');
 const messageFormatter = require('../utils/message-formatter');
 
 async function failureHandler(data) {
-  const gh = utils.getGithubApi();
   const {
     owner,
     repo,
@@ -36,14 +35,15 @@ async function failureHandler(data) {
   );
 
   logger.log('Attempting to create failure comment in PR', data);
-  const issues = gh.getIssues(data.owner, data.repo);
 
   try {
-    const commentResult = await issues.createIssueComment(
+    const commentId = await utils.createComment(
+      owner,
+      repo,
       data.pullRequest,
       commentContent,
+      data.insertMode,
     );
-    const commentId = commentResult.data.id;
 
     const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${
       data.pullRequest
