@@ -3,7 +3,6 @@ const logger = require('../utils/logger');
 const messageFormatter = require('../utils/message-formatter');
 
 async function successHandler(data) {
-  const gh = utils.getGithubApi();
   const {
     successTemplate,
     owner,
@@ -23,14 +22,15 @@ async function successHandler(data) {
   );
 
   logger.log('Attempting to create success comment in PR', data);
-  const issues = gh.getIssues(owner, repo);
 
   try {
-    const commentResult = await issues.createIssueComment(
+    const commentId = await utils.createComment(
+      owner,
+      repo,
       data.pullRequest,
       commentContent,
+      data.insertMode,
     );
-    const commentId = commentResult.data.id;
 
     const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${
       data.pullRequest

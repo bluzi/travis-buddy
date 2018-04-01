@@ -2,7 +2,7 @@ const logger = require('./logger');
 const request = require('request-promise-native');
 const stripAnsi = require('strip-ansi');
 const ordinal = require('ordinal');
-const GitHub = require('github-api');
+const GitHub = require('better-github-api');
 
 const MAX_ATTEMPTS_TO_GET_DONE = process.env.maxAttemptsToGetDone || 10;
 logger.log(`Max attempts to get done is: ${MAX_ATTEMPTS_TO_GET_DONE}`);
@@ -158,3 +158,62 @@ module.exports.starRepo = (owner, repoName) =>
       return resolve(false);
     });
   });
+
+module.exports.createComment = async (
+  owner,
+  repo,
+  pullRequestNumber,
+  contents,
+  insertMode,
+) => {
+  const gh = module.exports.getGithubApi();
+  const issues = gh.getIssues(owner, repo);
+
+  if (insertMode === 'update') {
+    const comments = await module.exports.getAllComments(
+      owner,
+      repo,
+      pullRequestNumber,
+    );
+    const travisBuddysComment = comments.find(
+      comment => comment.user.login === module.exports.getUserName(),
+    );
+
+    if (travisBuddysComment) {
+      logger.log(`Editing comment ${travisBuddysComment.id}`);
+      await issues.editIssueComment(travisBuddysComment.id, contents);
+
+      return travisBuddysComment.id;
+    }
+  }
+
+  const commentResult = await issues.createIssueComment(
+    pullRequestNumber,
+    contents,
+  );
+
+  return commentResult ? commentResult.data.id : false;
+};
+
+module.exports.getUserName = () =>
+  process.env.GITHUB_USERNAME || 'Chomusuke12345';
+
+module.exports.getAllComments = async (owner, repo, pullRequestNumber) => {
+  const gh = module.exports.getGithubApi();
+  const comments = [];
+  let page = 1;
+  const issues = gh.getIssues(owner, repo);
+  let bulk;
+
+  do {
+    bulk = await issues.listIssueComments(pullRequestNumber, {
+      page,
+    });
+
+    comments.push(...bulk.data);
+
+    page += 1;
+  } while (bulk.data.length > 0);
+
+  return comments;
+};

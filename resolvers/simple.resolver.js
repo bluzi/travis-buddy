@@ -45,10 +45,16 @@ module.exports = async (job, log, data) => {
       scriptContents = scriptContents.trim();
 
       if (scriptContents) {
-        scriptLogs.push({
-          command: script,
-          contents: scriptContents,
-        });
+        const isDuplicate = scriptLogs.some(
+          scriptLog => scriptLog.contents === scriptContents,
+        );
+
+        if (!isDuplicate) {
+          scriptLogs.push({
+            command: script,
+            contents: scriptContents,
+          });
+        }
       }
     }
 

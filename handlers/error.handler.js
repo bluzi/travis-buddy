@@ -3,7 +3,6 @@ const logger = require('../utils/logger');
 const messageFormatter = require('../utils/message-formatter');
 
 async function errorHandler(data) {
-  const gh = utils.getGithubApi();
   const {
     errorTemplate,
     owner,
@@ -13,7 +12,7 @@ async function errorHandler(data) {
     pullRequestAuthor,
   } = data;
 
-  const contents = await messageFormatter.error(
+  const commentContent = await messageFormatter.error(
     errorTemplate,
     owner,
     repo,
@@ -23,14 +22,23 @@ async function errorHandler(data) {
   );
 
   logger.log('Attempting to create error comment in PR', data);
-  const issues = gh.getIssues(owner, repo);
 
   try {
-    const commentResult = await issues.createIssueComment(data.pullRequest, contents);
-    const commentId = commentResult.data.id;
+    const commentId = await utils.createComment(
+      owner,
+      repo,
+      data.pullRequest,
+      commentContent,
+      data.insertMode,
+    );
 
-    const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${data.pullRequest}#issuecomment-${commentId}`;
-    logger.log(`Comment created successfuly: ${pullRequestUrl}`, Object.assign({}, data, { commentContent: contents }));
+    const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${
+      data.pullRequest
+    }#issuecomment-${commentId}`;
+    logger.log(
+      `Comment created successfuly: ${pullRequestUrl}`,
+      Object.assign({}, data, { commentContent }),
+    );
   } catch (error) {
     logger.error('Could not create comment', { data, error });
     throw error;
