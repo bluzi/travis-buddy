@@ -21,27 +21,28 @@ async function failureHandler(data) {
 
   let jobs = await Promise.all(resolverPromises);
 
-  debugger;
-  for (const key in jobs) {
-    const job = jobs[key];
-    const duplicates = jobs.filter(
-      otherJob =>
-        !otherJob.scripts.some(
-          (script, index) =>
-            stringSimilarity.compareTwoStrings(
-              script.contents.replace(/[0-9]/g, ''),
-              job.scripts[index].contents.replace(/[0-9]/g, ''),
-            ) < 0.9,
-        ),
-    );
-    const isDuplicate = duplicates.length > 1;
+  if (jobs.length > 1) {
+    Object.keys(jobs).forEach(key => {
+      const job = jobs[key];
+      const duplicates = jobs.filter(
+        otherJob =>
+          !otherJob.scripts.some(
+            (script, index) =>
+              stringSimilarity.compareTwoStrings(
+                script.contents.replace(/[0-9]/g, ''),
+                job.scripts[index].contents.replace(/[0-9]/g, ''),
+              ) < 0.9,
+          ),
+      );
+      const isDuplicate = duplicates.length > 1;
 
-    if (isDuplicate) {
-      delete jobs[key];
-    }
+      if (isDuplicate) {
+        delete jobs[key];
+      }
+    });
+
+    jobs = jobs.filter(job => job);
   }
-
-  jobs = jobs.filter(job => job);
 
   if (!jobs || jobs.length === 0) {
     throw new Error('Could not resolve build log!');
