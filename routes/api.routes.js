@@ -13,6 +13,10 @@ router.get('/status', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  if (process.env.delay && Number(process.env.delay)) {
+    await utils.wait(Number(process.env.delay));
+  }
+
   const payload = JSON.parse(req.body.payload);
   let data;
 

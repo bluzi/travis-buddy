@@ -217,3 +217,5 @@ module.exports.getAllComments = async (owner, repo, pullRequestNumber) => {
 
   return comments;
 };
+
+module.exports.wait = ms => new Promise(resolve => setTimeout(resolve, ms));
