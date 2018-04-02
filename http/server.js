@@ -13,6 +13,8 @@ server.on('listening', () =>
   ),
 );
 
+throw new Error("First error!");
+
 server.on('error', error => logger.error('Server error', { error }));
 
 server.listen(port);
