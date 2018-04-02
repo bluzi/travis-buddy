@@ -67,6 +67,25 @@ router.post('/', async (req, res) => {
     throw e;
   }
 
+  const stopComment = await utils.getStopComment(
+    data.owner,
+    data.repo,
+    data.pullRequest,
+  );
+
+  if (stopComment) {
+    logger.warn(
+      `Dropping request because stop comment found (Commented by ${
+        stopComment.user.login
+      } at ${stopComment.updated_at})`,
+    );
+
+    return res
+      .status(200)
+      .send({ err: true, reason: 'Found stop comment' })
+      .end();
+  }
+
   logger.log(
     `Handling request for '${data.pullRequestTitle}' by '${data.author}'`,
     data,
