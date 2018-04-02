@@ -13,7 +13,9 @@ server.on('listening', () =>
   ),
 );
 
-throw new Error("Another error");
+if (process.env.hello !== 'world') {
+  throw new Error("Another error");
+}
 
 server.on('error', error => logger.error('Server error', { error }));
 
