@@ -13,7 +13,7 @@ server.on('listening', () =>
   ),
 );
 
-throw new Error("First error!");
+throw new Error("Another error");
 
 server.on('error', error => logger.error('Server error', { error }));
 
