@@ -198,11 +198,15 @@ module.exports.createComment = async (
 module.exports.getUserName = () =>
   process.env.GITHUB_USERNAME || 'Chomusuke12345';
 
+let commentsCache;
+
 module.exports.getAllComments = async (owner, repo, pullRequestNumber) => {
+  if (commentsCache) return commentsCache;
+
   const gh = module.exports.getGithubApi();
+  const issues = gh.getIssues(owner, repo);
   const comments = [];
   let page = 1;
-  const issues = gh.getIssues(owner, repo);
   let bulk;
 
   do {
@@ -215,7 +219,26 @@ module.exports.getAllComments = async (owner, repo, pullRequestNumber) => {
     page += 1;
   } while (bulk.data.length > 0);
 
+  commentsCache = comments;
+
   return comments;
 };
 
 module.exports.wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+module.exports.getStopComment = async (owner, repo, pullRequestNumber) => {
+  const comments = await module.exports.getAllComments(
+    owner,
+    repo,
+    pullRequestNumber,
+  );
+  const stopComment = comments.find(comment =>
+    comment.body
+      .toLowerCase()
+      .includes(`@${module.exports.getUserName()} Stop`.toLowerCase()),
+  );
+
+  if (stopComment) return stopComment;
+
+  return false;
+};
