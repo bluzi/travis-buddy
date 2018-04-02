@@ -8,6 +8,7 @@ const path = require('path');
 const apiRoutes = require('../routes/api.routes');
 const testRoutes = require('../routes/test.routes');
 const websiteRoutes = require('../routes/website.routes');
+const githubRoutes = require('../routes/github-app.routes');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use('/public', express.static('public'));
 app.use('/', apiRoutes);
 app.use('/test', testRoutes);
 app.use('/', websiteRoutes);
+app.use('/', githubRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res) => {
