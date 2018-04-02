@@ -1,2 +1,2 @@
 Hey @{{pullRequestAuthor}},  
-Your changes looks good to me!
+Your changes look good to me!
