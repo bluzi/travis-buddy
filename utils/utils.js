@@ -175,6 +175,18 @@ module.exports.createComment = async (
       repo,
       pullRequestNumber,
     );
+
+    const authors = comments
+      .map(comment => comment.user.login)
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .join(', ');
+
+    logger.debug(
+      `Found ${
+        comments.length
+      } comments, from those the following authors: ${authors}`,
+    );
+
     const travisBuddysComment = comments.find(
       comment => comment.user.login === module.exports.getUserName(),
     );
