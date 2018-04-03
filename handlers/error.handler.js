@@ -30,6 +30,7 @@ async function errorHandler(data) {
       data.pullRequest,
       commentContent,
       data.insertMode,
+      data.comments,
     );
 
     const pullRequestUrl = `https://github.com/${owner}/${repo}/pull/${
