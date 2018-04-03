@@ -3,6 +3,7 @@ const os = require('os');
 const ip = require('ip');
 const bunyan = require('bunyan');
 const PrettyStream = require('bunyan-prettystream');
+const logzIo = require('logzio-nodejs');
 
 const env = process.env.environment || 'unknown';
 
@@ -20,6 +21,15 @@ const bunyanLogger = bunyan.createLogger({
     },
   ],
 });
+
+let logzIoLogger;
+
+if (process.env.logzIoAccessToken) {
+  logzIoLogger = logzIo.createLogger({
+    token: process.env.logzIoAccessToken,
+    type: 'api',
+  });
+}
 
 let logdnaLogger;
 if (process.env.logdnaApiKey) {
@@ -43,6 +53,15 @@ module.exports.log = (message, meta) => {
   if (logdnaLogger) {
     logdnaLogger.log(formatMessage(message, meta), { meta });
   }
+
+  if (logzIoLogger) {
+    logzIoLogger.log({
+      type: 'log',
+      message,
+      ...meta,
+    });
+  }
+
   bunyanLogger.info(message);
 };
 
@@ -50,6 +69,15 @@ module.exports.debug = (message, meta) => {
   if (logdnaLogger) {
     logdnaLogger.debug(formatMessage(message, meta), { meta });
   }
+
+  if (logzIoLogger) {
+    logzIoLogger.log({
+      type: 'debug',
+      message,
+      ...meta,
+    });
+  }
+
   bunyanLogger.debug(message, meta || '');
 };
 
@@ -57,12 +85,29 @@ module.exports.error = (message, meta) => {
   if (logdnaLogger) {
     logdnaLogger.error(formatMessage(message, meta), { meta });
   }
+
+  if (logzIoLogger) {
+    logzIoLogger.log({
+      type: 'error',
+      message,
+      ...meta,
+    });
+  }
+
   bunyanLogger.error(message, meta || '');
 };
 
 module.exports.warn = (message, meta) => {
   if (logdnaLogger) {
     logdnaLogger.warn(formatMessage(message, meta), { meta });
+  }
+
+  if (logzIoLogger) {
+    logzIoLogger.log({
+      type: 'warning',
+      message,
+      ...meta,
+    });
   }
 
   bunyanLogger.warn(message);
