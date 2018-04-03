@@ -51,7 +51,7 @@ function formatMessage(message, meta) {
 
 module.exports.log = (message, meta) => {
   if (logdnaLogger) {
-    logdnaLogger.log(formatMessage(message, meta), { meta });
+    logdnaLogger.log(formatMessage(message, meta));
   }
 
   if (logzIoLogger) {

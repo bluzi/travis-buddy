@@ -67,11 +67,19 @@ router.post('/', async (req, res) => {
     throw e;
   }
 
-  const stopComment = await utils.getStopComment(
-    data.owner,
-    data.repo,
-    data.pullRequest,
+  const authors = data.comments
+    .map(comment => comment.user.login)
+    .filter((value, index, self) => self.indexOf(value) === index)
+    .join(', ');
+
+  logger.log(
+    `Found ${
+      data.comments.length
+    } comments, from those the following authors: ${authors}`,
+    data,
   );
+
+  const stopComment = await utils.getStopComment(data.comments);
 
   if (stopComment) {
     logger.warn(
