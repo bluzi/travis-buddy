@@ -24,3 +24,6 @@ Some repositories execute more than one script in TravisCI. From now on, @Travis
 ## Feedback
 If you have any feedback, if @TravisBuddy is making you troubles, if you have an idea of how we can improve the service, please create an issue or contact me via eliran013@gmail.com.
  
+<p align="center">
+  <img src="https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/header.jpg">
+</p>
