@@ -49,66 +49,35 @@ function formatMessage(message, meta) {
   return message;
 }
 
-module.exports.log = (message, meta) => {
-  if (logdnaLogger) {
-    logdnaLogger.log(formatMessage(message, meta));
-  }
+function commonLogger(logdnaType, bunyanType) {
+  return (message, meta) => {
+    if (bunyanType !== undefined && logdnaType !== undefined) {
+      if (logdnaLogger) {
+        logdnaLogger[logdnaType](formatMessage(message, meta), { meta });
+      }
+      const type = logdnaType === 'warn' ? 'warning' : logdnaType;
+      if (logzIoLogger) {
+        logzIoLogger.log({
+          type: String(type),
+          message,
+          ...meta,
+        });
+      }
 
-  if (logzIoLogger) {
-    logzIoLogger.log({
-      type: 'log',
-      message,
-      ...meta,
-    });
-  }
+      bunyanLogger[bunyanType](message, meta || '');
+    }
+  };
+}
+const [log, warn, error, debug] = [
+  commonLogger('log', 'info'),
+  commonLogger('warn', 'warn'),
+  commonLogger('error', 'error'),
+  commonLogger('debug', 'debug'),
+];
 
-  bunyanLogger.info(message);
-};
-
-module.exports.debug = (message, meta) => {
-  if (logdnaLogger) {
-    logdnaLogger.debug(formatMessage(message, meta), { meta });
-  }
-
-  if (logzIoLogger) {
-    logzIoLogger.log({
-      type: 'debug',
-      message,
-      ...meta,
-    });
-  }
-
-  bunyanLogger.debug(message, meta || '');
-};
-
-module.exports.error = (message, meta) => {
-  if (logdnaLogger) {
-    logdnaLogger.error(formatMessage(message, meta), { meta });
-  }
-
-  if (logzIoLogger) {
-    logzIoLogger.log({
-      type: 'error',
-      message,
-      ...meta,
-    });
-  }
-
-  bunyanLogger.error(message, meta || '');
-};
-
-module.exports.warn = (message, meta) => {
-  if (logdnaLogger) {
-    logdnaLogger.warn(formatMessage(message, meta), { meta });
-  }
-
-  if (logzIoLogger) {
-    logzIoLogger.log({
-      type: 'warning',
-      message,
-      ...meta,
-    });
-  }
-
-  bunyanLogger.warn(message);
+module.exports = {
+  log,
+  warn,
+  error,
+  debug,
 };
