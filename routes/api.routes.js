@@ -5,6 +5,7 @@ const errorHandler = require('../handlers/error.handler');
 const utils = require('../utils/utils');
 const database = require('../utils/database');
 const logger = require('../utils/logger');
+const configuration = require('../utils/configuration');
 
 const router = express.Router();
 
@@ -105,10 +106,12 @@ router.post('/', async (req, res) => {
     errored: errorHandler,
   }[payload.state];
 
-  data.successTemplate = req.query.successTemplate;
-  data.failureTemplate = req.query.failureTemplate;
+  const config = await configuration(data.owner, data.repo);
+
+  data.successTemplate = config.templates.success || req.query.successTemplate;
+  data.failureTemplate = config.templates.failure || req.query.failureTemplate;
   data.errorTemplate = req.query.errorTemplate;
-  data.insertMode = req.query.insertMode || 'append';
+  data.insertMode = config.insertMode || req.query.insertMode || 'append';
 
   const handlerResult = await handleRequest(data);
 

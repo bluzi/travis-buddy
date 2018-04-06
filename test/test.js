@@ -3,6 +3,8 @@ const app = require('../http/app');
 const samplePayload = require('./samples/payload.json');
 const GitHub = require('better-github-api');
 const utils = require('../utils/utils');
+const configuration = require('../utils/configuration');
+const assert = require('assert');
 
 describe('api', () => {
   describe('POST /', () => {
@@ -95,6 +97,16 @@ describe('site', () => {
           if (err) return done(err);
           done();
         });
+    });
+  });
+});
+
+describe('TravisBuddy configuration', () => {
+  it('should parse successfully', done => {
+    configuration('bluzi/travis-buddy').then(config => {
+      assert.notEqual(config, undefined);
+      assert.notEqual(config.templates, undefined);
+      done();
     });
   });
 });
