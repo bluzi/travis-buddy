@@ -35,7 +35,7 @@ router.post('/', async (req, res) =>
     .pipe('format message', formatMessage)
     .pipe('publish', publish)
     .pipe('finish', finish)
-    .afterPipe((context, pipe) => logger.log(`Pipe ${pipe} finished`))
+    .afterPipe((context, pipe) => logger.log(`Pipe ${pipe} finished`, context))
     .resolve()
     .then(() => ({
       ok: true,
