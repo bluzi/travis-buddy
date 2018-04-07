@@ -5,13 +5,9 @@ const getJobCommands = (context, job) => {
   if (!context.scripts) {
     if (job.script) {
       allScripts = [job.script];
+    } else if (!defaultScripts[context.language]) {
+      throw new Error(`Deafult script was not found for '${context.language}'`);
     } else {
-      if (!defaultScripts[context.language]) {
-        throw new Error(
-          `Deafult script was not found for '${context.language}'`,
-        );
-      }
-
       allScripts = [defaultScripts[context.language]];
     }
   } else if (Array.isArray(context.scripts)) {

@@ -39,15 +39,12 @@ const getLog = async (context, job) => {
     const log = await requestLog(job.id);
     const isValid = validateLog(log);
 
-    if (isValid || attempts >= context.meta.maxAttemptsToGetDone) {
-      if (isValid) {
-        doneFound(attempts, context.meta.maxAttemptsToGetDone);
-      } else {
-        logger.log('Max attempts achived, giving up done');
-      }
-
-      const cleanLog = stripAnsi(log);
-      job.log = cleanLog;
+    if (isValid) {
+      doneFound(attempts, context.meta.maxAttemptsToGetDone);
+      job.log = stripAnsi(log);
+    } else if (attempts >= context.meta.maxAttemptsToGetDone) {
+      logger.log('Max attempts achived, giving up done');
+      job.log = stripAnsi(log);
     } else {
       doneNotFound(attempts, context.meta.maxAttemptsToGetDone);
 
