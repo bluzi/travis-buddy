@@ -1,0 +1,5 @@
+travisBuddy:
+  templates:
+    success: default
+    failure: default
+  insertMode: append

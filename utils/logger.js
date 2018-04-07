@@ -1,4 +1,4 @@
-const Logger = require('logdna');
+const logdna = require('logdna');
 const os = require('os');
 const ip = require('ip');
 const bunyan = require('bunyan');
@@ -33,7 +33,7 @@ if (process.env.logzIoAccessToken) {
 
 let logdnaLogger;
 if (process.env.logdnaApiKey) {
-  logdnaLogger = Logger.createLogger(process.env.logdnaApiKey, {
+  logdnaLogger = logdna.createLogger(process.env.logdnaApiKey, {
     env,
     hostname: os.hostname(),
     ip: ip.address(),
@@ -49,30 +49,39 @@ function formatMessage(message, meta) {
   return message;
 }
 
-function commonLogger(logdnaType, bunyanType) {
+function commonLogger(options) {
   return (message, meta) => {
-    if (bunyanType !== undefined && logdnaType !== undefined) {
-      if (logdnaLogger) {
-        logdnaLogger[logdnaType](formatMessage(message, meta), { meta });
-      }
-      const type = logdnaType === 'warn' ? 'warning' : logdnaType;
-      if (logzIoLogger) {
-        logzIoLogger.log({
-          type: String(type),
-          message,
-          ...meta,
-        });
-      }
-
-      bunyanLogger[bunyanType](message, meta || '');
-    }
+    if (logdnaLogger && options.logdna)
+      logdnaLogger[options.logdna](formatMessage(message, meta), { meta });
+    if (logzIoLogger && options.logzIo)
+      logzIoLogger.log({ type: String(options.logzIo), message, ...meta });
+    if (options.bunyan) bunyanLogger[options.bunyan](message);
   };
 }
 const [log, warn, error, debug] = [
-  commonLogger('log', 'info'),
-  commonLogger('warn', 'warn'),
-  commonLogger('error', 'error'),
-  commonLogger('debug', 'debug'),
+  commonLogger({
+    logdna: 'log',
+    bunyan: 'info',
+    logzIo: 'log',
+  }),
+
+  commonLogger({
+    logdna: 'warn',
+    bunyan: 'warn',
+    logzIo: 'warning',
+  }),
+
+  commonLogger({
+    logdna: 'error',
+    bunyan: 'error',
+    logzIo: 'error',
+  }),
+
+  commonLogger({
+    logdna: 'debug',
+    bunyan: 'debug',
+    logzIo: 'debug',
+  }),
 ];
 
 module.exports = {
