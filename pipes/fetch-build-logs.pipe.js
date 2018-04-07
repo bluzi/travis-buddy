@@ -24,43 +24,41 @@ const validateLog = log => {
   return lastLine.startsWith('Done.');
 };
 
-const fetchBuildsLogs = async context => {
-  await Promise.all(
-    context.jobs.map(async job => {
-      let attempts = 0;
+const doneFound = (attempts, maxAttempts) =>
+  logger.log(`Done found after ${attempts}/${maxAttempts} attempts.`);
 
-      while (!job.log) {
-        const log = await requestLog(job.id);
-        const isValid = validateLog(log);
-
-        if (isValid || attempts >= context.meta.maxAttemptsToGetDone) {
-          if (isValid) {
-            logger.log(
-              `Done found after ${attempts}/${
-                context.meta.maxAttemptsToGetDone
-              } attempts.`,
-              context,
-            );
-          } else {
-            logger.log('Max attempts achived, giving up done');
-          }
-
-          const cleanLog = stripAnsi(log);
-          job.log = cleanLog;
-        } else {
-          logger.log(
-            `Done not found, requesting new log... (${attempts}/${
-              context.meta.maxAttemptsToGetDone
-            }`,
-            context,
-          );
-
-          attempts += 1;
-          await (ms => new Promise(resolve => setTimeout(resolve, ms)))(1000);
-        }
-      }
-    }),
+const doneNotFound = (attempts, maxAttempts) =>
+  logger.log(
+    `Done not found, requesting new log... (${attempts}/${maxAttempts}`,
   );
+
+const getLog = async (context, job) => {
+  let attempts = 0;
+
+  while (!job.log) {
+    const log = await requestLog(job.id);
+    const isValid = validateLog(log);
+
+    if (isValid || attempts >= context.meta.maxAttemptsToGetDone) {
+      if (isValid) {
+        doneFound(attempts, context.meta.maxAttemptsToGetDone);
+      } else {
+        logger.log('Max attempts achived, giving up done');
+      }
+
+      const cleanLog = stripAnsi(log);
+      job.log = cleanLog;
+    } else {
+      doneNotFound(attempts, context.meta.maxAttemptsToGetDone);
+
+      attempts += 1;
+      await (ms => new Promise(resolve => setTimeout(resolve, ms)))(1000);
+    }
+  }
+};
+
+const fetchBuildsLogs = async context => {
+  await Promise.all(context.jobs.map(job => getLog(context, job)));
 
   return context;
 };
