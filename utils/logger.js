@@ -1,4 +1,4 @@
-const Logger = require('logdna');
+const logdna = require('logdna');
 const os = require('os');
 const ip = require('ip');
 const bunyan = require('bunyan');
@@ -33,7 +33,7 @@ if (process.env.logzIoAccessToken) {
 
 let logdnaLogger;
 if (process.env.logdnaApiKey) {
-  logdnaLogger = Logger.createLogger(process.env.logdnaApiKey, {
+  logdnaLogger = logdna.createLogger(process.env.logdnaApiKey, {
     env,
     hostname: os.hostname(),
     ip: ip.address(),
@@ -49,13 +49,13 @@ function formatMessage(message, meta) {
   return message;
 }
 
-function commonLogger({ logdna, bunyan, logzIo }) {
+function commonLogger(options) {
   return (message, meta) => {
-    if (logdnaLogger && logdna)
-      logdnaLogger[logdna](formatMessage(message, meta), { meta });
-    if (logzIoLogger && logzIo)
-      logzIoLogger.log({ type: String(logzIo), message, ...meta });
-    if (bunyan) bunyanLogger[bunyan](message);
+    if (logdnaLogger && options.logdna)
+      logdnaLogger[options.logdna](formatMessage(message, meta), { meta });
+    if (logzIoLogger && options.logzIo)
+      logzIoLogger.log({ type: String(options.logzIo), message, ...meta });
+    if (options.bunyan) bunyanLogger[options.bunyan](message);
   };
 }
 const [log, warn, error, debug] = [

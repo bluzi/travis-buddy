@@ -12,8 +12,8 @@ describe('api', () => {
       request(app)
         .post('/')
         .send({ payload: JSON.stringify(samplePayload) })
-        .expect(200)
-        .expect({ err: false })
+        .expect(201)
+        .expect({ ok: true, status: 201 })
         .end(err => {
           if (err) return done(err);
           done();

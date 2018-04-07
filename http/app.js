@@ -5,7 +5,7 @@ const ejs = require('ejs');
 const logger = require('../utils/logger');
 const path = require('path');
 
-const apiRoutes = require('../routes/api.routes');
+const apiRoutes = require('../routes/api2.routes');
 const testRoutes = require('../routes/test.routes');
 const websiteRoutes = require('../routes/website.routes');
 const githubRoutes = require('../routes/github-app.routes');
