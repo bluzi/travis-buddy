@@ -1,10 +1,17 @@
 const express = require('express');
-const failureHandler = require('../handlers/failure.handler');
-const successHandler = require('../handlers/success.handler');
-const errorHandler = require('../handlers/error.handler');
-const utils = require('../utils/utils');
-const database = require('../utils/database');
+const paipu = require('paipu');
 const logger = require('../utils/logger');
+
+const validation = require('../pipes/validation.pipe');
+const wait = require('../pipes/wait.pipe');
+const parse = require('../pipes/parse.pipe');
+const metadata = require('../pipes/metadata.pipe');
+const star = require('../pipes/star.pipe');
+const fetchConfiguration = require('../pipes/fetch-configuration.pipe');
+const searchStopComment = require('../pipes/search-stop-comment.pipe');
+const formatMessage = require('../pipes/format-message.pipe');
+const publish = require('../pipes/publish.pipe');
+const finish = require('../pipes/finish.pipe');
 
 const router = express.Router();
 
@@ -12,113 +19,38 @@ router.get('/status', (req, res) => {
   res.send({ state: 'running' });
 });
 
-router.post('/', async (req, res) => {
-  if (process.env.delay && Number(process.env.delay)) {
-    await utils.wait(Number(process.env.delay));
-  }
+router.post('/', async (req, res) =>
+  paipu
+    .pipe('load payload', {
+      payload: JSON.parse(req.body.payload),
+      query: req.query,
+    })
+    .pipe('validate payload', validation)
+    .pipe('get metadata', metadata)
+    .pipe('wait', wait)
+    .pipe('parse payload', parse)
+    .pipe('star repo', star)
+    .pipe('fetch configuration', fetchConfiguration)
+    .pipe('search for a stop comment', searchStopComment)
+    .pipe('format message', formatMessage)
+    .pipe('publish', publish)
+    .pipe('finish', finish)
+    .afterPipe((context, pipe) => logger.log(`Pipe ${pipe} finished`, context))
+    .resolve()
+    .then(() => ({
+      ok: true,
+      status: 201,
+    }))
+    .catch(error => {
+      logger.error(error);
 
-  const payload = JSON.parse(req.body.payload);
-  let data;
-
-  database.logPayload(payload);
-
-  let dropReason;
-  if (!payload) {
-    dropReason = 'Request dropped: No payload received';
-  } else if (!payload.pull_request || !payload.pull_request_number) {
-    dropReason = 'Request dropped: Not a pull request';
-  } else if (
-    payload.state !== 'failed' &&
-    payload.state !== 'passed' &&
-    payload.state !== 'errored'
-  ) {
-    dropReason = `Request dropped: Wrong state ('${payload.state}')`;
-  }
-
-  if (dropReason) {
-    logger.warn(`Request dropped! Reason: '${dropReason}'`, data);
-    return res
-      .status(200)
-      .send({ err: true, reason: dropReason })
-      .end();
-  }
-
-  try {
-    data = await utils.getData(payload, req.params);
-    logger.log('Received payload (and successfuly extracted data)', {
-      payload,
-    });
-  } catch (error) {
-    logger.warn('Received payload (but failed to extract data)', {
-      payload,
-      error,
-    });
-
-    return res
-      .status(200)
-      .send({ err: true, reason: 'Failed to extract data' })
-      .end();
-  }
-
-  try {
-    utils.starRepo(data.owner, data.repo);
-  } catch (e) {
-    logger.error('Could not star repisotiry');
-    throw e;
-  }
-
-  const authors = data.comments
-    .map(comment => comment.user.login)
-    .filter((value, index, self) => self.indexOf(value) === index)
-    .join(', ');
-
-  logger.log(
-    `Found ${
-      data.comments.length
-    } comments, from those the following authors: ${authors}`,
-    data,
-  );
-
-  const stopComment = await utils.getStopComment(data.comments);
-
-  if (stopComment) {
-    logger.warn(
-      `Dropping request because stop comment found (Commented by ${
-        stopComment.user.login
-      } at ${stopComment.updated_at})`,
-    );
-
-    return res
-      .status(200)
-      .send({ err: true, reason: 'Found stop comment' })
-      .end();
-  }
-
-  logger.log(
-    `Handling request for '${data.pullRequestTitle}' by '${data.author}'`,
-    data,
-  );
-
-  const handleRequest = {
-    failed: failureHandler,
-    passed: successHandler,
-    errored: errorHandler,
-  }[payload.state];
-
-  data.successTemplate = req.query.successTemplate;
-  data.failureTemplate = req.query.failureTemplate;
-  data.errorTemplate = req.query.errorTemplate;
-  data.insertMode = req.query.insertMode || 'append';
-
-  const handlerResult = await handleRequest(data);
-
-  logger.log('Finished', handlerResult);
-  database.logComment(payload, handlerResult);
-
-  return res
-    .status(200)
-    .send({ err: false })
-    .end();
-});
+      return {
+        ok: false,
+        error: error.message,
+        status: error.status,
+      };
+    })
+    .then(result => res.status(result.status || 500).send(result)),
+);
 
 module.exports = router;

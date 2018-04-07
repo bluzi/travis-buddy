@@ -1,4 +1,4 @@
-const Logger = require('logdna');
+const logdna = require('logdna');
 const os = require('os');
 const ip = require('ip');
 const bunyan = require('bunyan');
@@ -33,7 +33,7 @@ if (process.env.logzIoAccessToken) {
 
 let logdnaLogger;
 if (process.env.logdnaApiKey) {
-  logdnaLogger = Logger.createLogger(process.env.logdnaApiKey, {
+  logdnaLogger = logdna.createLogger(process.env.logdnaApiKey, {
     env,
     hostname: os.hostname(),
     ip: ip.address(),
@@ -49,66 +49,44 @@ function formatMessage(message, meta) {
   return message;
 }
 
-module.exports.log = (message, meta) => {
-  if (logdnaLogger) {
-    logdnaLogger.log(formatMessage(message, meta));
-  }
+function commonLogger(options) {
+  return (message, meta) => {
+    if (logdnaLogger && options.logdna)
+      logdnaLogger[options.logdna](formatMessage(message, meta), { meta });
+    if (logzIoLogger && options.logzIo)
+      logzIoLogger.log({ type: String(options.logzIo), message, ...meta });
+    if (options.bunyan) bunyanLogger[options.bunyan](message);
+  };
+}
+const [log, warn, error, debug] = [
+  commonLogger({
+    logdna: 'log',
+    bunyan: 'info',
+    logzIo: 'log',
+  }),
 
-  if (logzIoLogger) {
-    logzIoLogger.log({
-      type: 'log',
-      message,
-      ...meta,
-    });
-  }
+  commonLogger({
+    logdna: 'warn',
+    bunyan: 'warn',
+    logzIo: 'warning',
+  }),
 
-  bunyanLogger.info(message);
-};
+  commonLogger({
+    logdna: 'error',
+    bunyan: 'error',
+    logzIo: 'error',
+  }),
 
-module.exports.debug = (message, meta) => {
-  if (logdnaLogger) {
-    logdnaLogger.debug(formatMessage(message, meta), { meta });
-  }
+  commonLogger({
+    logdna: 'debug',
+    bunyan: 'debug',
+    logzIo: 'debug',
+  }),
+];
 
-  if (logzIoLogger) {
-    logzIoLogger.log({
-      type: 'debug',
-      message,
-      ...meta,
-    });
-  }
-
-  bunyanLogger.debug(message, meta || '');
-};
-
-module.exports.error = (message, meta) => {
-  if (logdnaLogger) {
-    logdnaLogger.error(formatMessage(message, meta), { meta });
-  }
-
-  if (logzIoLogger) {
-    logzIoLogger.log({
-      type: 'error',
-      message,
-      ...meta,
-    });
-  }
-
-  bunyanLogger.error(message, meta || '');
-};
-
-module.exports.warn = (message, meta) => {
-  if (logdnaLogger) {
-    logdnaLogger.warn(formatMessage(message, meta), { meta });
-  }
-
-  if (logzIoLogger) {
-    logzIoLogger.log({
-      type: 'warning',
-      message,
-      ...meta,
-    });
-  }
-
-  bunyanLogger.warn(message);
+module.exports = {
+  log,
+  warn,
+  error,
+  debug,
 };

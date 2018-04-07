@@ -83,6 +83,10 @@ So far, we have:
 * [Jest](https://github.com/bluzi/travis-buddy-jest-tests)
 * [Jasmine](https://github.com/bluzi/travis-buddy-jasmine-tests)
 
+## Deploy to Heroku
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 ## Contribution
 
 Feel free to create issues or create pull requests.

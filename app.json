@@ -1,0 +1,9 @@
+{
+  "name": "Travis Buddy",
+  "description":
+    "TravisBuddy will comment on pull requests in your public repository everytime a test failed in one of them.",
+  "repository": "https://github.com/bluzi/travis-buddy",
+  "logo":
+    "https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/logo.png",
+  "keywords": ["node", "travis", "ci"]
+}
