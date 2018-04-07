@@ -41,7 +41,7 @@
     "mongoose": "^5.0.12",
     "mustache": "^2.3.0",
     "ordinal": "^1.0.2",
-    "paipu": "^1.0.8",
+    "paipu": "^1.0.9",
     "request-promise-native": "^1.0.5",
     "string-similarity": "^1.2.0",
     "strip-ansi": "^4.0.0",
