@@ -2,7 +2,6 @@ const request = require('supertest');
 const app = require('../http/app');
 const samplePayload = require('./samples/payload.json');
 const GitHub = require('better-github-api');
-const utils = require('../utils/utils');
 const configuration = require('../utils/configuration');
 const assert = require('assert');
 
