@@ -50,13 +50,23 @@ If you don't know the syntax, visit [the mustache documentation](https://mustach
 
 #### Disable success message
 
-If you only want TravisBuddy to create comments when the tests fails, add `on_success: never` to the notifications node, like this:
+If you only want TravisBuddy to create comments when the tests fail, add `on_success: never` to the notifications node, like this:
 
 ```yml
 notifications:
     webhooks: https://www.travisbuddy.com/
     on_success: never
 ```
+
+#### Update comments mode
+
+If you want TravisBuddy to only create one comment, add `?insertMode=update` to the webhook URL. TravisBuddy will create one comment and when there is for example a new reason the tests fail, it will update that one with the new information.
+
+```yml
+notifications:
+    webhooks: https://www.travisbuddy.com/?insertMode=update
+```
+
 
 ### Private Repositories
 
