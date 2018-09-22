@@ -8,7 +8,13 @@ const formatMessage = async context => {
     author: context.author,
     pullRequestAuthor: context.pullRequestAuthor,
     jobs: context.jobs,
+    link: context.link,
   });
+
+  if (context.config.debug === true) {
+    const debugData = JSON.stringify(context.payload, null, 4);
+    context.message = `${context.message}\n\n#Debug Data\n${debugData}`;
+  }
 
   return context;
 };

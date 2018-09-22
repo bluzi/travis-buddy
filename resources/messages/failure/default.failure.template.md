@@ -8,6 +8,8 @@ It'll be awesome if you fix what's wrong and commit the changes.
 
 ### {{displayName}}
 
+<a href="{{link}}">View build log</a>
+
 {{#scripts}}
 
 <details>

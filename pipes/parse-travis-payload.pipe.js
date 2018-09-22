@@ -10,10 +10,11 @@ const getJobDisplayName = (job, index) => {
   return `${ordinal(index + 1)} Build`;
 };
 
-const createJobObject = (job, index) => ({
+const createJobObject = (job, index, owner, repoName) => ({
   id: job.id,
   displayName: getJobDisplayName(job, index),
   script: job.config.script,
+  link: `https://travis-ci.org/${owner}/${repoName}/jobs/${job.id}`,
 });
 
 const getAllComments = async (
@@ -88,6 +89,9 @@ const parseTravisPayload = async ({ payload, query, meta }) => ({
   travisType: payload.type,
   language: payload.config.language,
   scripts: payload.config.script,
+  link: `https://travis-ci.org/${payload.repository.owner_name}/${
+    payload.repository.name
+  }/builds/${payload.id}`,
 
   payload,
   query,
@@ -95,7 +99,14 @@ const parseTravisPayload = async ({ payload, query, meta }) => ({
 
   jobs: payload.matrix
     .filter(job => job.state === 'failed')
-    .map((job, index) => createJobObject(job, index)),
+    .map((job, index) =>
+      createJobObject(
+        job,
+        index,
+        payload.repository.owner_name,
+        payload.repository.name,
+      ),
+    ),
 
   comments:
     (await getAllComments(

@@ -53,11 +53,27 @@ const getJobScripts = async (context, job) => {
 
   const allScripts = getJobCommands(context, job);
 
+  let jobLog = job.log;
+
   allScripts.forEach(script => {
-    let scriptContents = job.log.substr(job.log.indexOf(script));
+    let scriptContents = jobLog.substr(jobLog.indexOf(script));
+
     const exitCode = /exited\swith\s(\d+)/g.exec(scriptContents);
+
+    jobLog = jobLog.substr(jobLog.indexOf('" exited with ') + 1);
+
     if (!exitCode || Number(exitCode[1]) !== 0) {
       scriptContents = cutScript(scriptContents);
+
+      if (context.config.regex) {
+        const regex = new RegExp(context.config.regex);
+        const regexResult = regex.exec(scriptContents);
+        if (regexResult.length > 1) {
+          [, scriptContents] = regexResult;
+        } else {
+          scriptContents = undefined;
+        }
+      }
 
       if (scriptContents) {
         const isDuplicate = job.scripts.some(
@@ -81,6 +97,7 @@ const fetchJobScripts = async context => {
   context.jobs = await Promise.all(
     context.jobs.map(job => getJobScripts(context, job)),
   );
+
   context.jobs = context.jobs.filter(job => job.scripts.length > 0);
 
   return context;

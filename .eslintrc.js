@@ -3,5 +3,6 @@ module.exports = {
   rules: {
     'no-await-in-loop': 0,
     'no-param-reassign': 0,
+    'linebreak-style': 0,
   },
 };
