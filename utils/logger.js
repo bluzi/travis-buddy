@@ -63,7 +63,7 @@ function commonLogger(options) {
     if (options.bunyan) bunyanLogger[options.bunyan](message);
 
     if (process.env.SENTRY_DSN) {
-      if (meta.error) {
+      if (meta && meta.error) {
         Sentry.captureException(meta.error);
       }
 
