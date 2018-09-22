@@ -62,7 +62,7 @@ function commonLogger(options) {
       logzIoLogger.log({ type: String(options.logzIo), message, ...meta });
     if (options.bunyan) bunyanLogger[options.bunyan](message);
 
-    if (process.env.SENTRY_DSN) {
+    if (process.env.SENTRY_DSN && options.logdna === 'error') {
       if (meta && meta.error) {
         Sentry.captureException(meta.error);
       }
