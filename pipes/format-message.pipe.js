@@ -11,6 +11,11 @@ const formatMessage = async context => {
     link: context.link,
   });
 
+  if (context.config.debug === true) {
+    const debugData = JSON.stringify(context.payload, null, 4);
+    context.message = `${context.message}\n\n#Debug Data\n${debugData}`;
+  }
+
   return context;
 };
 
