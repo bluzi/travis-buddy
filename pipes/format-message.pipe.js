@@ -8,6 +8,7 @@ const formatMessage = async context => {
     author: context.author,
     pullRequestAuthor: context.pullRequestAuthor,
     jobs: context.jobs,
+    link: context.link,
   });
 
   return context;
