@@ -4,6 +4,11 @@ const ip = require('ip');
 const bunyan = require('bunyan');
 const PrettyStream = require('bunyan-prettystream');
 const logzIo = require('logzio-nodejs');
+const Sentry = require('@sentry/node');
+
+if (process.env.SENTRY_DSN) {
+  Sentry.init({ dsn: process.env.SENTRY_DSN });
+}
 
 const env = process.env.environment || 'unknown';
 
@@ -56,6 +61,14 @@ function commonLogger(options) {
     if (logzIoLogger && options.logzIo)
       logzIoLogger.log({ type: String(options.logzIo), message, ...meta });
     if (options.bunyan) bunyanLogger[options.bunyan](message);
+
+    if (process.env.SENTRY_DSN) {
+      if (meta.error) {
+        Sentry.captureException(meta.error);
+      }
+
+      Sentry.captureMessage(message);
+    }
   };
 }
 const [log, warn, error, debug] = [
