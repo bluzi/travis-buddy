@@ -59,6 +59,16 @@ const getJobScripts = async (context, job) => {
     if (!exitCode || Number(exitCode[1]) !== 0) {
       scriptContents = cutScript(scriptContents);
 
+      if (context.config.regex) {
+        const regex = new RegExp(context.config.regex);
+        const regexResult = regex.exec(scriptContents);
+        if (regexResult.length > 1) {
+          [, scriptContents] = regexResult;
+        } else {
+          scriptContents = undefined;
+        }
+      }
+
       if (scriptContents) {
         const isDuplicate = job.scripts.some(
           scriptLog => scriptLog.contents === scriptContents,
