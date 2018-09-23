@@ -1,192 +1,109 @@
 {
-  "id": 432195827,
-  "number": "31",
+  "id": 295066345,
+  "number": "628",
   "config": {
-    "os": "linux",
-    "dist": "trusty",
-    "jobs": {
-      "include": [
-        {
-          "env": ["TASK=\"Task1\""],
-          "script": [
-            "echo -e \"https://transfer.sh/JKasfZg/pki-build.txt \\n https://transfer.sh/nIVdsfsal/var_log.tar \\n https://transfer.sh/PsafdvD3/systemd_journal.txt\"\n",
-            "./random_script.sh 1"
-          ]
-        },
-        {
-          "script": [
-            "echo -e \"https://transfer.sh/JKMZg/pki-build.txt \\n https://transfer.sh/nIV2l/var_log.tar \\n https://transfer.sh/PUvD3/systemd_journal.txt\"\n",
-            "./random_script.sh 2"
-          ]
-        },
-        {
-          "stage": "Stage 2",
-          "script": [
-            "echo -e \"https://transfer.sh/JKdZg/pki-build.txt \\n https://transfer.sh/nfs2l/var_log.tar \\n https://transfer.sh/PsafD3/systemd_journal.txt\""
-          ]
-        }
-      ]
-    },
-    "sudo": "required",
-    "cache": "pip",
-    "group": "stable",
-    ".result": "configured",
-    "language": "python",
-    "travisBuddy": {
-      "regex": "(https:\\/\\/transfer\\.sh\\/.*\\/.*)"
+    "language": "node_js",
+    "node_js": ["8"],
+    "deploy": {
+      "provider": "script",
+      "skip_cleanup": true,
+      "script": "node deploy/deploy.collection.js",
+      "true": {
+        "branch": "master"
+      }
     },
     "notifications": {
-      "webhooks": "https://www.travisbuddy.com/"
-    }
+      "webhooks": "http://54.157.44.69/bluzi/name-db/mocha",
+      "on_success": "never",
+      "on_failure": "always",
+      "on_start": "never",
+      "on_cancel": "never",
+      "on_error": "never"
+    },
+    ".result": "configured",
+    "group": "stable",
+    "dist": "trusty"
   },
-  "type": "pull_request",
+  "type": "push",
   "state": "failed",
   "status": 1,
   "result": 1,
-  "status_message": "Broken",
-  "result_message": "Broken",
-  "started_at": "2018-09-23T17:45:21Z",
-  "finished_at": "2018-09-23T17:45:48Z",
-  "duration": 42,
-  "build_url": "https://travis-ci.org/SilleBille/test-travis/builds/432195827",
-  "commit_id": 129973841,
-  "commit": "5e8ff2638d69e3750b7cf58a3719b35da1bc2339",
-  "base_commit": "f41c45e65c0c724a8ba44c3ef585f48ee1d42757",
-  "head_commit": "dab4e91fd900ff2d2993b9055bce0ab32cbb616f",
-  "branch": "master",
-  "message": "Fixing permission",
-  "compare_url": "https://github.com/SilleBille/test-travis/pull/6",
-  "committed_at": "2018-09-23T17:44:28Z",
-  "author_name": "Dinesh Prasanth M K",
-  "author_email": "dmoluguw@redhat.com",
-  "committer_name": "Dinesh Prasanth M K",
-  "committer_email": "dmoluguw@redhat.com",
+  "status_message": "Still Failing",
+  "result_message": "Still Failing",
+  "started_at": "2017-10-30T21:25:38Z",
+  "finished_at": "2017-10-30T21:26:15Z",
+  "duration": 37,
+  "build_url": "https://travis-ci.org/bluzi/name-db/builds/295066345",
+  "commit_id": 86697275,
+  "commit": "857f45b7e2b4457c25bc8d42c1b191b729627db8",
+  "base_commit": "857f45b7e2b4457c25bc8d42c1b191b729627db8",
+  "head_commit": null,
+  "branch": "bluzi-travis-buddy-test",
+  "message": "Update .travis.yml",
+  "compare_url":
+    "https://github.com/bluzi/name-db/compare/9641fb84cf87...857f45b7e2b4",
+  "committed_at": "2017-10-30T21:23:26Z",
+  "author_name": "Eliran Pe'er",
+  "author_email": "eliran013@gmail.com",
+  "committer_name": "GitHub",
+  "committer_email": "noreply@github.com",
   "pull_request": true,
-  "pull_request_number": 6,
-  "pull_request_title": "Random script file",
+  "pull_request_number": 501,
+  "pull_request_title": "create sdfdsfsd",
+  "tag": null,
   "repository": {
-    "id": 20378209,
-    "name": "test-travis",
-    "owner_name": "SilleBille"
+    "id": 15852862,
+    "name": "name-db",
+    "owner_name": "bluzi",
+    "url": null
   },
   "matrix": [
     {
-      "id": 432195828,
-      "repository_id": 20378209,
-      "parent_id": 432195827,
-      "number": "31.1",
+      "id": 295066347,
+      "repository_id": 15852862,
+      "parent_id": 295066345,
+      "number": "628.1",
       "state": "failed",
       "config": {
-        "os": "linux",
-        "env": ["TASK=\"Task1\""],
-        "dist": "trusty",
-        "sudo": "required",
-        "cache": "pip",
-        "group": "stable",
-        "script": [
-          "echo -e \"https://transfer.sh/JKasfZg/pki-build.txt \\n https://transfer.sh/nIVdsfsal/var_log.tar \\n https://transfer.sh/PsafdvD3/systemd_journal.txt\"\n",
-          "./random_script.sh 1"
-        ],
-        ".result": "configured",
-        "language": "python",
-        "travisBuddy": {
-          "regex": "(https:\\/\\/transfer\\.sh\\/.*\\/.*)"
-        },
+        "language": "node_js",
+        "node_js": "8",
         "notifications": {
-          "webhooks": "https://www.travisbuddy.com/"
+          "webhooks": "http://54.157.44.69/bluzi/name-db/mocha",
+          "on_success": "never",
+          "on_failure": "always",
+          "on_start": "never",
+          "on_cancel": "never",
+          "on_error": "never"
+        },
+        ".result": "configured",
+        "group": "stable",
+        "dist": "trusty",
+        "os": "linux",
+        "addons": {
+          "deploy": {
+            "provider": "script",
+            "skip_cleanup": true,
+            "script": "node deploy/deploy.collection.js",
+            "true": {
+              "branch": "master"
+            }
+          }
         }
       },
       "status": 1,
       "result": 1,
-      "commit": "5e8ff2638d69e3750b7cf58a3719b35da1bc2339",
-      "branch": "master",
-      "message": "Fixing permission",
-      "compare_url": "https://github.com/SilleBille/test-travis/pull/6",
-      "started_at": "2018-09-23T17:45:21Z",
-      "finished_at": "2018-09-23T17:45:48Z",
-      "committed_at": "2018-09-23T17:44:28Z",
-      "author_name": "Dinesh Prasanth M K",
-      "author_email": "dmoluguw@redhat.com",
-      "committer_name": "Dinesh Prasanth M K",
-      "committer_email": "dmoluguw@redhat.com",
-      "allow_failure": false
-    },
-    {
-      "id": 432195829,
-      "repository_id": 20378209,
-      "parent_id": 432195827,
-      "number": "31.2",
-      "state": "failed",
-      "config": {
-        "os": "linux",
-        "dist": "trusty",
-        "sudo": "required",
-        "cache": "pip",
-        "group": "stable",
-        "script": [
-          "echo -e \"https://transfer.sh/JKMZg/pki-build.txt \\n https://transfer.sh/nIV2l/var_log.tar \\n https://transfer.sh/PUvD3/systemd_journal.txt\"\n",
-          "./random_script.sh 2"
-        ],
-        ".result": "configured",
-        "language": "python",
-        "travisBuddy": {
-          "regex": "(https:\\/\\/transfer\\.sh\\/.*\\/.*)"
-        },
-        "notifications": {
-          "webhooks": "https://www.travisbuddy.com/"
-        }
-      },
-      "status": 1,
-      "result": 1,
-      "commit": "5e8ff2638d69e3750b7cf58a3719b35da1bc2339",
-      "branch": "master",
-      "message": "Fixing permission",
-      "compare_url": "https://github.com/SilleBille/test-travis/pull/6",
-      "started_at": "2018-09-23T17:45:21Z",
-      "finished_at": "2018-09-23T17:45:48Z",
-      "committed_at": "2018-09-23T17:44:28Z",
-      "author_name": "Dinesh Prasanth M K",
-      "author_email": "dmoluguw@redhat.com",
-      "committer_name": "Dinesh Prasanth M K",
-      "committer_email": "dmoluguw@redhat.com",
-      "allow_failure": false
-    },
-    {
-      "id": 432195830,
-      "repository_id": 20378209,
-      "parent_id": 432195827,
-      "number": "31.3",
-      "state": "canceled",
-      "config": {
-        "os": "linux",
-        "dist": "trusty",
-        "sudo": "required",
-        "cache": "pip",
-        "group": "stable",
-        "stage": "Stage 2",
-        "script": [
-          "echo -e \"https://transfer.sh/JKdZg/pki-build.txt \\n https://transfer.sh/nfs2l/var_log.tar \\n https://transfer.sh/PsafD3/systemd_journal.txt\""
-        ],
-        ".result": "configured",
-        "language": "python",
-        "travisBuddy": {
-          "regex": "(https:\\/\\/transfer\\.sh\\/.*\\/.*)"
-        },
-        "notifications": {
-          "webhooks": "https://www.travisbuddy.com/"
-        }
-      },
-      "commit": "5e8ff2638d69e3750b7cf58a3719b35da1bc2339",
-      "branch": "master",
-      "message": "Fixing permission",
-      "compare_url": "https://github.com/SilleBille/test-travis/pull/6",
-      "started_at": "2018-09-23T17:45:21Z",
-      "finished_at": "2018-09-23T17:45:48Z",
-      "committed_at": "2018-09-23T17:44:28Z",
-      "author_name": "Dinesh Prasanth M K",
-      "author_email": "dmoluguw@redhat.com",
-      "committer_name": "Dinesh Prasanth M K",
-      "committer_email": "dmoluguw@redhat.com",
+      "commit": "857f45b7e2b4457c25bc8d42c1b191b729627db8",
+      "branch": "bluzi-patch-3",
+      "message": "Update .travis.yml",
+      "compare_url":
+        "https://github.com/bluzi/name-db/compare/9641fb84cf87...857f45b7e2b4",
+      "started_at": null,
+      "finished_at": null,
+      "committed_at": "2017-10-30T21:23:26Z",
+      "author_name": "Eliran Pe'er",
+      "author_email": "eliran013@gmail.com",
+      "committer_name": "GitHub",
+      "committer_email": "noreply@github.com",
       "allow_failure": false
     }
   ]
