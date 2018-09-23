@@ -34,9 +34,9 @@ const cutScript = (scriptContents, script) => {
     .slice(1)
     .join('\n');
 
-  if (scriptContents.indexOf(`The command "${script}" exited with `) > 0) {
+  if (scriptContents.indexOf(`exited with `) > 0) {
     scriptContents = scriptContents
-      .substr(0, scriptContents.indexOf(`The command "${script}" exited with `))
+      .substr(0, scriptContents.indexOf(`exited with `))
       .trim();
 
     scriptContents = scriptContents
@@ -83,6 +83,7 @@ const getJobScripts = async (context, job) => {
 
       console.log(`
       ${script}
+      regex: ${context.config.regex}
       beforeRegex:
       ${scriptContents}
       
