@@ -79,6 +79,13 @@ const getJobScripts = async (context, job) => {
     if (exitCode && Number(exitCode[1]) !== 0) {
       scriptContents = cutScript(scriptContents, script);
 
+      console.log(`
+      ${script}
+      beforeRegex:
+      ${scriptContents}
+      
+      `);
+
       if (context.config.regex) {
         const regex = new RegExp(context.config.regex);
         const regexResult = regex.exec(scriptContents);
