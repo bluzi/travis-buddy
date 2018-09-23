@@ -57,6 +57,8 @@ const getJobScripts = async (context, job) => {
 
   let jobLog = job.log;
 
+  console.log(jobLog);
+
   allScripts.forEach(script => {
     script = script.trim();
     let scriptContents = jobLog.substr(jobLog.indexOf(script));
