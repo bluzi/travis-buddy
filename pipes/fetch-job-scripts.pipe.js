@@ -39,10 +39,10 @@ const cutScript = (scriptContents, script) => {
       .substr(0, scriptContents.indexOf(`The command "${script}" exited with `))
       .trim();
 
-    scriptContents = scriptContents
-      .split('\n')
-      .slice(0, -1)
-      .join('\n');
+    // scriptContents = scriptContents
+    //   .split('\n')
+    //   .slice(0, -1)
+    //   .join('\n');
   }
 
   scriptContents = scriptContents.trim();
