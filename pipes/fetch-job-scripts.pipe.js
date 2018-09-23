@@ -2,7 +2,9 @@ const defaultScripts = require('../resources/default-scripts.json');
 
 const getCommandFromJob = (job, language) => {
   let allScripts;
-  if (job.script) {
+  if (Array.isArray(job.script)) {
+    allScripts = job.script;
+  } else if (job.script) {
     allScripts = [job.script];
   } else if (!defaultScripts[language]) {
     throw new Error(`Deafult script was not found for '${language}'`);

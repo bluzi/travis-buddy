@@ -6,16 +6,16 @@ const createComment = async context => {
     token: context.meta.githubToken,
   });
 
-  const issues = gh.getIssues(context.owner, context.repo);
+  // const issues = gh.getIssues(context.owner, context.repo);
 
-  const commentResult = await issues.createIssueComment(
-    context.pullRequest,
-    context.message,
-  );
+  // const commentResult = await issues.createIssueComment(
+  //   context.pullRequest,
+  //   context.message,
+  // );
 
-  context.commentId = commentResult.data.id;
+  // context.commentId = commentResult.data.id;
 
-  logger.log('Comment created', context);
+  // logger.log('Comment created', context);
 
   return context;
 };
