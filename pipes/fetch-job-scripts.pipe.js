@@ -70,6 +70,12 @@ const getJobScripts = async (context, job) => {
       jobLog.indexOf(`The command "${script}" exited with `) + 1,
     );
 
+    console.log(`
+    ${script}:
+    exit: ${exitCode ? exitCode[1] : 'no exit code'}
+    
+    `);
+
     if (exitCode && Number(exitCode[1]) !== 0) {
       scriptContents = cutScript(scriptContents, script);
 
@@ -82,6 +88,13 @@ const getJobScripts = async (context, job) => {
           scriptContents = undefined;
         }
       }
+
+      console.log(`
+      ${script}:
+      regexResult: 
+      ${scriptContents}
+      
+      `);
 
       if (scriptContents) {
         const isDuplicate = job.scripts.some(
