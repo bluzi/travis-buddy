@@ -32,7 +32,7 @@ app.use((req, res) => {
 
 // Error handler
 app.use((error, req, res) => {
-  logger.log(error.message, { error, body: req.body });
+  logger.error(error.message, { error, body: req.body });
 
   // Render the error page
   res.status(error.status || 500);

@@ -68,7 +68,7 @@ const getJobScripts = async (context, job) => {
       if (context.config.regex) {
         const regex = new RegExp(context.config.regex);
         const regexResult = regex.exec(scriptContents);
-        if (regexResult.length > 1) {
+        if (regexResult && regexResult.length > 1) {
           [, scriptContents] = regexResult;
         } else {
           scriptContents = undefined;
