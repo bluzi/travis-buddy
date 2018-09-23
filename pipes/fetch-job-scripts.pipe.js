@@ -28,15 +28,15 @@ const getJobCommands = (context, job) => {
   return allScripts;
 };
 
-const cutScript = scriptContents => {
+const cutScript = (scriptContents, script) => {
   scriptContents = scriptContents
     .split('\n')
     .slice(1)
     .join('\n');
 
-  if (scriptContents.indexOf('" exited with ') > 0) {
+  if (scriptContents.indexOf(`The command "${script}" exited with `) > 0) {
     scriptContents = scriptContents
-      .substr(0, scriptContents.indexOf('" exited with '))
+      .substr(0, scriptContents.indexOf(`The command "${script}" exited with `))
       .trim();
 
     scriptContents = scriptContents
@@ -58,14 +58,20 @@ const getJobScripts = async (context, job) => {
   let jobLog = job.log;
 
   allScripts.forEach(script => {
+    script = script.trim();
     let scriptContents = jobLog.substr(jobLog.indexOf(script));
 
-    const exitCode = /exited\swith\s(\d+)/g.exec(scriptContents);
+    const exitCode = new RegExp(
+      `The command "${script}" exited with (\\d+)`,
+      'g',
+    ).exec(scriptContents);
 
-    jobLog = jobLog.substr(jobLog.indexOf('" exited with ') + 1);
+    jobLog = jobLog.substr(
+      jobLog.indexOf(`The command "${script}" exited with `) + 1,
+    );
 
-    if (!exitCode || Number(exitCode[1]) !== 0) {
-      scriptContents = cutScript(scriptContents);
+    if (exitCode && Number(exitCode[1]) !== 0) {
+      scriptContents = cutScript(scriptContents, script);
 
       if (context.config.regex) {
         const regex = new RegExp(context.config.regex);
