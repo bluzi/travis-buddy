@@ -4,9 +4,9 @@ const yaml = require('yamljs');
 const defaults = require('defaults');
 const fs = require('fs');
 
-const load = async (owner, repo) => {
+const load = async (owner, repo, branch) => {
   const options = {
-    uri: `http://raw.githubusercontent.com/${owner}/${repo}/master/.travis.yml`,
+    uri: `http://raw.githubusercontent.com/${owner}/${repo}/${branch}/.travis.yml`,
     method: 'GET',
     resolveWithFullResponse: true,
   };
