@@ -79,6 +79,12 @@ const getJobScripts = async (context, job) => {
     `);
 
     if (exitCode && Number(exitCode[1]) !== 0) {
+      console.log(`
+      ${script}
+      beforeCut:
+      ${scriptContents}
+      
+      `);
       scriptContents = cutScript(scriptContents, script);
 
       console.log(`
