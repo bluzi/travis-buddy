@@ -1,6 +1,7 @@
 const express = require('express');
 const paipu = require('paipu');
 const logger = require('../utils/logger');
+const uuid = require('uuid/v1');
 
 const validation = require('../pipes/validation.pipe');
 const wait = require('../pipes/wait.pipe');
@@ -24,6 +25,7 @@ router.post('/', async (req, res) =>
     .pipe('load payload', {
       payload: JSON.parse(req.body.payload),
       query: req.query,
+      requestId: uuid(),
     })
     .pipe('validate payload', validation)
     .pipe('get metadata', metadata)
@@ -35,7 +37,18 @@ router.post('/', async (req, res) =>
     .pipe('format message', formatMessage)
     .pipe('publish', publish)
     .pipe('finish', finish)
-    .afterPipe((context, pipe) => logger.log(`Pipe ${pipe} finished`, context))
+    .afterPipe((context, pipe) =>
+      logger.log(
+        `Pipe ${pipe} finished`,
+        { logType: 'pipe-finished' },
+        context,
+      ),
+    )
+    .beforePipe((context, pipe) => {
+      if (!context) context = {};
+      context.currentPipe = pipe;
+      return context;
+    })
     .resolve()
     .then(() => ({
       ok: true,

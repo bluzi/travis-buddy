@@ -24,12 +24,18 @@ const validateLog = log => {
   return lastLine.startsWith('Done.');
 };
 
-const doneFound = (attempts, maxAttempts) =>
-  logger.log(`Done found after ${attempts}/${maxAttempts} attempts.`);
+const doneFound = (attempts, maxAttempts, context) =>
+  logger.log(
+    `Done found after ${attempts}/${maxAttempts} attempts.`,
+    { attempts, maxAttempts },
+    context,
+  );
 
-const doneNotFound = (attempts, maxAttempts) =>
+const doneNotFound = (attempts, maxAttempts, context) =>
   logger.log(
     `Done not found, requesting new log... (${attempts}/${maxAttempts}`,
+    { attempts, maxAttempts },
+    context,
   );
 
 const getLog = async (context, job) => {
@@ -40,13 +46,23 @@ const getLog = async (context, job) => {
     const isValid = validateLog(log);
 
     if (isValid) {
-      doneFound(attempts, context.meta.maxAttemptsToGetDone);
+      doneFound(attempts, context.meta.maxAttemptsToGetDone, context);
       job.log = stripAnsi(log);
+      logger.log(
+        `Found log for job #${job.id} ${job.displayName}`,
+        job,
+        context,
+      );
     } else if (attempts >= context.meta.maxAttemptsToGetDone) {
       logger.log('Max attempts achived, giving up done');
       job.log = stripAnsi(log);
+      logger.log(
+        `Giving up on done for job #${job.id} ${job.displayName}`,
+        job,
+        context,
+      );
     } else {
-      doneNotFound(attempts, context.meta.maxAttemptsToGetDone);
+      doneNotFound(attempts, context.meta.maxAttemptsToGetDone, context);
 
       attempts += 1;
       await (ms => new Promise(resolve => setTimeout(resolve, ms)))(1000);
@@ -56,6 +72,8 @@ const getLog = async (context, job) => {
 
 const fetchBuildsLogs = async context => {
   await Promise.all(context.jobs.map(job => getLog(context, job)));
+
+  logger.log('Found all logs', context.jobs, context);
 
   return context;
 };

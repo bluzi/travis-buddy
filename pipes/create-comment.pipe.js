@@ -15,7 +15,11 @@ const createComment = async context => {
 
   context.commentId = commentResult.data.id;
 
-  logger.log('Comment created', context);
+  logger.log(
+    'Comment created',
+    { commentId: context.commentId, commentContents: context.message },
+    context,
+  );
 
   return context;
 };

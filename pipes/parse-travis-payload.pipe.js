@@ -77,7 +77,7 @@ const getPullRequestAuthor = async (
       );
   });
 
-const parseTravisPayload = async ({ payload, query, meta }) => ({
+const parseTravisPayload = async ({ payload, meta, ...restOfContext }) => ({
   owner: payload.repository.owner_name,
   repo: payload.repository.name,
   pullRequest: payload.pull_request_number,
@@ -94,8 +94,8 @@ const parseTravisPayload = async ({ payload, query, meta }) => ({
   }/builds/${payload.id}`,
 
   payload,
-  query,
   meta,
+  ...restOfContext,
 
   jobs: payload.matrix
     .filter(job => job.state === 'failed')

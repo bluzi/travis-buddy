@@ -27,3 +27,5 @@ It'll be awesome if you fix what's wrong and commit the changes.
 
 {{/scripts}}
 {{/jobs}}
+
+###### TravisBuddy Request Identifier: {{requestId}}

@@ -1,4 +1,3 @@
-const logger = require('./logger');
 const request = require('request-promise-native');
 const yaml = require('yamljs');
 const defaults = require('defaults');
@@ -15,17 +14,27 @@ const load = async (owner, repo, branch) => {
   const defaultConfigFile = fs.readFileSync(defaultConfigPath, 'utf8');
   const defaultConfig = yaml.parse(defaultConfigFile);
 
+  let config = {};
+  let isDefault = false;
+  let travisYml = '';
+
   try {
     const res = await request(options);
-    let config = yaml.parse(res.body);
+    travisYml = res.body;
+    config = yaml.parse(travisYml);
 
     config = defaults(config.travisBuddy || {}, defaultConfig.travisBuddy);
-
-    return config;
   } catch (e) {
-    logger.warn('No .travis.yml was present on the repository');
-    return defaultConfig.travisBuddy;
+    isDefault = true;
+    config = defaultConfig.travisBuddy;
   }
+
+  return {
+    selectedConfig: config,
+    isDefault,
+    travisYml,
+    defaultConfigPath,
+  };
 };
 
 module.exports = load;

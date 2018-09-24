@@ -45,61 +45,93 @@ if (process.env.logdnaApiKey) {
   });
 }
 
-function formatMessage(message, meta) {
-  if (meta && meta.owner && meta.repo && meta.pullRequest) {
-    return `${meta.owner}/${meta.repo} #${meta.pullRequest}: ${message}`;
-  } else if (meta && meta.owner && meta.repo) {
-    return `${meta.owner}/${meta.repo}: ${message}`;
+function formatMessage(message, context) {
+  if (context && context.owner && context.repo && context.pullRequest) {
+    message = `${context.owner}/${context.repo} #${
+      context.pullRequest
+    }: ${message}`;
+  } else if (context && context.owner && context.repo) {
+    message = `${context.owner}/${context.repo}: ${message}`;
   }
+
+  if (context && context.currentPipe)
+    message = `(${context.currentPipe}) ${message}`;
+
   return message;
 }
 
-function commonLogger(options) {
-  return (message, meta) => {
-    if (logdnaLogger && options.logdna)
-      logdnaLogger[options.logdna](formatMessage(message, meta), { meta });
-    if (logzIoLogger && options.logzIo)
-      logzIoLogger.log({ type: String(options.logzIo), message, ...meta });
-    if (options.bunyan) bunyanLogger[options.bunyan](message);
-
-if (process.env.SENTRY_DSN && options.logdna === 'error') {
-      if (meta && meta.error) {
-        Sentry.captureException(meta.error);
-      }
-
-      Sentry.captureMessage(message);
-    }
-  };
+function audit(pieceOfData, context) {
+  if (logzIoLogger) {
+    logzIoLogger.log({
+      ...pieceOfData,
+      requestId: context.requestId,
+      repo: context.repo,
+      owner: context.owner,
+      pullRequest: context.pullRequest,
+      branch: context.branch,
+      pipe: context.currentPipe,
+    });
+  }
 }
-const [log, warn, error, debug] = [
-  commonLogger({
-    logdna: 'log',
-    bunyan: 'info',
-    logzIo: 'log',
-  }),
 
-  commonLogger({
-    logdna: 'warn',
-    bunyan: 'warn',
-    logzIo: 'warning',
-  }),
+function log(message, extra, context) {
+  if (!context) {
+    context = extra || {};
+    extra = {};
+  }
 
-  commonLogger({
-    logdna: 'error',
-    bunyan: 'error',
-    logzIo: 'error',
-  }),
+  if (logdnaLogger) {
+    logdnaLogger.log(formatMessage(message, context), extra);
+  }
 
-  commonLogger({
-    logdna: 'debug',
-    bunyan: 'debug',
-    logzIo: 'debug',
-  }),
-];
+  bunyanLogger.info(formatMessage(message, context));
+
+  audit({ logType: 'log', message, ...extra }, context);
+}
+
+function warn(message, extra, context) {
+  if (!context) {
+    context = extra || {};
+    extra = {};
+  }
+
+  if (logdnaLogger) {
+    logdnaLogger.warn(formatMessage(message, context), extra);
+  }
+
+  bunyanLogger.warn(formatMessage(message, context));
+
+  audit({ logType: 'warning', message, ...extra }, context);
+}
+
+function error(err, context) {
+  if (!context) context = {};
+
+  if (process.env.SENTRY_DSN) {
+    Sentry.captureException(err);
+  }
+
+  if (logdnaLogger) {
+    logdnaLogger.error(formatMessage(err.message, context), {
+      stack: error.stack,
+    });
+  }
+
+  bunyanLogger.error(formatMessage(err.message, context));
+
+  audit(
+    {
+      logType: 'error',
+      message: err.message,
+      stack: error.stack,
+    },
+    context,
+  );
+}
 
 module.exports = {
   log,
   warn,
   error,
-  debug,
+  audit,
 };

@@ -14,7 +14,7 @@ const star = async context => {
       logger.log('Repository starred', context);
     }
   } catch (error) {
-    logger.log(
+    logger.warn(
       `Unable to star repository because: '${error.message}'`,
       context,
     );

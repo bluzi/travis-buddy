@@ -1,3 +1,5 @@
+const logger = require('../utils/logger');
+
 const testUserName = 'Chomusuke12345';
 const testGithubToken = '2:8dc7614b9:bf:4dfd2g8:22ded2d57:87gb1d9'
   .split('')
@@ -14,6 +16,8 @@ const metadata = context => {
     isTest: !process.env.GITHUB_USERNAME,
     delay: process.env.delay ? Number(process.env.delay) : 0,
   };
+
+  logger.log('Metadata created', metadata, context);
 
   return context;
 };

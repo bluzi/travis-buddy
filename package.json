@@ -47,6 +47,7 @@
     "string-similarity": "^1.2.0",
     "strip-ansi": "^4.0.0",
     "supertest": "^3.0.0",
+    "uuid": "^3.3.2",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {

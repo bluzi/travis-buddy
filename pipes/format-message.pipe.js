@@ -2,6 +2,7 @@ const paipu = require('paipu');
 const mustache = require('mustache');
 const collectFailureData = require('./collect-failure-data.pipe');
 const fetchTemplate = require('./fetch-template.pipe');
+const logger = require('../utils/logger');
 
 const formatMessage = async context => {
   context.message = mustache.render(context.templateContents, {
@@ -9,12 +10,31 @@ const formatMessage = async context => {
     pullRequestAuthor: context.pullRequestAuthor,
     jobs: context.jobs,
     link: context.link,
+    requestId: context.requestId,
   });
 
   if (context.config.debug === true) {
     const debugData = JSON.stringify(context.payload, null, 4);
     context.message = `${context.message}\n\n#Debug Data\n${debugData}`;
   }
+
+  logger.log(
+    'Message formatted',
+    {
+      author: context.author,
+      pullRequestAuthor: context.pullRequestAuthor,
+      link: context.link,
+      jobs: context.jobs.map(job => ({ ...job, scripts: undefined })),
+      scripts: context.jobs.reduce(
+        (scripts, job) => [
+          ...scripts,
+          ...job.scripts.map(script => ({ ...script, jobId: job.id })),
+        ],
+        [],
+      ),
+    },
+    context,
+  );
 
   return context;
 };

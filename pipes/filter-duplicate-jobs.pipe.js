@@ -1,3 +1,4 @@
+const logger = require('../utils/logger');
 const stringSimilarity = require('string-similarity');
 
 const similarIndication = 0.9;
@@ -19,6 +20,18 @@ const filterDuplicateJobs = context => {
       const isDuplicate = duplicates.length > 1;
 
       if (isDuplicate) {
+        logger.log(
+          'Deleting duplicate job',
+          {
+            jobId: job.id,
+            displayName: job.displayName,
+            link: job.link,
+            log: job.log,
+            similarIndication,
+          },
+          context,
+        );
+
         delete context.jobs[key];
       }
     });

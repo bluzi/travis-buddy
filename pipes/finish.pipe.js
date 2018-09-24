@@ -5,7 +5,14 @@ const finish = context => {
     context.repo
   }/pull/${context.pullRequest}#issuecomment-${context.commentId}`;
 
-  logger.log(`Successfuly created comment: ${context.pullRequestUrl}`, context);
+  logger.log(
+    `Successfuly created comment`,
+    {
+      pullRequestUrl: context.pullRequestUrl,
+      commentContents: context.message,
+    },
+    context,
+  );
 
   return context;
 };

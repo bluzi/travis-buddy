@@ -1,3 +1,5 @@
+const logger = require('../utils/logger');
+
 const defaultScripts = require('../resources/default-scripts.json');
 
 const getCommandFromJob = (job, language) => {
@@ -55,23 +57,38 @@ const getJobScripts = async (context, job) => {
 
   const allScripts = getJobCommands(context, job);
 
+  logger.log(`Found ${allScripts.length} scripts`, { allScripts }, context);
+
   let jobLog = job.log;
 
   allScripts.forEach(script => {
     script = script.trim();
+    const initialJobLog = jobLog;
+    let scriptContentsAfterCut = '';
+    let scriptContentsAfterRegex = '';
+    let isDuplicate = false;
+    let hasProcessed = false;
+
     let scriptContents = jobLog.substr(jobLog.indexOf(script));
+    const initialScriptContents = scriptContents;
 
     const exitCode = new RegExp(
       `The command "${script}" exited with (\\d+)`,
       'g',
     ).exec(scriptContents);
 
+    const exitCodeFound = !!exitCode;
+
     jobLog = jobLog.substr(
       jobLog.indexOf(`The command "${script}" exited with `) + 1,
     );
 
+    const resultedJobLog = jobLog;
+
     if (!exitCode || Number(exitCode[1]) !== 0) {
       scriptContents = cutScript(scriptContents, script);
+
+      scriptContentsAfterCut = scriptContents;
 
       if (context.config.regex) {
         const regex = new RegExp(context.config.regex);
@@ -83,12 +100,15 @@ const getJobScripts = async (context, job) => {
         }
       }
 
+      scriptContentsAfterRegex = scriptContents;
+
       if (scriptContents) {
-        const isDuplicate = job.scripts.some(
+        isDuplicate = job.scripts.some(
           scriptLog => scriptLog.contents === scriptContents,
         );
 
         if (!isDuplicate) {
+          hasProcessed = true;
           job.scripts.push({
             command: script,
             contents: scriptContents,
@@ -96,6 +116,28 @@ const getJobScripts = async (context, job) => {
         }
       }
     }
+
+    logger.log(
+      `Script ${script}`,
+      {
+        jobId: job,
+        jobDisplayName: job.displayName,
+        jobLink: job.link,
+        jobLog: job.log,
+        script,
+        initialJobLog,
+        exitCodeFound,
+        exitCode: exitCode ? Number(exitCode[1]) : 0,
+        initialScriptContents,
+        resultedJobLog,
+        scriptContentsAfterCut,
+        regex: context.config.regex,
+        scriptContentsAfterRegex,
+        isDuplicate,
+        hasProcessed,
+      },
+      context,
+    );
   });
 
   return job;
@@ -107,6 +149,20 @@ const fetchJobScripts = async context => {
   );
 
   context.jobs = context.jobs.filter(job => job.scripts.length > 0);
+
+  logger.log(
+    'Fetched scripts',
+    {
+      scripts: context.jobs.reduce(
+        (scripts, job) => [
+          ...scripts,
+          ...job.scripts.map(script => ({ ...script, jobId: job.id })),
+        ],
+        [],
+      ),
+    },
+    context,
+  );
 
   return context;
 };
