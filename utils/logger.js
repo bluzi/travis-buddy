@@ -67,6 +67,7 @@ function audit(pieceOfData, context) {
       requestId: context.requestId,
       repo: context.repo,
       owner: context.owner,
+      repoFullName: `${context.owner}/${context.repo}`,
       pullRequest: context.pullRequest,
       branch: context.branch,
       pipe: context.currentPipe,

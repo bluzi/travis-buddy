@@ -5,11 +5,16 @@ const finish = context => {
     context.repo
   }/pull/${context.pullRequest}#issuecomment-${context.commentId}`;
 
+  const endTime = new Date().getTime();
+
   logger.log(
     `Successfuly created comment`,
     {
       pullRequestUrl: context.pullRequestUrl,
       commentContents: context.message,
+      startTime: context.startTime,
+      endTime,
+      totalTime: endTime - context.startTime,
     },
     context,
   );

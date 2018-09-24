@@ -23,6 +23,7 @@ router.get('/status', (req, res) => {
 router.post('/', async (req, res) =>
   paipu
     .pipe('load payload', {
+      startTime: new Date().getTime(),
       payload: JSON.parse(req.body.payload),
       query: req.query,
       requestId: uuid(),
