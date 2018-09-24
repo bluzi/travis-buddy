@@ -16,7 +16,11 @@ const editComment = async context => {
 
   await issues.editIssueComment(context.commentId, context.message);
 
-  logger.log('Comment edited', context);
+  logger.log(
+    'Comment edited',
+    { commentId: context.commentId, commentContents: context.message },
+    context,
+  );
 
   return context;
 };

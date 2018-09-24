@@ -1,6 +1,17 @@
+const logger = require('../utils/logger');
+
 const validateTravisPayload = async context => {
-  const { payload } = context;
+  const { payload, requestId } = context;
   let dropReason;
+
+  logger.log(
+    `Validating payload`,
+    {
+      payload,
+      requestId,
+    },
+    context,
+  );
 
   const allowedStates = ['failed', 'passed', 'errored'];
 
@@ -13,6 +24,16 @@ const validateTravisPayload = async context => {
   }
 
   if (dropReason) {
+    logger.log(
+      'Dropped request',
+      {
+        requestId,
+        dropReason,
+        state: payload.state,
+      },
+      context,
+    );
+
     const error = new Error(dropReason);
     error.status = 400;
     throw error;

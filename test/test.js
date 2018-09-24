@@ -103,9 +103,9 @@ describe('site', () => {
 describe('TravisBuddy configuration', () => {
   it('should parse successfully', done => {
     configuration('bluzi', 'travis-buddy').then(config => {
-      assert.notEqual(config, undefined);
-      assert.notEqual(config.templates, undefined);
+      assert.notEqual(config.selectedConfig, undefined);
+      assert.notEqual(config.selectedConfig.templates, undefined);
       done();
     });
-  });
+  }).timeout(100000);
 });

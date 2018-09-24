@@ -1,5 +1,6 @@
 const fs = require('fs');
 const request = require('request-promise-native');
+const logger = require('../utils/logger');
 
 const getTemplate = async context => {
   const { owner, repo, branch, template } = context;
@@ -10,8 +11,10 @@ const getTemplate = async context => {
     errored: 'error',
   }[context.state];
 
+  let templatePath = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/travis-buddy-${type}-template.md`;
+
   const options = {
-    uri: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/travis-buddy-${type}-template.md`,
+    uri: templatePath,
     method: 'GET',
     resolveWithFullResponse: true,
   };
@@ -20,10 +23,20 @@ const getTemplate = async context => {
     const res = await request(options);
     context.templateContents = res.body;
   } catch (error) {
-    const templatePath = `resources/messages/${type}/${template ||
+    templatePath = `resources/messages/${type}/${template ||
       'default'}.${type}.template.md`;
     context.templateContents = fs.readFileSync(templatePath, 'utf8');
   }
+
+  logger.log(
+    'Template',
+    {
+      templateContents: context.templateContents,
+      templatePath,
+      type,
+    },
+    context,
+  );
 
   return context;
 };
