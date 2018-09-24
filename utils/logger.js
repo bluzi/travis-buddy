@@ -62,12 +62,17 @@ function formatMessage(message, context) {
 
 function audit(pieceOfData, context) {
   if (logzIoLogger) {
+    const timeSinceStart = context.startTime
+      ? new Date().getTime() - context.startTime
+      : -1;
+
     logzIoLogger.log({
       ...pieceOfData,
       requestId: context.requestId,
       repo: context.repo,
       owner: context.owner,
       repoFullName: `${context.owner}/${context.repo}`,
+      timeSinceStart,
       pullRequest: context.pullRequest,
       branch: context.branch,
       pipe: context.currentPipe,
