@@ -70,7 +70,7 @@ const getJobScripts = async (context, job) => {
       jobLog.indexOf(`The command "${script}" exited with `) + 1,
     );
 
-    if (exitCode && Number(exitCode[1]) !== 0) {
+    if (!exitCode || Number(exitCode[1]) !== 0) {
       scriptContents = cutScript(scriptContents, script);
 
       if (context.config.regex) {
