@@ -7,7 +7,7 @@ const validateTravisPayload = async context => {
   logger.log(
     `Validating payload`,
     {
-      payload,
+      payload: JSON.stringify(payload, null, 4),
       requestId,
     },
     context,
