@@ -41,6 +41,25 @@ notifications:
     webhooks: https://www.travisbuddy.com/
 ```
 
+#### Configuration
+You can configure TravisBuddy by adding a `travisBuddy` node to your `travis.yml` i.e.: 
+```yml
+language: node_js
+node_js:
+    - "8"
+notifications:
+    webhooks: https://www.travisbuddy.com/
+travisBuddy:
+    regex: "(\d+ failing)"
+```
+
+You may use the following configuration keys:
+| Key        | Description           | Values  |
+| ------------- |:-------------:| -----:|
+| regex | Tells TravisBuddy to take only parts of the log. The regex is executed on each test script separately | Any valid regular expression |
+| regexOptions | Use along with `regex` to apply regular expression options      |   Any valid regular expression option, i.e. `g` |
+| insertMode | Tells TravisBuddy to comment once and keep editing that one comment instead of appending new comment for every build | (default) `append` or `update` |
+
 #### Custom Template
 
 If TravisBuddy finds a file name `travis-buddy-failure-template.md` in the root of the branch it's commenting on, it'll be used as a template for the comments.
