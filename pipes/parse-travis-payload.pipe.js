@@ -34,9 +34,13 @@ const getAllComments = async (
   let bulk;
 
   do {
-    bulk = await issues.listIssueComments(pullRequestNumber, {
-      page,
-    });
+    try {
+      bulk = await issues.listIssueComments(pullRequestNumber, {
+        page,
+      });
+    } catch (e) {
+      break;
+    }
 
     comments.push(...bulk.data);
 
