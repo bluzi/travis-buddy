@@ -7,8 +7,6 @@ const finish = context => {
 
   const endTime = new Date().getTime();
 
-  debugger;
-
   logger.log(
     `Successfuly created comment`,
     {
