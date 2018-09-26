@@ -18,23 +18,29 @@ const formatMessage = async context => {
     context.message = `${context.message}\n\n#Debug Data\n${debugData}`;
   }
 
-  logger.log(
-    'Message formatted',
-    {
-      author: context.author,
-      pullRequestAuthor: context.pullRequestAuthor,
-      link: context.link,
-      jobs: context.jobs.map(job => ({ ...job, scripts: undefined })),
-      scripts: context.jobs.reduce(
-        (scripts, job) => [
-          ...scripts,
-          ...job.scripts.map(script => ({ ...script, jobId: job.id })),
-        ],
-        [],
-      ),
-    },
-    context,
-  );
+  try {
+    logger.log(
+      'Message formatted',
+      {
+        author: context.author,
+        pullRequestAuthor: context.pullRequestAuthor,
+        link: context.link,
+        jobs: context.jobs.map(job => ({ ...job, scripts: undefined })),
+        scripts: context.jobs.reduce(
+          (scripts, job) => [
+            ...scripts,
+            ...(job.scripts && job.scripts.length > 0
+              ? job.scripts.map(script => ({ ...script, jobId: job.id }))
+              : []),
+          ],
+          [],
+        ),
+      },
+      context,
+    );
+  } catch (e) {
+    logger.error(e, context);
+  }
 
   return context;
 };
