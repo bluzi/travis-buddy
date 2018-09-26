@@ -7,6 +7,8 @@ const finish = context => {
 
   const endTime = new Date().getTime();
 
+  debugger;
+
   logger.log(
     `Successfuly created comment`,
     {
@@ -15,6 +17,22 @@ const finish = context => {
       startTime: context.startTime,
       endTime,
       totalTime: endTime - context.startTime,
+      message: context.message,
+      templateContents: context.templateContents,
+      travisType: context.travisType,
+      state: context.state,
+      query: context.query,
+      pullRequestTitle: context.pullRequestTitle,
+      pullRequestAuthor: context.pullRequestAuthor,
+      author: context.author,
+      pullRequest: context.pullRequest,
+      link: context.link,
+      language: context.language,
+      insertMode: context.config.insertMode,
+      commentId: context.commentId,
+      buildNumber: context.buildNumber,
+
+      ...context.meta,
     },
     context,
   );
