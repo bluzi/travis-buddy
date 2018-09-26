@@ -8,14 +8,13 @@ const finish = context => {
   const endTime = new Date().getTime();
 
   logger.log(
-    `Successfuly created comment`,
+    `Successfully created comment`,
     {
       pullRequestUrl: context.pullRequestUrl,
       commentContents: context.message,
       startTime: context.startTime,
       endTime,
       totalTime: endTime - context.startTime,
-      message: context.message,
       templateContents: context.templateContents,
       travisType: context.travisType,
       state: context.state,
