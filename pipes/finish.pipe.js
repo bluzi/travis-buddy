@@ -28,6 +28,7 @@ const finish = context => {
       insertMode: context.config.insertMode,
       commentId: context.commentId,
       buildNumber: context.buildNumber,
+      payload: JSON.stringify(context.payload, null, 4),
 
       ...context.meta,
     },
