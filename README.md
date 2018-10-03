@@ -66,7 +66,7 @@ insertMode | Tells TravisBuddy to comment once and keep editing that one comment
 If TravisBuddy finds a file name `travis-buddy-failure-template.md` in the root of the branch it's commenting on, it'll be used as a template for the comments.
 
 The content of the file must be a valid [mustache](https://github.com/janl/mustache.js/) template.
-If you don't know the syntax, visit [the mustache documentation](https://mustache.github.io/mustache.5.html) or refer to this [sample template](https://raw.githubusercontent.com/bluzi/name-db/bluzi-travis-buddy-test/travis-buddy-failure-template.md).
+If you don't know the syntax, visit [the mustache documentation](https://mustache.github.io/mustache.5.html) or refer to this [sample template](https://raw.githubusercontent.com/bluzi/name-db/master/travis-buddy-failure-template.md).
 
 #### Disable success message
 
