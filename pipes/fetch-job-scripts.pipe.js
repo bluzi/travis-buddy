@@ -91,10 +91,11 @@ const getJobScripts = async (context, job) => {
       scriptContentsAfterCut = scriptContents;
 
       if (context.config.regex) {
-        const regex = new RegExp(context.config.regex);
+        const regex = new RegExp(context.config.regex, context.config.regexOptions);
         const regexResult = regex.exec(scriptContents);
+        // Retrieve the full strings of chars matched.
         if (regexResult && regexResult.length > 1) {
-          [, scriptContents] = regexResult;
+          scriptContents = regexResult[0];
         } else {
           scriptContents = undefined;
         }
