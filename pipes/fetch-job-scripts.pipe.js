@@ -92,16 +92,15 @@ const getJobScripts = async (context, job) => {
 
       if (context.config.regex) {
         const regex = new RegExp(context.config.regex, context.config.regexOptions);
-        const regexResult = regex.exec(scriptContents);
-        // Retrieve the full strings of chars matched.
-        if (regexResult && regexResult.length > 1) {
-          scriptContents = regexResult[0];
-        } else {
+
+        while ((regexResult = regex.exec(scriptContents)) !== null) {
+          // Copy only the full matched string
+          scriptContentsAfterRegex += regexResult[0] + '\n'
+        }
+        if (scriptContentsAfterRegex == '') {
           scriptContents = undefined;
         }
       }
-
-      scriptContentsAfterRegex = scriptContents;
 
       if (scriptContents) {
         isDuplicate = job.scripts.some(
