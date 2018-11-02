@@ -17,13 +17,7 @@ const createJobObject = (job, index, owner, repoName) => ({
   link: `https://travis-ci.org/${owner}/${repoName}/jobs/${job.id}`,
 });
 
-const getAllComments = async (
-  githubToken,
-  owner,
-  repo,
-  pullRequestNumber,
-  isTest,
-) => {
+const getAllComments = async (githubToken, owner, repo, pullRequestNumber) => {
   const gh = new GitHub({
     token: githubToken,
   });
@@ -43,8 +37,6 @@ const getAllComments = async (
     }
 
     comments.push(...bulk.data);
-
-    if (isTest) return comments;
 
     page += 1;
   } while (bulk.data.length > 0);
@@ -118,7 +110,6 @@ const parseTravisPayload = async ({ payload, meta, ...restOfContext }) => ({
       payload.repository.owner_name,
       payload.repository.name,
       payload.pull_request_number,
-      meta.isTest,
     )) || [],
 
   pullRequestAuthor:
