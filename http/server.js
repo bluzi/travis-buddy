@@ -1,7 +1,9 @@
 const http = require('http');
-const app = require('./app');
+const { createApp } = require('./app');
 const logger = require('../utils/logger');
 const ip = require('ip');
+
+const app = createApp({ isTest: false });
 
 const port = process.env.PORT || '3000';
 const server = http.createServer(app);

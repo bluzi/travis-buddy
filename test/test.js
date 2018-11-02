@@ -1,20 +1,29 @@
 const request = require('supertest');
-const app = require('../http/app');
+const { createApp } = require('../http/app');
 const samplePayload = require('./samples/payload.json');
 const GitHub = require('better-github-api');
 const configuration = require('../utils/configuration');
 const assert = require('assert');
 
+const app = createApp({ isTest: true, returnRequestContext: true });
+
 describe('api', () => {
   describe('POST /', () => {
-    it('should return HTTP status 200 and ok message', done => {
+    it('should return HTTP status 201 and ok message', done => {
       request(app)
         .post('/')
         .send({ payload: JSON.stringify(samplePayload) })
         .expect(201)
-        .expect({ ok: true, status: 201 })
-        .end(err => {
+        .end((err, { body: { ok, context } }) => {
           if (err) return done(err);
+
+          if (!ok) return done('No ok');
+          if (!context) return done('No context');
+          if (!context.message || context.message.length < 100)
+            return done(`Weird message:\n${context.message}`);
+          if (!context.message.includes('TravisBuddy Request Identifier'))
+            return done('No request identifier');
+
           done();
         });
     }).timeout(100000);

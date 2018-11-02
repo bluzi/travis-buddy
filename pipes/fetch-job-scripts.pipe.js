@@ -91,13 +91,21 @@ const getJobScripts = async (context, job) => {
       scriptContentsAfterCut = scriptContents;
 
       if (context.config.regex) {
-        const regex = new RegExp(context.config.regex, context.config.regexOptions);
+        const regex = new RegExp(
+          context.config.regex,
+          context.config.regexOptions,
+        );
 
-        while ((regexResult = regex.exec(scriptContents)) !== null) {
+        let regexResult = regex.exec(scriptContents);
+
+        while (regexResult !== null) {
           // Copy only the full matched string
-          scriptContentsAfterRegex += regexResult[0] + '\n'
+          scriptContentsAfterRegex += `${regexResult[0]}\n`;
+
+          regexResult = regex.exec(scriptContents);
         }
-        if (scriptContentsAfterRegex == '') {
+
+        if (!scriptContentsAfterRegex) {
           scriptContents = undefined;
         }
       }
