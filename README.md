@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/header.jpg">
 </p>
 
-# TravisBuddy [![Build Status](https://travis-ci.org/bluzi/travis-buddy.svg?branch=master)](htts://travis-ci.org/bluzi/travis-buddy) ![Heroku](https://heroku-badge.herokuapp.com/?app=travis-buddy-service&style=flat) <a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://www.statuscake.com/App/button/index.php?Track=2MnfbAoOjQ&Days=1&Design=7" /></a>
+# TravisBuddy [![Build Status](https://travis-ci.org/bluzi/travis-buddy.svg?branch=master)](https://travis-ci.org/bluzi/travis-buddy) ![Heroku](https://heroku-badge.herokuapp.com/?app=travis-buddy-service&style=flat) <a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://www.statuscake.com/App/button/index.php?Track=2MnfbAoOjQ&Days=1&Design=7" /></a>
 
 TravisBuddy is a cloud service that creates comments in failed pull requests and tell the author what went wrong and what they can do to fix it.
 
