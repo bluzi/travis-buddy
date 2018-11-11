@@ -18,6 +18,11 @@ const createJobObject = (job, index, owner, repoName) => ({
 });
 
 const getAllComments = async (githubToken, owner, repo, pullRequestNumber) => {
+  if (!githubToken) {
+    logger.warn('No Github token, cannot fetch comments');
+    return [];
+  }
+
   const gh = new GitHub({
     token: githubToken,
   });
@@ -51,6 +56,11 @@ const getPullRequestAuthor = async (
   pullRequestNumber,
 ) =>
   new Promise((resolve, reject) => {
+    if (!githubToken) {
+      logger.warn('No GitHub token, unable to fetch PR owner');
+      return resolve('Unknown PR author');
+    }
+
     const gh = new GitHub({
       token: githubToken,
     });

@@ -6,6 +6,13 @@ const createComment = async context => {
     token: context.meta.githubToken,
   });
 
+  const onlyOption = context.query.only;
+  if (onlyOption && onlyOption.split(',').includes(context.state) === false) {
+    logger.log(`Skipping comment because only option forbids it`);
+    context.onlyOptionSkippedComment = true;
+    return context;
+  }
+
   const issues = gh.getIssues(context.owner, context.repo);
 
   const commentResult = await issues.createIssueComment(
