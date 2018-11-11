@@ -5,32 +5,47 @@ const GitHub = require('better-github-api');
 const configuration = require('../utils/configuration');
 const assert = require('assert');
 
-const app = createApp({ isTest: true, returnRequestContext: true });
+const app = createApp({
+  isTest: true,
+  returnRequestContext: true,
+  logs: 'errors',
+});
 
 describe('api', () => {
   describe('POST /', () => {
-    it('should return HTTP status 201 and ok message', done => {
+    let response;
+    let error;
+
+    before(function(done) {
+      this.timeout(100000);
+
       request(app)
         .post('/?someOption=someValue')
         .send({ payload: JSON.stringify(samplePayload) })
         .expect(201)
-        .end((err, { body: { ok, context } }) => {
-          if (err) return done(err);
-
-          if (!ok) return done('No ok');
-          if (!context) return done('No context');
-          if (!context.message || context.message.length < 100)
-            return done(`Weird message:\n${context.message}`);
-          if (!context.message.includes('TravisBuddy Request Identifier'))
-            return done('No request identifier');
-          if (context.query.someOption !== 'someValue') {
-            return done('Query configuration does not work');
-          }
-
+        .end((responseError, { body: responseBody }) => {
+          response = responseBody;
+          error = responseError;
           done();
         });
-    }).timeout(100000);
-  });
+    });
+
+    it('should not return an error', done => (error ? done(error) : done()));
+    it('should have an ok field', done =>
+      response.ok !== true ? done(`ok is: ${response.ok}`) : done());
+    it('should have a sain message', done =>
+      !response.context.message || response.context.message.length < 100
+        ? done(`Weird message:\n${response.context.message}`)
+        : done());
+    it('should have a message with a request identifier', done =>
+      !response.context.message.includes('TravisBuddy Request Identifier')
+        ? done(`No request identifier`)
+        : done());
+    it('should support query parameters', done =>
+      response.context.query.someOption !== 'someValue'
+        ? done(`Query parameter was not found or its value is malformed`)
+        : done());
+  }).timeout(100000);
 
   describe('GET /status', () => {
     it('should be running and return HTTP status 200', done => {
