@@ -58,29 +58,29 @@ const getPullRequestAuthor = async (
   new Promise((resolve, reject) => {
     if (!githubToken) {
       logger.warn('No GitHub token, unable to fetch PR owner');
-      return resolve('Unknown PR author');
+      resolve('Unknown PR author');
+    } else {
+      const gh = new GitHub({
+        token: githubToken,
+      });
+
+      gh
+        .getRepo(owner, repo)
+        .getPullRequest(pullRequestNumber, (err, pullRequest) => {
+          if (err) return reject(err);
+          return resolve(pullRequest.user.login);
+        })
+        .catch(() =>
+          logger.warn(
+            `Could not find author in: ${owner}/${repo} #${pullRequestNumber}`,
+            {
+              owner,
+              repo,
+              pullRequestNumber,
+            },
+          ),
+        );
     }
-
-    const gh = new GitHub({
-      token: githubToken,
-    });
-
-    gh
-      .getRepo(owner, repo)
-      .getPullRequest(pullRequestNumber, (err, pullRequest) => {
-        if (err) return reject(err);
-        return resolve(pullRequest.user.login);
-      })
-      .catch(() =>
-        logger.warn(
-          `Could not find author in: ${owner}/${repo} #${pullRequestNumber}`,
-          {
-            owner,
-            repo,
-            pullRequestNumber,
-          },
-        ),
-      );
   });
 
 const parseTravisPayload = async ({ payload, meta, ...restOfContext }) => ({
