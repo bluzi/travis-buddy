@@ -12,6 +12,8 @@ if (process.env.SENTRY_DSN) {
 
 const env = process.env.environment || 'unknown';
 
+let logLevel = 0;
+
 const prettyStdOut = new PrettyStream({
   mode: 'dev',
 });
@@ -43,6 +45,31 @@ if (process.env.logdnaApiKey) {
     hostname: os.hostname(),
     ip: ip.address(),
   });
+}
+
+function setLevel(level) {
+  switch (level) {
+    case 'all':
+      logLevel = 1;
+      break;
+
+    case 'warnings':
+      logLevel = 2;
+      break;
+
+    case 'errors':
+      logLevel = 3;
+      break;
+
+    case 'nothing':
+      logLevel = 0;
+      break;
+
+    default:
+      throw new Error(`Unknown log level: ${level}`);
+  }
+
+  logLevel = level;
 }
 
 function formatMessage(message, context) {
@@ -90,7 +117,9 @@ function log(message, extra, context) {
     logdnaLogger.log(formatMessage(message, context), extra);
   }
 
-  bunyanLogger.info(formatMessage(message, context));
+  if (logLevel === 1) {
+    bunyanLogger.info(formatMessage(message, context));
+  }
 
   audit({ logType: 'log', message, ...extra }, context);
 }
@@ -105,7 +134,9 @@ function warn(message, extra, context) {
     logdnaLogger.warn(formatMessage(message, context), extra);
   }
 
-  bunyanLogger.warn(formatMessage(message, context));
+  if (logLevel === 1 || logLevel === 2) {
+    bunyanLogger.warn(formatMessage(message, context));
+  }
 
   audit({ logType: 'warning', message, ...extra }, context);
 }
@@ -123,7 +154,9 @@ function error(err, context) {
     });
   }
 
-  bunyanLogger.error(formatMessage(err.message, context));
+  if (logLevel !== 0) {
+    bunyanLogger.error(formatMessage(err.message, context));
+  }
 
   audit(
     {
@@ -140,4 +173,5 @@ module.exports = {
   warn,
   error,
   audit,
+  setLevel,
 };
