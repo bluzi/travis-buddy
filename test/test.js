@@ -11,7 +11,7 @@ const app = createApp({
   logs: 'errors',
 });
 
-describe('api', suite => {
+describe('api', () => {
   describe('POST /', () => {
     let response;
     let error;
