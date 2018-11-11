@@ -10,6 +10,10 @@ const { createWebsiteRoutes } = require('../routes/website.routes');
 const { createGithubRoutes } = require('../routes/github-app.routes');
 
 const createApp = options => {
+  if (options.logs) {
+    logger.setLevel(options.logs);
+  }
+
   const app = express();
 
   app.use(bodyParser.json());
