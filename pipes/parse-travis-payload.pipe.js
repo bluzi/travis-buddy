@@ -18,6 +18,11 @@ const createJobObject = (job, index, owner, repoName) => ({
 });
 
 const getAllComments = async (githubToken, owner, repo, pullRequestNumber) => {
+  if (!githubToken) {
+    logger.warn('No Github token, cannot fetch comments');
+    return [];
+  }
+
   const gh = new GitHub({
     token: githubToken,
   });
@@ -51,26 +56,31 @@ const getPullRequestAuthor = async (
   pullRequestNumber,
 ) =>
   new Promise((resolve, reject) => {
-    const gh = new GitHub({
-      token: githubToken,
-    });
+    if (!githubToken) {
+      logger.warn('No GitHub token, unable to fetch PR owner');
+      resolve('Unknown PR author');
+    } else {
+      const gh = new GitHub({
+        token: githubToken,
+      });
 
-    gh
-      .getRepo(owner, repo)
-      .getPullRequest(pullRequestNumber, (err, pullRequest) => {
-        if (err) return reject(err);
-        return resolve(pullRequest.user.login);
-      })
-      .catch(() =>
-        logger.warn(
-          `Could not find author in: ${owner}/${repo} #${pullRequestNumber}`,
-          {
-            owner,
-            repo,
-            pullRequestNumber,
-          },
-        ),
-      );
+      gh
+        .getRepo(owner, repo)
+        .getPullRequest(pullRequestNumber, (err, pullRequest) => {
+          if (err) return reject(err);
+          return resolve(pullRequest.user.login);
+        })
+        .catch(() =>
+          logger.warn(
+            `Could not find author in: ${owner}/${repo} #${pullRequestNumber}`,
+            {
+              owner,
+              repo,
+              pullRequestNumber,
+            },
+          ),
+        );
+    }
   });
 
 const parseTravisPayload = async ({ payload, meta, ...restOfContext }) => ({

@@ -29,6 +29,7 @@ const finish = context => {
       commentId: context.commentId,
       buildNumber: context.buildNumber,
       payload: JSON.stringify(context.payload, null, 4),
+      onlyOptionSkippedComment: !!context.onlyOptionSkippedComment,
 
       ...context.meta,
     },

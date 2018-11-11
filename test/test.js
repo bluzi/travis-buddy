@@ -11,7 +11,7 @@ describe('api', () => {
   describe('POST /', () => {
     it('should return HTTP status 201 and ok message', done => {
       request(app)
-        .post('/')
+        .post('/?someOption=someValue')
         .send({ payload: JSON.stringify(samplePayload) })
         .expect(201)
         .end((err, { body: { ok, context } }) => {
@@ -23,6 +23,9 @@ describe('api', () => {
             return done(`Weird message:\n${context.message}`);
           if (!context.message.includes('TravisBuddy Request Identifier'))
             return done('No request identifier');
+          if (context.query.someOption !== 'someValue') {
+            return done('Query configuration does not work');
+          }
 
           done();
         });
