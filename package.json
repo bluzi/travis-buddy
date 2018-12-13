@@ -7,7 +7,10 @@
   "description": "",
   "main": "index.js",
   "lint-staged": {
-    "*.{js,json,css,md}": ["prettier --write", "git add"]
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "scripts": {
     "start": "node http/server.js",
@@ -39,7 +42,7 @@
     "logdna": "^1.4.0",
     "logzio-nodejs": "^0.4.10",
     "mocha": "^5.0.3",
-    "mongoose": "^5.0.12",
+    "mongoose": "^5.2.12",
     "mustache": "^2.3.0",
     "ordinal": "^1.0.2",
     "paipu": "^1.0.9",
