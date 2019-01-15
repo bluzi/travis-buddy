@@ -4,13 +4,13 @@
 
 # TravisBuddy [![Build Status](https://travis-ci.org/bluzi/travis-buddy.svg?branch=master)](https://travis-ci.org/bluzi/travis-buddy) ![Heroku](https://heroku-badge.herokuapp.com/?app=travis-buddy-service&style=flat) <a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://www.statuscake.com/App/button/index.php?Track=2MnfbAoOjQ&Days=1&Design=7" /></a>
 
-TravisBuddy is a cloud service that creates comments in failed pull requests and tell the author what went wrong and what they can do to fix it.
+TravisBuddy is a cloud service that creates comments in failed pull requests and tells the author what went wrong and what they can do to fix it.
 
 ## Why should I use it?
 
 * It takes 2 minutes to integrate TravisBuddy with your GitHub repository, assuming it's already integrated with TravisCI
 * It will save precious time to you and to your contributors, as you won't have to explain what went wrong, and they won't have to go through the whole build log in TravisCI.
-* It's free, open source and awesome.
+* It's free, open source, and awesome.
 
 ![TravisBuddy example comment](https://raw.githubusercontent.com/bluzi/travis-buddy/master/public/images/example.png)
 
@@ -80,7 +80,7 @@ notifications:
 
 #### Update comments mode
 
-If you want TravisBuddy to only create one comment, add `?insertMode=update` to the webhook URL. TravisBuddy will create one comment and when there is for example a new reason the tests fail, it will update that one with the new information.
+If you want TravisBuddy to only create one comment, add `?insertMode=update` to the webhook URL. TravisBuddy will create one comment and when there is a new cause for test failure, it will update that one with the new information.
 
 ```yml
 notifications:
@@ -91,7 +91,7 @@ notifications:
 ### Private Repositories
 
 TravisBuddy is not yet supported on private repositories.
-However, we're working on it, so stay alarmed.
+However, we're working on it, so stay tuned.
 
 ### What if I still can't get it to work?
 
