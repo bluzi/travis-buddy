@@ -26,6 +26,7 @@ const finish = context => {
       link: context.link,
       language: context.language,
       insertMode: context.config.insertMode,
+      successBuildLog: context.config.successBuildLog,
       commentId: context.commentId,
       buildNumber: context.buildNumber,
       payload: JSON.stringify(context.payload, null, 4),

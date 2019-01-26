@@ -1,6 +1,6 @@
 const paipu = require('paipu');
 const mustache = require('mustache');
-const collectFailureData = require('./collect-failure-data.pipe');
+const collectBuildData = require('./collect-build-data.pipe');
 const fetchTemplate = require('./fetch-template.pipe');
 const logger = require('../utils/logger');
 
@@ -47,9 +47,9 @@ const formatMessage = async context => {
 
 module.exports = paipu
   .pipeIf(
-    context => context.state === 'failed',
-    'collect failure data',
-    collectFailureData,
+    context => context.state === 'failed' || (context.query.successBuildLog || context.config.successBuildLog) === 'true',
+    'collect build data',
+    collectBuildData,
   )
   .pipe('fetch template', fetchTemplate)
   .pipe('format message', formatMessage);

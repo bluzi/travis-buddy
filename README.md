@@ -60,6 +60,7 @@ Key | Description | Values
 regex | Tells TravisBuddy to take only parts of the log. The regex is executed on each test script separately, and TravisBuddy will only show the first result catched using parentheses | Any valid regular expression
 regexOptions | Use along with `regex` to apply regular expression options      |   Any valid regular expression option, i.e. `g`
 insertMode | Tells TravisBuddy to comment once and keep editing that one comment instead of appending new comment for every build | (default) `append` or `update`
+successBuildLog | Tells TravisBuddy to add the build log for successfull builds. | (default) `false` or `true`
 
 #### Custom Template
 

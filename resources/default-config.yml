@@ -3,3 +3,4 @@ travisBuddy:
     success: default
     failure: default
   insertMode: append
+  successBuildLog: false
