@@ -12,16 +12,16 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta property="description" content="An awesome cloud service that integrates TravisCI with GitHub and helps open-source project owners manage their contributions"
-    />
+    <meta property="description"
+        content="An awesome cloud service that integrates TravisCI with GitHub and helps open-source project owners manage their contributions" />
 
     <meta property="og:title" content="TravisBuddy">
-    <meta property="og:description" content="An awesome cloud service that integrates TravisCI with GitHub and helps open-source project owners manage their contributions"
-    />
+    <meta property="og:description"
+        content="An awesome cloud service that integrates TravisCI with GitHub and helps open-source project owners manage their contributions" />
 
     <meta name="twitter:title" content="TravisBuddy" />
-    <meta name="twitter:description" content="An awesome cloud service that integrates TravisCI with GitHub and helps open-source project owners manage their contributions"
-    />
+    <meta name="twitter:description"
+        content="An awesome cloud service that integrates TravisCI with GitHub and helps open-source project owners manage their contributions" />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23421052-10"></script>
@@ -61,28 +61,46 @@
             </div>
         </div>
     </header>
-    <div class="container">
-        <section class="logo">
-            <img src="/public/images/logo.png" />
-        </section>
+    <section class="logo">
+        <img src="/public/images/logo.png" />
+    </section>
 
-        <div class="text-center lead">
-            Not the bot you deserve, but the one you need
+    <div class="text-center lead">
+        Seamless integration between TravisCI and GitHub, set up in 5 minutes
+    </div>
+
+    <main>
+        <div class="container">
+            <p class="text-center">
+                TravisBuddy creates comments on pull requests in your public GitHub repositories whenever a test is failing on TravisCI.<br /
+                The comment only includes the relevant part of the log and can be easily customized.<br />
+                Save your contirbutors the hassle of browsing into TravisCI and searching the huge build log for errors by taking 5 minutes to integrate TravisBuddy into your repository.
+            </p>
         </div>
 
-        <main>
-            <p>
-                TravisBuddy will comment on pull requests in your public repository everytime a test failed in one of them. The comment will
-                include only the part of the build log that applies to your testing framework, so your contributors won't
-                have to enter Travis's website and search the long and annoying build log for the reason the tests failed.
-            </p>
+        <p class="main-buttons">
+            <a class="btn btn-primary" href="/getting-started">Get started</a>
+            <a class="btn" href="https://github.com/bluzi/travis-buddy">Contribute</a>
+        </p>
 
-            <p class="text-center">
-                <a class="btn btn-primary" href="/getting-started">Get started</a>
-                <a class="btn" href="https://github.com/bluzi/travis-buddy">Contribute</a>
-            </p>
-        </main>
-    </div>
+        <div class="trusted-by">
+            <h2>Trusted By</h2>
+
+            <div class="lead">
+                hundreds of repositories across GitHub, including
+            </div>
+
+            <a target="_blank" href="https://github.com/xbmc/repo-plugins/tree/krypton">
+                <img src="public/images/kodi-logo.png" alt="Kodi" />
+            </a>
+            <a target="_blank" href="https://github.com/mdn/interactive-examples/">
+                <img src="public/images/mdn-logo.png" alt="MDN" />
+            </a>
+            <a target="_blank" href="https://github.com/kubernetes/minikube">
+                <img src="public/images/kubernetes-logo.png" alt="Kubernetes" />
+            </a>
+        </div>
+    </main>
 
     <footer>
         <div class="container">

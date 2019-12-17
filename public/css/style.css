@@ -1,5 +1,5 @@
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 body {
@@ -57,7 +57,7 @@ section.logo {
 }
 
 section.logo img {
-  height: 25rem;
+  height: 15rem;
 }
 
 section.logo.not-found img {
@@ -89,9 +89,9 @@ footer a {
   font-weight: bold;
 }
 
-footer a:before {
+/* footer a:before {
   content: '@';
-}
+} */
 
 footer a:hover {
   text-decoration: none;
@@ -148,4 +148,20 @@ form.contact-us {
   .background-logo {
     display: none;
   }
+}
+
+.trusted-by {
+  text-align: center;
+  margin: 50px auto;
+}
+
+.trusted-by img {
+  height: 6rem;
+  filter: grayscale(80%);
+  margin: 0 20px;
+}
+
+.main-buttons {
+  margin-top: 30px;
+  text-align: center;
 }

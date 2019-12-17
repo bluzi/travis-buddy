@@ -11,6 +11,7 @@
   },
   "scripts": {
     "start": "node http/server.js",
+    "watch": "nodemon -e js,html,css http/server.js",
     "prod": "PORT=80 npm start",
     "test": "mocha",
     "test:inspect": "mocha --inspect",
@@ -57,6 +58,7 @@
     "eslint-plugin-import": "^2.8.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.1",
+    "nodemon": "^2.0.2",
     "npm-sort": "0.0.4",
     "prettier": "1.11.1"
   }
