@@ -11,14 +11,12 @@ const getJobDisplayName = (job, index) => {
   return `${ordinal(index + 1)} Build`;
 };
 
-const createJobObject = (job, index, owner, repoName, host) => {
-  return {
-    id: job.id,
-    displayName: getJobDisplayName(job, index),
-    script: job.config.script,
-    link: `https://${host}/${owner}/${repoName}/jobs/${job.id}`,
-  };
-};
+const createJobObject = (job, index, owner, repoName, host) => ({
+  id: job.id,
+  displayName: getJobDisplayName(job, index),
+  script: job.config.script,
+  link: `https://${host}/${owner}/${repoName}/jobs/${job.id}`,
+});
 
 const getAllComments = async (githubToken, owner, repo, pullRequestNumber) => {
   if (!githubToken) {
