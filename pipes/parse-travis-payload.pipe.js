@@ -1,6 +1,7 @@
 const logger = require('../utils/logger');
 const GitHub = require('better-github-api');
 const ordinal = require('ordinal');
+const { URL } = require('url');
 
 const getJobDisplayName = (job, index) => {
   if (job.config.language === 'node_js')
@@ -10,12 +11,14 @@ const getJobDisplayName = (job, index) => {
   return `${ordinal(index + 1)} Build`;
 };
 
-const createJobObject = (job, index, owner, repoName) => ({
-  id: job.id,
-  displayName: getJobDisplayName(job, index),
-  script: job.config.script,
-  link: `https://travis-ci.org/${owner}/${repoName}/jobs/${job.id}`,
-});
+const createJobObject = (job, index, owner, repoName, host) => {
+  return {
+    id: job.id,
+    displayName: getJobDisplayName(job, index),
+    script: job.config.script,
+    link: `https://${host}/${owner}/${repoName}/jobs/${job.id}`,
+  };
+};
 
 const getAllComments = async (githubToken, owner, repo, pullRequestNumber) => {
   if (!githubToken) {
@@ -83,52 +86,58 @@ const getPullRequestAuthor = async (
     }
   });
 
-const parseTravisPayload = async ({ payload, meta, ...restOfContext }) => ({
-  owner: payload.repository.owner_name,
-  repo: payload.repository.name,
-  pullRequest: payload.pull_request_number,
-  pullRequestTitle: payload.pull_request_title,
-  buildNumber: payload.id,
-  author: payload.author_name,
-  state: payload.state,
-  branch: payload.branch,
-  travisType: payload.type,
-  language: payload.config.language,
-  scripts: payload.config.script,
-  link: `https://travis-ci.org/${payload.repository.owner_name}/${
-    payload.repository.name
-  }/builds/${payload.id}`,
+const parseTravisPayload = async ({ payload, meta, ...restOfContext }) => {
+  const { host } = new URL(payload.build_url);
 
-  payload,
-  meta,
-  ...restOfContext,
+  return {
+    owner: payload.repository.owner_name,
+    repo: payload.repository.name,
+    pullRequest: payload.pull_request_number,
+    pullRequestTitle: payload.pull_request_title,
+    buildNumber: payload.id,
+    author: payload.author_name,
+    state: payload.state,
+    branch: payload.branch,
+    travisType: payload.type,
+    language: payload.config.language,
+    scripts: payload.config.script,
+    host,
+    link: `https://${host}/${payload.repository.owner_name}/${
+      payload.repository.name
+    }/builds/${payload.id}`,
 
-  jobs: payload.matrix
-    .filter(job => job.state === 'failed')
-    .map((job, index) =>
-      createJobObject(
-        job,
-        index,
+    payload,
+    meta,
+    ...restOfContext,
+
+    jobs: payload.matrix
+      .filter(job => job.state === 'failed')
+      .map((job, index) =>
+        createJobObject(
+          job,
+          index,
+          payload.repository.owner_name,
+          payload.repository.name,
+          host,
+        ),
+      ),
+
+    comments:
+      (await getAllComments(
+        meta.githubToken,
         payload.repository.owner_name,
         payload.repository.name,
-      ),
-    ),
+        payload.pull_request_number,
+      )) || [],
 
-  comments:
-    (await getAllComments(
-      meta.githubToken,
-      payload.repository.owner_name,
-      payload.repository.name,
-      payload.pull_request_number,
-    )) || [],
-
-  pullRequestAuthor:
-    (await getPullRequestAuthor(
-      meta.githubToken,
-      payload.repository.owner_name,
-      payload.repository.name,
-      payload.pull_request_number,
-    )) || payload.author_name,
-});
+    pullRequestAuthor:
+      (await getPullRequestAuthor(
+        meta.githubToken,
+        payload.repository.owner_name,
+        payload.repository.name,
+        payload.pull_request_number,
+      )) || payload.author_name,
+  };
+};
 
 module.exports = parseTravisPayload;
