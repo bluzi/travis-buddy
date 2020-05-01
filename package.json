@@ -7,7 +7,10 @@
   "description": "",
   "main": "index.js",
   "lint-staged": {
-    "*.{js,json,css,md}": ["prettier --write", "git add"]
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "scripts": {
     "start": "node http/server.js",
@@ -22,7 +25,9 @@
     "sort": "npm-sort",
     "before-pr": "npm run sort && npm test && npm run lint",
     "precommit": "lint-staged",
-    "prettier": "prettier '**/*.{js,ts,css,md}' --write"
+    "prettier": "prettier '**/*.{js,ts,css,md}' --write",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "",
   "license": "ISC",
@@ -49,7 +54,8 @@
     "strip-ansi": "^4.0.0",
     "supertest": "^3.0.0",
     "uuid": "^3.3.2",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "eslint": "^4.10.0",
@@ -61,5 +67,6 @@
     "nodemon": "^2.0.2",
     "npm-sort": "0.0.4",
     "prettier": "1.11.1"
-  }
+  },
+  "snyk": true
 }
